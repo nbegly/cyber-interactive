@@ -13,8 +13,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            /* Default to a single column for mobile and narrow screens */
-
         }
         .list-group-item { 
             background-color: var(--bg-dark-tertiary); 
@@ -63,7 +61,6 @@
         </ul>
     </div>
     <script>
-        // Register the Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
