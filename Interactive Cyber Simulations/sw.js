@@ -1,6 +1,5 @@
-const CACHE_NAME = 'sec-plus-sims-v1'; // <--- Changed from v1 to v2
+const CACHE_NAME = 'sec-plus-sims-v1';
 
-// The complete list of files to cache for offline use.
 const assetsToCache = [
   './',
   'index.html',
@@ -23,7 +22,6 @@ const assetsToCache = [
   'sims/sim14.html'
 ];
 
-// Install event: cache all assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -34,7 +32,6 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate event: clean up old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -50,7 +47,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event: serve from cache first, then network
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
