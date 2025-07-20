@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 13: VPN Configuration</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        /* Sim-specific styles */
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .sim13-container { 
+            background-color: var(--bg-dark-secondary); 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-top: 20px;
+            position: relative;
+        }
+        #line-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .sim13-diagram { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-around; 
+            gap: 20px; 
+            min-height: 250px; 
+        }
+        .sim13-endpoint { 
+            text-align: center;
+            color: var(--accent-green);
+            z-index: 1;
+        }
+        .sim13-endpoint-icon svg { 
+            width: 60px;
+            height: 60px;
+            fill: currentColor;
+        }
+        .sim13-vpn-icon { 
+            font-size: 3rem; 
+            cursor: pointer; 
+        }
+        .sim13-endpoint-label { 
+            margin-top: 10px; 
+            color: var(--text-light);
+        }
+
+        /* Modal specific styles */
+        .sim13-modal-body .tabs { 
+            display: flex; 
+            border-bottom: 1px solid var(--border-color); 
+            margin-bottom: 15px; 
+        }
+        .sim13-modal-body .tab-btn { 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            background-color: transparent; 
+            border: none; 
+            color: var(--text-light); 
+            border-bottom: 3px solid transparent; 
+        }
+        .sim13-modal-body .tab-btn.active { 
+            border-bottom-color: var(--accent-green); 
+            font-weight: bold; 
+        }
+        .sim13-modal-body .tab-content { 
+            display: none; 
+        }
+        .sim13-modal-body .tab-content.active { 
+            display: block; 
+        }
+        .sim13-form-grid { 
+            display: grid; 
+            grid-template-columns: 150px 1fr; 
+            gap: 10px; 
+            align-items: center; 
+        }
+        .sim13-form-grid label { 
+            text-align: right; 
+        }
+        .sim13-form-grid input, .sim13-form-grid select { 
+            width: 100%; 
+            padding: 8px; 
+            background-color: var(--bg-dark-main); 
+            color: var(--text-light); 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+        }
+        .sim13-form-grid input:disabled { 
+            background-color: var(--bg-dark-tertiary); 
+            color: #aaa; 
+        }
+        .modal-footer { 
+            text-align: right; 
+            margin-top: 20px;
+        }
+        .modal-footer .modal-cancel-btn {
+            background-color: var(--danger-red);
+        }
+        .modal-footer .modal-cancel-btn:hover {
+            background-color: var(--danger-red-hover);
+        }
+        .modal-footer .modal-save-btn {
+            background-color: var(--accent-green);
+        }
+        .modal-footer .modal-save-btn:hover {
+            background-color: var(--accent-green-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 13: VPN Configuration</h3>
+        <div class="sim13-container">
+            <canvas id="line-canvas"></canvas>
+            <div class="sim13-diagram">
+                <div class="sim13-endpoint" id="branch1"></div>
+                <div class="sim13-endpoint" id="vpn1"></div>
+                 <div class="sim13-endpoint" id="internet"></div>
+                 <div class="sim13-endpoint" id="vpn2"></div>
+                <div class="sim13-endpoint" id="branch2"></div>
+            </div>
+        </div>
+        <div class="sim-controls">
+            <div></div>
+            <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = true, options = {}) {
+            modalBody.innerHTML = '';
+            if (options.isWide) modal.classList.add('modal-wide');
+            if (typeof content === 'string') {
+                const p = document.createElement('p');
+                p.style.whiteSpace = 'pre-wrap';
+                p.textContent = content;
+                modalBody.appendChild(p);
+            } else {
+                modalBody.appendChild(content);
+            }
+            if (!options.noCloseButton) {
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'modal-close-btn';
+                closeButton.onclick = closeModal;
+                modalBody.appendChild(closeButton);
+            }
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { 
+            modal.style.display = "none"; 
+            modal.classList.remove('modal-wide');
+        }
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim13 = {
+            state: {},
+            data: {
+                info: `SIMULATION\nA systems administrator is configuring a site-to-site VPN between two branch offices. Some of the settings have already been configured correctly. The systems administrator has been provided the following requirements as part of completing the configuration:\n\n     Most secure algorithms should be selected\n     All traffic should be encrypted over the VPN\n     A secret password will be used to authenticate the two VPN concentrators\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.`,
+                dropdowns: {
+                    authMethod: ["PSK", "PKI", "RADIUS"],
+                    encryption: ["AES-128", "AES-192", "AES-256", "DES", "3DES"],
+                    hash: ["MD5", "SHA-1", "SHA-256"],
+                    protocol: ["ESP", "AH"]
+                },
+                vpn1: { localNet: '192.168.1.0/24', remoteNet: '192.168.2.0/24', peerIp: '5.5.5.20' },
+                vpn2: { localNet: '192.168.2.0/24', remoteNet: '192.168.1.0/24', peerIp: '5.5.5.10' },
+                correctAnswers: {
+                    phase1: { authMethod: "PSK", encryption: "AES-256", hash: "SHA-256" },
+                    phase2: { protocol: "ESP", encryption: "AES-256", hash: "SHA-256" }
+                },
+                icons: {
+                    office: '<div class="sim13-endpoint-icon"><svg viewBox="0 0 24 24"><path d="M12,3L2,12H5V20H19V12H22L12,3Z" /></svg></div>',
+                    vpn: '<div class="sim13-endpoint-icon sim13-vpn-icon"><svg viewBox="0 0 24 24"><path d="M18,8A6,6 0 0,0 12,2A6,6 0 0,0 6,8C6,11.54 9.61,16.44 11.2,18.33C11.39,18.55 11.69,18.67 12,18.67C12.31,18.67 12.61,18.55 12.8,18.33C14.39,16.44 18,11.54 18,8M12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11M12,22A8,8 0 0,1 4,14V12H2V14A10,10 0 0,0 12,24A10,10 0 0,0 22,14V12H20V14A8,8 0 0,1 12,22Z" /></svg></div>',
+                    internet: '<div class="sim13-endpoint-icon"><svg viewBox="0 0 24 24"><path d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg></div>'
+                }
+            },
+            setup: function() {
+                this.state = {
+                    vpn1: { phase1: {}, phase2: {} },
+                    vpn2: { phase1: {}, phase2: {} }
+                };
+                
+                // Set up icons
+                document.getElementById('branch1').innerHTML = this.data.icons.office + '<div class="sim13-endpoint-label">Branch Office 1<br>192.168.1.0/24<br><br></div>';
+                document.getElementById('vpn1').innerHTML = this.data.icons.vpn + '<div class="sim13-endpoint-label">VPN Concentrator<br>5.5.5.10<br>255.255.255.0</div>';
+                document.getElementById('internet').innerHTML = this.data.icons.internet + '<div class="sim13-endpoint-label">Internet<br><br><br></div>';
+                document.getElementById('vpn2').innerHTML = this.data.icons.vpn + '<div class="sim13-endpoint-label">VPN Concentrator<br>5.5.5.20<br>255.255.255.0</div>';
+                document.getElementById('branch2').innerHTML = this.data.icons.office + '<div class="sim13-endpoint-label">Branch Office 2<br>192.168.2.0/24<br><br></div>';
+                
+                document.querySelectorAll('.sim13-vpn-icon').forEach((icon, index) => {
+                    icon.onclick = () => this.showVpnModal(`vpn${index + 1}`);
+                });
+                this.drawLines();
+            },
+            drawLines: function() {
+                const canvas = document.getElementById('line-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const container = document.querySelector('.sim13-container');
+                if (!container) return;
+
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+                ctx.lineWidth = 2;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+                
+                drawLineWithArrow(300, 105, 385, 105);
+                drawLineWithArrow(300, 105, 200, 105);
+                drawLineWithArrow(560, 105, 650, 105);
+                drawLineWithArrow(560, 105, 485, 105);
+                drawLineWithArrow(825, 105, 915, 105);
+                drawLineWithArrow(825, 105, 750, 105);
+                drawLineWithArrow(1110, 105, 1200, 105);
+                drawLineWithArrow(1110, 105, 1015, 105);
+
+                function drawLineWithArrow(x1, y1, x2, y2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                    const angle = Math.atan2(y2 - y1, x2 - x1);
+                    const size = 8;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.translate(x2, y2);
+                    ctx.rotate(angle);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-size, -size / 2);
+                    ctx.lineTo(-size, size / 2);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.restore();
+                }
+            },
+            showVpnModal: function(vpnId) {
+                const currentState = this.state[vpnId];
+                const createDropdown = (options, name, phase) => '<option value=""></option>' + options.map(opt => `<option value="${opt}" ${currentState[phase][name] === opt ? 'selected' : ''}>${opt}</option>`).join('');
+                
+                const modalBody = document.createElement('div');
+                modalBody.className = 'sim13-modal-body';
+                modalBody.innerHTML = `
+                    <h4>VPN Concentrator Configuration (${this.data[vpnId].peerIp})</h4>
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="phase1">Phase 1</button>
+                        <button class="tab-btn" data-tab="phase2">Phase 2</button>
+                    </div>
+                    <div id="phase1" class="tab-content active">
+                        <div class="sim13-form-grid">
+                            <label for="peerIp">Peer IP Address:</label><input type="text" id="peerIp" value="${currentState.phase1.peerIp || ''}">
+                            <label for="p1-authMethod">Auth Method:</label><select id="p1-authMethod">${createDropdown(this.data.dropdowns.authMethod, 'authMethod', 'phase1')}</select>
+                            <label>Negotiation Mode:</label><input type="text" value="Main" disabled>
+                            <label for="p1-encryption">Encryption Algorithm:</label><select id="p1-encryption">${createDropdown(this.data.dropdowns.encryption, 'encryption', 'phase1')}</select>
+                            <label for="p1-hash">Hash Algorithm:</label><select id="p1-hash">${createDropdown(this.data.dropdowns.hash, 'hash', 'phase1')}</select>
+                            <label>DH Key Group:</label><input type="text" value="5" disabled>
+                        </div>
+                    </div>
+                    <div id="phase2" class="tab-content">
+                        <div class="sim13-form-grid">
+                            <label>Mode:</label><input type="text" value="Tunnel" disabled>
+                            <label for="p2-protocol">Protocol:</label><select id="p2-protocol">${createDropdown(this.data.dropdowns.protocol, 'protocol', 'phase2')}</select>
+                            <label for="p2-encryption">Encryption Algorithm:</label><select id="p2-encryption">${createDropdown(this.data.dropdowns.encryption, 'encryption', 'phase2')}</select>
+                            <label for="p2-hash">Hash Algorithm:</label><select id="p2-hash">${createDropdown(this.data.dropdowns.hash, 'hash', 'phase2')}</select>
+                            <label for="localNet">Local Network/Mask:</label><input type="text" id="localNet" value="${currentState.phase2.localNet || ''}">
+                            <label for="remoteNet">Remote Network/Mask:</label><input type="text" id="remoteNet" value="${currentState.phase2.remoteNet || ''}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="back-btn modal-cancel-btn">Cancel</button>
+                        <button class="sim-check-btn modal-save-btn">Save & Close</button>
+                    </div>`;
+                
+                modalBody.querySelector('.modal-save-btn').onclick = () => this.saveVpnState(vpnId, modalBody);
+                modalBody.querySelector('.modal-cancel-btn').onclick = () => closeModal();
+                modalBody.querySelectorAll('.tab-btn').forEach(btn => btn.onclick = (e) => this.openSim13Tab(e));
+
+                showModal(modalBody, false, { noCloseButton: true });
+            },
+            saveVpnState: function(vpnId, modalBody) {
+                this.state[vpnId].phase1.peerIp = modalBody.querySelector('#peerIp').value;
+                this.state[vpnId].phase1.authMethod = modalBody.querySelector('#p1-authMethod').value;
+                this.state[vpnId].phase1.encryption = modalBody.querySelector('#p1-encryption').value;
+                this.state[vpnId].phase1.hash = modalBody.querySelector('#p1-hash').value;
+                this.state[vpnId].phase2.protocol = modalBody.querySelector('#p2-protocol').value;
+                this.state[vpnId].phase2.encryption = modalBody.querySelector('#p2-encryption').value;
+                this.state[vpnId].phase2.hash = modalBody.querySelector('#p2-hash').value;
+                this.state[vpnId].phase2.localNet = modalBody.querySelector('#localNet').value;
+                this.state[vpnId].phase2.remoteNet = modalBody.querySelector('#remoteNet').value;
+                closeModal();
+            },
+            openSim13Tab: function(evt) {
+                const body = evt.target.closest('.sim13-modal-body');
+                const tabName = evt.target.dataset.tab;
+                body.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                body.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active'));
+                body.querySelector(`#${tabName}`).classList.add('active');
+                evt.currentTarget.classList.add('active');
+            },
+            check: function() {
+                let correctCount = 0;
+                let totalChecks = 0;
+
+                ['vpn1', 'vpn2'].forEach(vpnId => {
+                    const vpnData = this.data[vpnId];
+                    const userState = this.state[vpnId];
+                    const answers = this.data.correctAnswers;
+                    
+                    if (Object.keys(userState.phase1).length === 0 && Object.keys(userState.phase2).length === 0) {
+                        return;
+                    }
+
+                    totalChecks += 9;
+                    if (userState.phase1.peerIp === vpnData.peerIp) correctCount++;
+                    if (userState.phase1.authMethod === answers.phase1.authMethod) correctCount++;
+                    if (userState.phase1.encryption === answers.phase1.encryption) correctCount++;
+                    if (userState.phase1.hash === answers.phase1.hash) correctCount++;
+                    
+                    if (userState.phase2.localNet === vpnData.localNet) correctCount++;
+                    if (userState.phase2.remoteNet === vpnData.remoteNet) correctCount++;
+                    if (userState.phase2.protocol === answers.phase2.protocol) correctCount++;
+                    if (userState.phase2.encryption === answers.phase2.encryption) correctCount++;
+                    if (userState.phase2.hash === answers.phase2.hash) correctCount++;
+                });
+                
+                if (totalChecks === 0) {
+                    showModal("Please configure at least one of the VPN concentrators.", true);
+                    return;
+                }
+
+                if (correctCount === totalChecks) {
+                    showModal("Correct! Both VPN concentrators are configured securely.", true);
+                } else {
+                    showModal(`Incorrect. Please review the configuration on both VPN concentrators. You have ${correctCount} out of ${totalChecks} settings correct.`, true);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim13.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim13.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim13.setup());
+            document.getElementById('infoBtn').onclick = () => {
+                showModal(sim13.data.info, false);
+            };
+            window.addEventListener('resize', () => sim13.drawLines());
+        });
+    </script>
+</body>
+</html>
