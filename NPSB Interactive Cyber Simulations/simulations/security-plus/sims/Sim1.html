@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 1: Match Protocols to Ports</title>
+    <!-- Link to the shared stylesheet -->
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        /* Sim-specific styles */
+        .sim1-container { 
+            display: flex; 
+            gap: 20px; 
+            margin-top: 20px;
+        }
+        .sim1-column-group { 
+            flex: 1; 
+            padding: 15px; 
+            background: var(--bg-dark-secondary); 
+            border-radius: 8px; 
+        }
+        .sim1-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+        }
+        .sim1-draggable { 
+            background: var(--interactive-blue); 
+            color: white; 
+            padding: 10px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 10px; 
+            border-radius: 5px; 
+            cursor: grab; 
+            text-align: center; 
+        }
+        .sim1-draggable:hover { 
+            background: var(--interactive-blue-hover); 
+        }
+        .sim1-dropzone { 
+            height: 45px; 
+            background: var(--bg-dark-tertiary); 
+            border: 2px dashed var(--border-color); 
+            border-radius: 5px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 10px; 
+        }
+        .sim1-dropzone.drag-over { 
+            background: var(--interactive-blue-hover); 
+            border-color: var(--accent-green); 
+        }
+        .sim1-port-label { 
+            font-weight: bold; 
+            color: var(--text-light); 
+        }
+        .sim1-draggable.dropped { 
+            background: var(--accent-green); 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <!-- Back button added to the top left -->
+        <a href="../index.html" class="back-btn">Back to Menu</a>
+
+        <!-- Core HTML content for the simulation -->
+        <h3>Sim 1: Match Protocols to Ports</h3>
+        <div class="sim1-container">
+            <div class="sim1-column-group">
+                <h4>Protocols</h4>
+                <div class="sim1-grid" id="sim1-protocol-bank"></div>
+            </div>
+            <div class="sim1-column-group">
+                <h4>Ports</h4>
+                <div class="sim1-grid" id="sim1-port-bank"></div>
+            </div>
+        </div>
+        <div class="sim-controls">
+            <!-- Empty div for spacing -->
+            <div></div> 
+            <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Universal Modal Container -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+            <button class="modal-close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Shared Modal Logic ---
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = true) {
+            modalBody.innerHTML = '';
+            if (typeof content === 'string') {
+                const p = document.createElement('p');
+                p.style.whiteSpace = 'pre-wrap';
+                p.textContent = content;
+                modalBody.appendChild(p);
+            } else {
+                modalBody.appendChild(content);
+            }
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { modal.style.display = "none"; }
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        // --- Sim-specific JavaScript ---
+        const sim1 = {
+            data: {
+                protocols: ["RDP", "DNS", "LDAP", "LDAPS", "Kerberos", "POP3", "FTP", "Telnet", "SMTP", "SNMP", "SCP", "TFTP"],
+                ports: ["3389", "53", "389", "636", "88", "110", "21", "23", "25", "161", "22", "69"],
+                correctAnswers: { "3389": "RDP", "53": "DNS", "389": "LDAP", "636": "LDAPS", "88": "Kerberos", "110": "POP3", "21": "FTP", "23": "Telnet", "25": "SMTP", "161": "SNMP", "22": "SCP", "69": "TFTP" }
+            },
+            setup: function() {
+                const protocolBank = document.getElementById('sim1-protocol-bank');
+                const portBank = document.getElementById('sim1-port-bank');
+                const protocols = [...this.data.protocols].sort(() => Math.random() - 0.5);
+                const ports = [...this.data.ports].sort(() => Math.random() - 0.5);
+
+                protocolBank.innerHTML = protocols.map(p => `<div class="sim1-draggable" draggable="true">${p}</div>`).join('');
+                portBank.innerHTML = ports.map(p => `<div class="sim1-dropzone" data-port="${p}"><span class="sim1-port-label">${p}</span></div>`).join('');
+                
+                let draggedItem = null;
+                document.querySelectorAll('.sim1-draggable').forEach(item => {
+                    item.ondragstart = e => { 
+                        draggedItem = e.target; 
+                        e.dataTransfer.setData('text/plain', e.target.innerText); 
+                    };
+                });
+
+                document.querySelectorAll('.sim1-dropzone').forEach(zone => {
+                    zone.ondragover = e => { e.preventDefault(); zone.classList.add('drag-over'); };
+                    zone.ondragleave = () => zone.classList.remove('drag-over');
+                    zone.ondrop = e => {
+                        e.preventDefault();
+                        zone.classList.remove('drag-over');
+                        if (draggedItem) {
+                            // If the dropzone already has an item, return it to the bank
+                            if (zone.querySelector('.sim1-draggable')) {
+                                protocolBank.appendChild(zone.querySelector('.sim1-draggable'));
+                            }
+                            zone.appendChild(draggedItem);
+                            draggedItem = null;
+                        }
+                    };
+                });
+            },
+            check: function() {
+                let allCorrect = true;
+                let answeredCount = 0;
+                document.querySelectorAll('.sim1-dropzone').forEach(zone => {
+                    const droppedItem = zone.querySelector('.sim1-draggable');
+                    if (droppedItem) {
+                        answeredCount++;
+                        if (droppedItem.innerText !== this.data.correctAnswers[zone.dataset.port]) {
+                            allCorrect = false;
+                        }
+                    } else {
+                        allCorrect = false; // Mark as incorrect if a dropzone is empty
+                    }
+                });
+
+                if (answeredCount !== this.data.ports.length) {
+                    allCorrect = false;
+                }
+
+                showModal(allCorrect ? "Correct!" : "Incorrect. Please try again.");
+            }
+        };
+
+        // Initialize the simulation when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            sim1.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim1.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim1.setup());
+        });
+    </script>
+</body>
+</html>
