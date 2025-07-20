@@ -5,16 +5,25 @@ This is an interactive simulation bank for explicit use of only those given dire
 Passwords:
 
 Sims:
+
 Sec+: 123
+
 Linux+: 456
+
 SecX: still in progress
+
 CySA+: still in progress
 
 Exams:
+
 Sec+: sec
+
 Linux+: linux
+
 Splunk: splunk
+
 SecX: secx
+
 CySA+: cysa
 
 # DO NOT SHARE ACCESS WITH ANYONE!
