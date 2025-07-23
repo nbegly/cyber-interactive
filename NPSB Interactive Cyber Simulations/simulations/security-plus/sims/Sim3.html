@@ -45,7 +45,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
             pointer-events: none;
         }
         .sim3-zone { 
@@ -68,7 +67,7 @@
             align-items: center; 
             height: 100%; 
         }
-        .sim3-device { text-align: center; z-index: 1; }
+        .sim3-device { text-align: center; }
         .sim3-icon { color: var(--accent-green); }
         .sim3-icon svg { width: 48px; height: 48px; fill: currentColor; }
         .sim3-label { font-size: 0.9em; }
@@ -77,9 +76,8 @@
         #secure-network { top: 20px; right: 20px; bottom: 20px; width: 15%; }
         #secure-network .sim3-device-grid { flex-direction: column; }
         #internet-icon-sim3 { position: absolute; top: 50%; left: 40px; transform: translateY(-50%); color: var(--accent-green); }
-        #firewall-icon-sim3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--danger-red); cursor: pointer; z-index: 2; }
-        
-        /* Firewall Modal Styles */
+        #firewall-icon-sim3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--danger-red); cursor: pointer; }
+
         .firewall-header-row, .firewall-rule-row { 
             display: grid; 
             grid-template-columns: 30px 1.5fr 1.5fr 120px 100px 100px; 
