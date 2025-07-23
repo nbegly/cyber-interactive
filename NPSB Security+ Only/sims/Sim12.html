@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 12: Malicious Attack</title>
+    <!-- Link to the shared stylesheet -->
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        /* Sim-specific styles */
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .sim12-container { 
+            background-color: var(--bg-dark-secondary); 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-top: 20px;
+            transform: scale(0.87);
+            transform-origin: top center;
+            height: 800px; /* Adjust height to compensate for scaling */
+            position: relative; /* For positioning controls */
+        }
+        .sim12-diagram { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 20px; 
+            height: 100%;
+            position: relative;
+        }
+        #line-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .sim12-network { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 20px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            padding: 20px; 
+            width: 80%; 
+        }
+        .sim12-network h4 { 
+            margin: 0 0 15px 0; 
+            color: var(--accent-green); 
+        }
+        .sim12-device-row { 
+            display: flex; 
+            justify-content: space-around; 
+            width: 100%; 
+        }
+        .sim12-device-unit { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .sim12-device { 
+            text-align: center; 
+            cursor: pointer; 
+            z-index: 1;
+        }
+        .sim12-device-icon { 
+            color: var(--accent-green);
+        }
+        .sim12-device-icon svg {
+            width: 48px;
+            height: 48px;
+            fill: currentColor;
+        }
+        .sim12-device-label { 
+            font-size: 0.9rem; 
+            margin-top: 5px; 
+        }
+        .sim12-device-controls {
+            border: 1px solid var(--border-color);
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .sim12-device-controls label { 
+            display: block; 
+            margin: 5px; 
+            font-size: 0.8rem; 
+            text-align: left; 
+            cursor: pointer;
+        }
+        .sim12-device-controls input { 
+            vertical-align: middle; 
+            margin-right: 5px;
+        }
+        .sim12-center-row { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            width: 80%;
+            margin: 20px 0; 
+            position: relative;
+        }
+        #firewall-icon {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .sim-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        .modal-wide .modal-content {
+            width: 80vw;
+            max-width: 1400px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 12: Malicious Attack Investigation</h3>
+        <div class="sim12-container">
+            <div class="sim12-diagram" id="diagram-panel">
+                <canvas id="line-canvas"></canvas>
+                <div class="sim12-network" id="rd-network">
+                    <h4>R&D Network</h4>
+                    <div class="sim12-device-row" id="rd-device-row"></div>
+                </div>
+                <div class="sim12-center-row">
+                     <div id="internet-icon" class="sim12-device"></div>
+                     <div id="firewall-icon" class="sim12-device"></div>
+                </div>
+                <div class="sim12-network" id="eng-network">
+                    <h4>Engineering Network</h4>
+                    <div class="sim12-device-row" id="eng-device-row"></div>
+                </div>
+            </div>
+             <div class="sim-controls">
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = true, options = {}) {
+            modalBody.innerHTML = '';
+            if (options.isWide) modal.classList.add('modal-wide');
+            if (typeof content === 'string') {
+                const p = document.createElement('p');
+                p.style.whiteSpace = 'pre-wrap';
+                p.textContent = content;
+                modalBody.appendChild(p);
+            } else {
+                modalBody.appendChild(content);
+            }
+            if (!options.noCloseButton) {
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'modal-close-btn';
+                closeButton.onclick = closeModal;
+                modalBody.appendChild(closeButton);
+            }
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { 
+            modal.style.display = "none"; 
+            modal.classList.remove('modal-wide');
+        }
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim12 = {
+            data: {
+                info: `SIMULATION\nA security administrator is investigating a potential infection on a network. \n\nINSTRUCTIONS\nClick on each host and firewall. Review all logs to determine which host originated the infection and then identify if each remaining host is clean or infected.\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.`,
+                icons: {
+                    laptop: '<div class="sim12-device-icon"><svg viewBox="0 0 24 24"><path d="M20,18H4V8H20M20,6H4A2,2 0 0,0 2,8V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8A2,2 0 0,0 20,6Z"/></svg></div>',
+                    firewall: '<div class="sim12-device-icon"><svg viewBox="0 0 24 24"><path d="M21,9V7H2V9H21M21,13V11H2V13H21M21,17V15H2V17H21M2,3H21A2,2 0 0,1 23,5V19A2,2 0 0,1 21,21H2A2,2 0 0,1 0,19V5A2,2 0 0,1 2,3Z"/></svg></div>',
+                    internet: '<div class="sim12-device-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></div>'
+                },
+                devices: {
+                    'host-192-168-10-22': { name: '192.168.10.22', network: 'R&D', log: `4/17/2019 14:30 Info Scheduled scan initiated\n4/17/2019 14:31 Info Checking for update\n4/17/2019 14:32 Info No update available\n4/17/2019 14:33 Info Checking for definition update\n4/17/2019 14:34 Info No definition update available\n4/17/2019 14:35 Info Scan type - full\n4/17/2019 14:36 Info Scan Alert\n4/17/2019 14:37 Info Scanning system files\n4/17/2019 14:38 Info Scanning temporary files\n4/17/2019 14:39 Info Scanning services\n4/17/2019 14:40 Info Scanning boot sector\n4/17/2019 14:41 Info Scan complete\n4/17/2019 14:42 Info Files removed: 0\n4/17/2019 14:43 Info Files quarantined: 0\n4/17/2019 14:44 Info Boot sector: clean\n4/17/2019 14:45 Info Next scheduled scan: 4/18/2019 14:30\n4/18/2019 2:31 Warn Scheduled scan disabled by process svch0st.exe\n4/18/2019 2:32 Warn Scheduled update disabled by process svch0st.exe`, correct: 'origin' },
+                    'host-192-168-10-37': { name: '192.168.10.37', network: 'R&D', log: `4/17/2019 14:30 Info Scheduled scan initiated\n4/17/2019 14:31 Info Checking for update\n4/17/2019 14:32 Info No update available\n4/17/2019 14:33 Info Checking for definition update\n4/17/2019 14:34 Info No definition update available\n4/17/2019 14:35 Info Scan type - full\n4/17/2019 14:36 Info Scan Start\n4/17/2019 14:37 Info Scanning system files\n4/17/2019 14:38 Info Scanning temporary files\n4/17/2019 14:39 Info Scanning services\n4/17/2019 14:40 Info Scanning boot sector\n4/17/2019 14:41 Info Scan complete\n4/17/2019 14:42 Info Files removed: 0\n4/17/2019 14:43 Info Files quarantined: 0\n4/17/2019 14:44 Info Boot sector: clean\n4/17/2019 14:45 Info Next scheduled scan: 4/18/2019 14:30\n4/18/2019 14:30 Info Scheduled scan initiated\n4/18/2019 14:31 Info Checking for update\n4/18/2019 14:32 Info No update available\n4/18/2019 14:33 Info Checking for definition update\n4/18/2019 14:34 Info Update available v10.2.3.4440\n4/18/2019 14:34 Info Downloading update\n4/18/2019 14:35 Info Definition update complete\n4/18/2019 14:35 Info Scan type - full\n4/18/2019 14:36 Info Scan Start\n4/18/2019 14:37 Info Scanning system files\n4/18/2019 14:37 Warn File found svch0st.exe match definition v10.2.3.4440\n4/18/2019 14:37 Warn File quarantined svch0st.exe\n4/18/2019 14:38 Info Scanning temporary files`, correct: 'clean' },
+                    'host-192-168-10-41': { name: '192.168.10.41', network: 'R&D', log: `4/17/2019 14:37 Info Scanning system files\n4/17/2019 14:38 Info Scanning temporary files\n4/17/2019 14:39 Info Scanning services\n4/17/2019 14:40 Info Scanning boot sector\n4/17/2019 14:41 Info Scan complete\n4/17/2019 14:42 Info Files removed: 0\n4/17/2019 14:43 Info Files quarantined: 0\n4/17/2019 14:44 Info Boot sector: clean\n4/17/2019 14:45 Info Next scheduled scan: 4/18/2019 14:30\n4/18/2019 14:30 Info Scheduled scan initiated\n4/18/2019 14:31 Info Checking for update\n4/18/2019 14:32 Info No update available\n4/18/2019 14:33 Info Checking for definition update\n4/18/2019 14:34 Error Unable to reach update server\n4/18/2019 14:35 Info Scan type - full\n4/18/2019 14:36 Info Scan Start\n4/18/2019 14:37 Info Scanning system files\n4/18/2019 14:37 Warn File svch0st.exe match heuristic pattern 0c09488c08d0f3k\n4/18/2019 14:37 Error Unable to quarantine file svch0st.exe\n4/18/2019 14:38 Info Scanning temporary files\n4/18/2019 14:39 Info Scanning services\n4/17/2019 14:40 Info Scanning boot sector\n4/17/2019 14:41 Info Scan complete\n4/17/2019 14:42 Info Files removed: 0\n4/17/2019 14:43 Info Files quarantined: 0\n4/17/2019 14:43 Warn File quarantine file\n4/17/2019 14:44 Info Boot sector: clean\n4/17/2019 14:45 Info Next scheduled scan: 4/19/2019 14:30`, correct: 'infected' },
+                    'host-10-10-9-12': { name: '10.10.9.12', network: 'Engineering', log: `4/17/2019 14:37 Info Scanning system files\n4/17/2019 14:38 Info Scanning temporary files\n4/17/2019 14:39 Info Scanning services\n4/17/2019 14:40 Info Scanning boot sector\n4/17/2019 14:41 Info Scan complete\n4/17/2019 14:42 Info Files removed: 0\n4/17/2019 14:43 Info Files quarantined: 0\n4/17/2019 14:44 Info Boot sector: clean\n4/17/2019 14:45 Info Next scheduled scan: 4/18/2019 14:30\n4/18/2019 14:30 Info Scheduled scan initiated\n4/18/2019 14:31 Info Checking for update\n4/18/2019 14:32 Info No update available\n4/18/2019 14:33 Info Checking for definition update\n4/18/2019 14:34 Info Update available v10.2.3.4440\n4/18/2019 14:35 Info Downloading update\n4/18/2019 14:35 Info Definition update complete\n4/18/2019 14:36 Info Scan type - full\n4/18/2019 14:37 Info Scan Start\n4/18/2019 14:37 Info Scanning system files\n4/18/2019 14:37 Warn File found svch0st.exe match definition v10.2.3.4440\n4/18/2019 14:38 Warn File quarantined svch0st.exe\n4/18/2019 14:39 Info Scanning temporary files\n4/18/2019 14:40 Info Scanning services\n4/18/2019 14:41 Info Scan complete\n4/18/2019 14:42 Info Files removed: 0\n4/18/2019 14:43 Info Files quarantined: 1\n4/18/2019 14:44 Info Boot sector: clean\n4/18/2019 14:45 Info Next scheduled scan: 4/19/2019 14:30`, correct: 'clean' },
+                    'host-10-10-9-18': { name: '10.10.9.18', network: 'Engineering', log: `4/17/2019 14:37 Info Scanning system files\n4/17/2019 14:38 Info Scanning temporary files\n4/17/2019 14:39 Info Scanning services\n4/17/2019 14:40 Info Scanning boot sector\n4/17/2019 14:41 Info Scan complete\n4/17/2019 14:42 Info Files removed: 0\n4/17/2019 14:43 Info Files quarantined: 0\n4/17/2019 14:44 Info Boot sector: clean\n4/17/2019 14:45 Info Next scheduled scan: 4/18/2019 14:30\n4/18/2019 14:30 Info Scheduled scan initiated\n4/18/2019 14:31 Info Checking for update\n4/18/2019 14:32 Info No update available\n4/18/2019 14:33 Info Checking for definition update\n4/18/2019 14:34 Error Unable to reach update server\n4/18/2019 14:35 Info Scan type - full\n4/18/2019 14:36 Info Scan Start\n4/18/2019 14:37 Info Scanning system files\n4/18/2019 14:37 Warn File svch0st.exe match heuristic pattern 0c09488c08d0f3k\n4/18/2019 14:37 Error Unable to quarantine file svch0st.exe\n4/18/2019 14:38 Info Scanning temporary files\n4/18/2019 14:39 Info Scanning services\n4/18/2019 14:40 Info Scanning boot sector\n4/18/2019 14:41 Info Scan complete\n4/18/2019 14:42 Info Files removed: 0\n4/18/2019 14:43 Info Files quarantined: 0\n4/18/2019 14:43 Warn File quarantine file\n4/18/2019 14:44 Info Boot sector: clean\n4/18/2019 14:45 Info Next scheduled scan: 4/18/2019 14:30`, correct: 'infected' },
+                    'firewall': { name: 'Firewall', log: `Timestamp,Source,Destination,Destination Port,Application,Action,Client Bytes,Server Bytes\n4/17/2019 16:01:44,10.10.9.18,57.203.54.183,443,ssl,Permit,6953,99427\n4/17/2019 16:01:58,192.168.10.37,57.203.54.221,443,ssl,Permit,9301,199386\n4/17/2019 16:17:06,192.168.10.22,10.10.9.12,135,rpc,Permit,175,1504\n4/17/2019 16:27:36,192.168.10.41,10.10.9.12,445,smbv1,Permit,345,34757\n4/17/2019 16:28:06,10.10.9.12,192.168.10.41,135,rpc,Permit,754,4771\n4/17/2019 16:33:31,10.10.9.18,192.168.10.22,135,rpc,Permit,643,2355\n4/17/2019 16:35:36,192.168.10.37,10.10.9.12,135,smbv2,Permit,649,5644\n4/17/2019 23:58:36,10.10.9.12,192.168.10.41,icmp,Permit,128,128\n4/17/2019 23:58:43,10.10.9.12,192.168.10.22,icmp,Permit,128,128\n4/17/2019 23:58:45,10.10.9.12,192.168.10.37,icmp,Permit,128,128\n4/18/2019 2:31:36,10.10.9.18,192.168.10.41,445,smbv2,Permit,1874,23874\n4/18/2019 2:31:45,192.168.10.22,57.203.55.29,8080,http,Permit,7203,75997\n4/18/2019 2:31:51,10.10.9.18,57.203.56.201,443,ssl,Permit,9953,199730\n4/18/2019 2:32:02,192.168.10.22,57.203.55.234,443,http,Permit,4937,84937\n4/18/2019 2:39:11,192.168.10.41,57.203.53.89,8080,http,Permit,8201,133183\n4/18/2019 2:39:12,10.10.9.18,57.203.55.19,8080,ssl,Permit,1284,9102854\n4/18/2019 2:39:32,192.168.10.37,57.203.56.113,443,ssl,Permit,9341,9938\n4/18/2019 13:37:36,192.168.10.22,10.10.9.18,445,smbv3,Permit,1874,23874\n4/18/2019 13:39:43,192.168.10.22,10.10.9.18,135,rpc,Permit,673,41358\n4/18/2019 13:45:04,10.10.9.18,192.168.10.37,135,rpc,Permit,693,1952\n4/18/2019 13:47:44,10.10.9.12,192.168.10.41,445,smbv3,Permit,482,3505\n4/18/2019 13:52:57,10.10.9.18,192.168.10.22,135,rpc,Permit,545,9063\n4/18/2019 13:53:01,192.168.10.37,10.10.9.12,335,smbv3,Permit,876,8068\n4/18/2019 14:30:04,10.10.9.12,57.203.56.231,443,ssl,Permit,9901,199730\n4/18/2019 14:30:04,192.168.10.37,57.203.56.143,443,ssl,Permit,10092,209938`, correct: null },
+                }
+            },
+            setup: function() {
+                const rdHosts = Object.keys(this.data.devices).filter(id => this.data.devices[id].network === 'R&D');
+                const engHosts = Object.keys(this.data.devices).filter(id => this.data.devices[id].network === 'Engineering');
+
+                const createDeviceHTML = (id) => {
+                    const device = this.data.devices[id];
+                    return `
+                        <div class="sim12-device-unit" id="unit-${id}">
+                            <div class="sim12-device" onclick="sim12.showLogModal('${id}')">
+                                <div class="sim12-device-icon">${this.data.icons.laptop}</div>
+                                <div class="sim12-device-label">${device.name}</div>
+                            </div>
+                            <div class="sim12-device-controls" data-device-id="${id}">
+                                <label><input type="checkbox" name="origin" value="origin"> Origin</label>
+                                <label><input type="checkbox" name="infected" value="infected"> Infected</label>
+                                <label><input type="checkbox" name="clean" value="clean"> Clean</label>
+                            </div>
+                        </div>`;
+                };
+
+                document.getElementById('rd-device-row').innerHTML = rdHosts.map(createDeviceHTML).join('');
+                document.getElementById('eng-device-row').innerHTML = engHosts.map(createDeviceHTML).join('');
+                
+                const firewallIcon = document.getElementById('firewall-icon');
+                firewallIcon.innerHTML = this.data.icons.firewall + '<div class="sim12-device-label">Firewall</div>';
+                firewallIcon.onclick = () => this.showLogModal('firewall');
+                
+                const internetIcon = document.getElementById('internet-icon');
+                internetIcon.innerHTML = this.data.icons.internet + '<div class="sim12-device-label">Internet</div>';
+
+                document.querySelectorAll('.sim12-device-controls').forEach(controlGroup => {
+                    const originCheckbox = controlGroup.querySelector('input[name="origin"]');
+                    const infectedCheckbox = controlGroup.querySelector('input[name="infected"]');
+                    const cleanCheckbox = controlGroup.querySelector('input[name="clean"]');
+
+                    originCheckbox.addEventListener('change', () => {
+                        if (originCheckbox.checked) {
+                            infectedCheckbox.checked = true;
+                            cleanCheckbox.checked = false;
+                        }
+                    });
+                    infectedCheckbox.addEventListener('change', () => {
+                        if (infectedCheckbox.checked) {
+                            cleanCheckbox.checked = false;
+                        } else {
+                            originCheckbox.checked = false;
+                        }
+                    });
+                    cleanCheckbox.addEventListener('change', () => {
+                        if (cleanCheckbox.checked) {
+                            originCheckbox.checked = false;
+                            infectedCheckbox.checked = false;
+                        }
+                    });
+                });
+                this.drawLines();
+            },
+            drawLines: function() {
+                const canvas = document.getElementById('line-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const container = document.getElementById('diagram-panel');
+                if (!container) return;
+
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+                ctx.lineWidth = 2;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+
+                // ADD YOUR LINE AND ARROW COORDINATES HERE
+                // Format: drawLineWithArrow(startX, startY, endX, endY);
+                // Example: drawLineWithArrow(100, 100, 200, 200);
+                
+                const manualLines = [
+                    [680, 400, 680, 420], 
+                    [680, 315, 680, 290],
+                    [320, 290, 1050, 290],
+                    [405, 420, 950, 420],
+
+                ];
+                manualLines.forEach(([x1, y1, x2, y2]) => {
+                    drawManualLine(x1, y1, x2, y2);
+                });
+
+                drawLineWithArrow(200, 345, 645, 345); 
+                drawLineWithArrow(320, 290, 320, 265); 
+                drawLineWithArrow(680, 290, 680, 265); 
+                drawLineWithArrow(1050, 290, 1050, 265); 
+                drawLineWithArrow(405, 420, 405, 510); 
+                drawLineWithArrow(950, 420, 950, 510); 
+
+
+                function drawManualLine(x1, y1, x2, y2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                }
+
+                function drawLineWithArrow(x1, y1, x2, y2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                    const angle = Math.atan2(y2 - y1, x2 - x1);
+                    const size = 8;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.translate(x2, y2);
+                    ctx.rotate(angle);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-size, -size / 2);
+                    ctx.lineTo(-size, size / 2);
+                    ctx.closePath();
+                    ctx.fillStyle = ctx.strokeStyle;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            },
+            showLogModal: function(deviceId) {
+                if (!this.data.devices[deviceId]) return; 
+                const logData = this.data.devices[deviceId];
+                const modalContent = document.createElement('div');
+                
+                let options = { noCloseButton: false, isWide: false };
+
+                if (deviceId === 'firewall') {
+                    options.isWide = true;
+                    const lines = logData.log.split('\n');
+                    const headers = lines[0].split(',');
+                    const colWidths = [22, 18, 18, 18, 12, 8, 14, 14];
+                    let formattedLog = headers.map((h, i) => h.padEnd(colWidths[i])).join('') + '\n';
+                    formattedLog += headers.map((h, i) => '-'.repeat(colWidths[i] - 1)).join(' ') + '\n';
+                    lines.slice(1).forEach(line => {
+                        const cells = line.split(',');
+                        formattedLog += cells.map((cell, i) => cell.padEnd(colWidths[i])).join('') + '\n';
+                    });
+                    modalContent.innerHTML = `<h4>Log: ${logData.name}</h4><pre style="white-space: pre;">${formattedLog}</pre>`;
+                } else {
+                    modalContent.innerHTML = `<h4>Log: ${logData.name}</h4><pre>${logData.log}</pre>`;
+                }
+                showModal(modalContent, false, options);
+            },
+            check: function() {
+                let correctCount = 0;
+                const correctAnswers = {
+                    'host-192-168-10-22': 'origin',
+                    'host-192-168-10-37': 'clean',
+                    'host-192-168-10-41': 'infected',
+                    'host-10-10-9-12': 'clean',
+                    'host-10-10-9-18': 'infected',
+                };
+                const deviceIds = Object.keys(correctAnswers);
+                
+                deviceIds.forEach(id => {
+                    const controls = document.querySelector(`.sim12-device-controls[data-device-id="${id}"]`);
+                    const originChecked = controls.querySelector('input[name="origin"]').checked;
+                    const infectedChecked = controls.querySelector('input[name="infected"]').checked;
+                    const cleanChecked = controls.querySelector('input[name="clean"]').checked;
+
+                    let selectedState = null;
+                    if (originChecked) {
+                        selectedState = 'origin';
+                    } else if (infectedChecked) {
+                        selectedState = 'infected';
+                    } else if (cleanChecked) {
+                        selectedState = 'clean';
+                    }
+                    
+                    if (selectedState === correctAnswers[id]) {
+                        correctCount++;
+                    }
+                });
+
+                if (correctCount === deviceIds.length) {
+                    showModal("Correct! You have correctly identified the status of all hosts.", true);
+                } else {
+                    showModal(`Incorrect. You have correctly identified ${correctCount} out of ${deviceIds.length} hosts. Please review the logs and your selections.`, true);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim12.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim12.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim12.setup());
+            document.getElementById('infoBtn').onclick = () => {
+                showModal(sim12.data.info, false);
+            };
+            window.addEventListener('resize', () => sim12.drawLines());
+        });
+    </script>
+</body>
+</html>
