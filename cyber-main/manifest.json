@@ -1,6 +1,6 @@
 {
   "name": "Interactive Cybersecurity Simulations",
-  "short_name": "Sims",
+  "short_name": "NPSB Sim",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#121212",
@@ -8,7 +8,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "assets/app-icon.ico",
+      "src": "/assets/app-icon.ico",
       "type": "image/ico",
       "sizes": "512x512"
     }

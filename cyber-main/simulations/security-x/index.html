@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Security X Simulation Hub</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="../../manifest.json">
     <link rel="stylesheet" href="../../assets/style.css">
     <style>
         .list-group { 
@@ -147,7 +148,7 @@ To reset a simulation, use the reset button on the simulation page.`;
         // --- Service Worker Registration ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
+                navigator.serviceWorker.register('../../sw.js')
                   .then(registration => {
                     console.log('Service Worker registered! Scope: ', registration.scope);
                 })

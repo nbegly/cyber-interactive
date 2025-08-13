@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Screen</title>
+    <title>Site Access</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,6 +52,7 @@
         .message {
             color: #e74c3c;
             margin-top: 15px;
+            min-height: 1.2em; /* Prevents layout shift */
             visibility: hidden;
         }
     </style>
@@ -59,25 +60,26 @@
 <body>
 
 <div class="container">
-    <h1>Access Required</h1>
-    <p>Please enter the password to continue.</p>
-    <input type="password" id="passwordInput" placeholder="Enter password">
+    <h1>Welcome</h1>
+    <p>Please enter the password to access the site.</p>
+    <input type="password" id="passwordInput" placeholder="Password">
     <button id="submitButton">Enter</button>
     <p id="message" class="message">Incorrect password. Please try again.</p>
 </div>
 
 <script>
-    async function checkPassword() {
+    async function handleLogin() {
 
-        const correctPasswordHash = "33fcf0a08ed0e7a08c6488c6aeea28f6857d698acb0853f36e1dc8e09a2a78b6";
+        const correctMasterPasswordHash = "33fcf0a08ed0e7a08c6488c6aeea28f6857d698acb0853f36e1dc8e09a2a78b6"; 
 
         const enteredPassword = document.getElementById('passwordInput').value;
         const messageElement = document.getElementById('message');
 
         const enteredPasswordHash = await sha256(enteredPassword);
 
-        if (enteredPasswordHash === correctPasswordHash) {
-            window.location.href = "sims.html"; 
+        if (enteredPasswordHash === correctMasterPasswordHash) {
+            sessionStorage.setItem('masterKey', 'true');
+            window.location.href = "/cyber-main/index.html";
         } else {
             messageElement.style.visibility = 'visible';
             document.getElementById('passwordInput').value = '';
@@ -91,11 +93,11 @@
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         return hashHex;
     }
-
-    document.getElementById('submitButton').addEventListener('click', checkPassword);
+    
+    document.getElementById('submitButton').addEventListener('click', handleLogin);
     document.getElementById('passwordInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            checkPassword();
+            handleLogin();
         }
     });
 </script>
