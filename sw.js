@@ -7,20 +7,6 @@ const assetsToCache = [
   'manifest.json',
   'assets/style.css',
   'assets/app-icon.png',
-  'sims/sim1.html',
-  'sims/sim2.html',
-  'sims/sim3.html',
-  'sims/sim4.html',
-  'sims/sim5.html',
-  'sims/sim6.html',
-  'sims/sim7.html',
-  'sims/sim8.html',
-  'sims/sim9.html',
-  'sims/sim10.html',
-  'sims/sim11.html',
-  'sims/sim12.html',
-  'sims/sim13.html',
-  'sims/sim14.html'
 ];
 
 const URLS_TO_CACHE = [
@@ -35,7 +21,6 @@ const URLS_TO_CACHE = [
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'
 ];
 
-// Install event: cache all assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -46,7 +31,6 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate event: clean up old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -62,7 +46,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event: serve from cache first, then network
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
