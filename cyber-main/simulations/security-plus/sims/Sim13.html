@@ -6,6 +6,7 @@
     <title>Sim 13: VPN Configuration</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
+        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
@@ -68,6 +69,8 @@
             margin-top: 10px; 
             color: var(--text-light);
         }
+
+        /* Modal specific styles */
         .sim13-modal-body .tabs { 
             display: flex; 
             border-bottom: 1px solid var(--border-color); 
@@ -224,6 +227,7 @@
                     vpn2: { phase1: {}, phase2: {} }
                 };
                 
+                // Set up icons
                 document.getElementById('branch1').innerHTML = this.data.icons.office + '<div class="sim13-endpoint-label">Branch Office 1<br>192.168.1.0/24<br><br></div>';
                 document.getElementById('vpn1').innerHTML = this.data.icons.vpn + '<div class="sim13-endpoint-label">VPN Concentrator<br>5.5.5.10<br>255.255.255.0</div>';
                 document.getElementById('internet').innerHTML = this.data.icons.internet + '<div class="sim13-endpoint-label">Internet<br><br><br></div>';

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 5: IoC Analysis</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        .sim-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .info-btn { padding: 8px; background-color: var(--interactive-blue); border: none; border-radius: 5px; cursor: pointer; color: white; line-height: 0; }
+        .info-btn:hover { background-color: var(--interactive-blue-hover); }
+        .info-btn svg { width: 24px; height: 24px; fill: currentColor; }
+
+        #sim79-content {
+            background-color: var(--bg-dark-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: monospace;
+        }
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1em;
+            font-family: inherit;
+        }
+        .tab-btn.active {
+            background-color: var(--interactive-blue);
+            color: white;
+        }
+        .tab-content {
+            display: none; /* Hidden by default */
+            padding: 1.5rem;
+        }
+        .tab-content.active {
+            display: block; /* Show active tab */
+        }
+        .log-display {
+            background-color: #1e1e1e;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            white-space: pre;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        .analysis-action-box {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+        .analysis-action-box label { font-weight: bold; text-align: right; }
+        .analysis-action-box select {
+            width: 100%;
+            background: var(--bg-dark-tertiary);
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to SecX Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 5: IoC Analysis</h3>
+        <p>Review each of the events and select the appropriate analysis and action options for each IoC.</p>
+        
+        <div id="sim79-content">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="ioc1">IoC 1</button>
+                <button class="tab-btn" data-tab="ioc2">IoC 2</button>
+                <button class="tab-btn" data-tab="ioc3">IoC 3</button>
+            </div>
+
+            <div id="ioc1" class="tab-content active">
+                <div class="log-display">Source  Svc         Type   Dest         Data
+Apache_httpd        DNSQ   @10.1.1.1:53 update.s.domain
+Apache_httpd        DNSQR  @10.1.2.5    CNAME 3a129sk2l9r0slsmfkzz800.s.domain
+Apache_httpd        DNSQ   @10.1.1.1:53 3a129sk2l9r0slsmfkzz800.s.domain
+Apache_httpd        DNSQR  @10.1.2.5    IN A 108.158.253.253</div>
+                <div class="analysis-action-box">
+                    <label for="ioc1-analysis">Analysis</label>
+                    <select id="ioc1-analysis"></select>
+                    <label for="ioc1-action">Action</label>
+                    <select id="ioc1-action"></select>
+                </div>
+            </div>
+
+            <div id="ioc2" class="tab-content">
+                <div class="log-display">Src         Dst         Proto    Data    Action
+10.0.5.5    10.1.2.1    IP_ICMP ECHO    Drop
+10.0.5.5    10.1.2.2    IP_ICMP ECHO    Drop
+10.0.5.5    10.1.2.3    IP_ICMP ECHO    Drop
+10.0.5.5    10.1.2.4    IP_ICMP ECHO    Drop
+10.0.5.5    10.1.2.5    IP_ICMP ECHO    Drop</div>
+                 <div class="analysis-action-box">
+                    <label for="ioc2-analysis">Analysis</label>
+                    <select id="ioc2-analysis"></select>
+                    <label for="ioc2-action">Action</label>
+                    <select id="ioc2-action"></select>
+                </div>
+            </div>
+
+            <div id="ioc3" class="tab-content">
+                <div class="log-display">Proxylog>
+> GET /announce?info_hash=%D1%8D%D0%AF%D1%91%D1%89%D1%80&peer_id=...
+> HTTP/1.1
+> Accept: application/x-bittorrent
+> User-Agent: RAZA 2.1.0.0
+> Host: localhost
+< HTTP 200 OK</div>
+                 <div class="analysis-action-box">
+                    <label for="ioc3-analysis">Analysis</label>
+                    <select id="ioc3-analysis"></select>
+                    <label for="ioc3-action">Action</label>
+                    <select id="ioc3-action"></select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sim-controls">
+             <div></div>
+             <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset All</button>
+             </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <pre id="modal-body-content" style="white-space: pre-wrap; font-family: sans-serif;"></pre>
+            <button class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(message, isCentered = false) {
+            modalBody.textContent = message;
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { modal.style.display = "none"; }
+        modal.querySelector('.modal-close-btn').onclick = closeModal;
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim79 = {
+            data: {
+                info: `During the course of normal SOC operations, three anomalous events occurred and were flagged as potential IoCs.\n\nEvidence for each of these potential IoCs is provided.\n\nINSTRUCTIONS\nReview each of the events and select the appropriate analysis and action options for each IoC.`,
+                analysisOptions: ["Someone is footprinting a network subnet.", "Service identification and fingerprinting are occurring.", "An employee is attempting to access a blocked website.", "An employee is using P2P services to download files.", "The service is attempting to resolve a malicious domain.", "An application is performing an automatic update."],
+                actionOptions: ["Configure the DNS server to perform recursion.", "Block ping requests across the WAN interface.", "Deploy a network-based DLP solution.", "Enforce endpoint controls on third-party software installations.", "Implement a blocklist for known malicious ports.", "Close ticket as resolved.", "Investigate for software supply-chain attacks."],
+                correctAnswers: {
+                    ioc1: { analysis: "The service is attempting to resolve a malicious domain.", action: "Investigate for software supply-chain attacks." },
+                    ioc2: { analysis: "Someone is footprinting a network subnet.", action: "Block ping requests across the WAN interface." },
+                    ioc3: { analysis: "An employee is using P2P services to download files.", action: "Deploy a network-based DLP solution." }
+                }
+            },
+            setup: function() {
+                const analysisSelects = document.querySelectorAll('select[id$="-analysis"]');
+                const actionSelects = document.querySelectorAll('select[id$="-action"]');
+                
+                const analysisPlaceholder = `<option value="" selected disabled>Select analysis</option>`;
+                const actionPlaceholder = `<option value="" selected disabled>Select action</option>`;
+
+                const analysisOptionsHtml = analysisPlaceholder + this.data.analysisOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+                const actionOptionsHtml = actionPlaceholder + this.data.actionOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+
+                analysisSelects.forEach(s => s.innerHTML = analysisOptionsHtml);
+                actionSelects.forEach(s => s.innerHTML = actionOptionsHtml);
+
+                this.switchTab('ioc1');
+            },
+            switchTab: function(tabId) {
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                
+                document.getElementById(tabId).classList.add('active');
+                document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+            },
+            check: function() {
+                const results = [];
+                let allCorrect = true;
+
+                for (let i = 1; i <= 3; i++) {
+                    const iocId = `ioc${i}`;
+                    const userAnalysis = document.getElementById(`${iocId}-analysis`).value;
+                    const userAction = document.getElementById(`${iocId}-action`).value;
+                    const correct = this.data.correctAnswers[iocId];
+
+                    if (userAnalysis === correct.analysis && userAction === correct.action) {
+                        results.push(`IoC ${i}: Correct`);
+                    } else {
+                        results.push(`IoC ${i}: Incorrect`);
+                        allCorrect = false;
+                    }
+                }
+                
+                let feedbackMessage = results.join('\n');
+                if (allCorrect) {
+                    feedbackMessage += "\n\nAll incidents were analyzed and handled correctly.";
+                } else {
+                     feedbackMessage += "\n\nPlease review the incorrect items.";
+                }
+                showModal(feedbackMessage, true);
+            },
+            initEventListeners: function() {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
+                });
+                document.getElementById('checkBtn').addEventListener('click', () => this.check());
+                document.getElementById('resetBtn').addEventListener('click', () => this.setup());
+                document.getElementById('infoBtn').onclick = () => showModal(this.data.info);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim79.setup();
+            sim79.initEventListeners();
+        });
+    </script>
+</body>
+</html>

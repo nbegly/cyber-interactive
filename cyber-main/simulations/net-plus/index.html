@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network+ Simulation Hub</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="../../assets/style.css">
+    <style>
+        .list-group { 
+            list-style: none; 
+            padding: 0; 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 768px) {
+            .list-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        .list-group-item { 
+            background-color: var(--bg-dark-tertiary); 
+            border: 1px solid var(--border-color); 
+            padding: 1.5rem 1rem; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            color: var(--text-light); 
+            display: block; 
+            transition: background-color 0.2s; 
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .list-group-item:hover { 
+            background-color: var(--accent-green-hover); 
+        }
+        .jumbotron { 
+            text-align: center; 
+            padding: 2rem; 
+            background-color: var(--bg-dark-secondary); 
+            border-radius: 8px; 
+            margin-bottom: 2rem; 
+        }
+        
+        /* Added from original for the welcome modal */
+        .modal { 
+            display: none; /* Hidden by default */
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: rgba(0,0,0,0.7); 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+        }
+        .modal-content { 
+            background-color: #2a2a2a; 
+            padding: 30px; 
+            border-radius: 10px; 
+            max-width: 600px; 
+            text-align: left; 
+            border: 1px solid #444; 
+        }
+        .modal-content.centered-text { text-align: center; }
+        .modal-content pre {
+            white-space: pre-wrap;
+            font-family: sans-serif;
+            font-size: 1.1em;
+            margin: 0;
+            color: var(--text-light);
+        }
+        .modal-content button { 
+            padding: 10px 20px; 
+            background-color: #4caf50; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="sim-container">
+        <div class="jumbotron">
+            <h1 class="display-4">Network+ Simulation Application Hub</h1>
+            <p class="lead">Select a simulation from the list below to begin.</p>
+        </div>
+        </div>
+            <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Simulations Menu</a>
+            </button>
+        </div>
+        <ul class="list-group">
+            <li><a href="sims/sim1.html" class="list-group-item">Sim 1</a></li>
+        </ul>
+    </div>
+
+    <div id="welcome-modal" class="modal">
+        <div class="modal-content centered-text">
+            <pre id="modal-message"></pre>
+            <button id="close-modal-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Welcome Modal Logic (shows once per session) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('welcome-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            
+            const showModal = () => {
+                const welcomeText = `Welcome to the Linux+ Simulation Quiz.
+Everything is interactive.
+
+To see the objective for any simulation, click on the eye icon inside the simulation page.
+
+To reset a simulation, use the reset button on the simulation page.`;
+                document.getElementById('modal-message').textContent = welcomeText;
+                modal.style.display = 'flex';
+            };
+
+            const closeModal = () => {
+                modal.style.display = 'none';
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Check if the welcome message has been shown in this session
+            if (!sessionStorage.getItem('welcomeShown')) {
+                showModal();
+                // Set the flag in session storage so it doesn't show again
+                sessionStorage.setItem('welcomeShown', 'true');
+            }
+        });
+
+
+        // --- Service Worker Registration ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                  .then(registration => {
+                    console.log('Service Worker registered! Scope: ', registration.scope);
+                })
+                .catch(err => {
+                    console.error('Service worker registration failed.', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

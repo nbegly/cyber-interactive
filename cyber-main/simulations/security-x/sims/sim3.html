@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 3: IPsec Configuration</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        /* Sim-specific styles */
+        #sim77-content {
+            background-color: var(--bg-dark-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            height: 550px;
+            position: relative;
+            font-family: monospace;
+            overflow: hidden;
+        }
+        .ipsec-component {
+            position: absolute;
+            width: 150px;
+            text-align: center;
+            cursor: default;
+        }
+        .ipsec-component.clickable {
+            cursor: pointer;
+        }
+        .device-icon { width: 64px; height: 64px; margin-bottom: 5px; }
+        .device-icon .outline { stroke: #0f0; stroke-width: 1.5; fill: none; }
+        .device-icon .detail { stroke: #0f0; stroke-width: 1; }
+        .device-icon .lights { fill: #0f0; }
+        .ipsec-component .label { font-weight: bold; display: block; }
+        
+        /* Positioning */
+        #vpn-concentrator { top: 150px; left: 50px; }
+        #aaa-server { top: 350px; left: 200px; }
+        #enterprise-ca { top: 350px; left: 400px; }
+        #cloud { position: absolute; top: 50%; left: 50%; width: 400px; height: 200px; fill: darkslategray; }
+        #user1 { top: 20px; right: 200px; }
+        #user2 { top: 20px; right: 50px; }
+        #user3 { top: 300px; right: 200px; }
+        #user4 { top: 450px; right: 50px; }
+        
+        /* Modal Styles */
+        .config-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 100;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .config-modal-content {
+            background-color: #1e1e1e;
+            color: #dcdcdc;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 600px;
+            padding: 1.5rem;
+        }
+        .config-modal-content h4 { margin-top: 0; color: #1eff8e; }
+        .config-modal-content pre { white-space: pre-wrap; margin: 0; }
+        .config-modal-content select, .config-modal-content input {
+            background: var(--bg-dark-tertiary);
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 5px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1em;
+            width: 250px;
+        }
+        .config-modal-controls { margin-top: 1.5rem; text-align: right; }
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to SecX Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 3: IPsec Configuration</h3>
+        <p>Click on the AAA server and VPN concentrator to complete the configuration.</p>
+        
+        <div id="sim77-content">
+            <svg id="cloud" viewBox="0 0 130 80"><path d="M 12,50 C 0,50 0,30 15,30 C 20,10 50,10 60,25 C 75,10 100,20 110,35 C 130,35 130,50 118,50 Z"></path></svg>
+            
+            <div id="vpn-concentrator" class="ipsec-component clickable">
+                <svg class="device-icon" viewBox="0 0 24 24">
+                    <path class="outline" d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z"/>
+                </svg>
+                <span class="label">VPN Concentrator</span>
+                <span>198.134.0.2</span>
+            </div>
+
+            <div id="aaa-server" class="ipsec-component clickable">
+                <svg class="device-icon" viewBox="0 0 24 24"><rect class="outline" x="3" y="4" width="18" height="16" rx="1"/><line class="detail" x1="7" y1="8" x2="17" y2="8"/><line class="detail" x1="7" y1="12" x2="17" y2="12"/><circle class="lights" cx="8" cy="16" r="1"/></svg>
+                <span class="label">AAA Server</span>
+                 <span>10.1.0.10</span>
+            </div>
+            <div id="enterprise-ca" class="ipsec-component">
+                <svg class="device-icon" viewBox="0 0 24 24"><path class="outline" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span class="label">Enterprise CA</span>
+                 <span>10.1.0.11</span>
+            </div>
+            <div id="user1" class="ipsec-component">
+                <svg class="device-icon" viewBox="0 0 24 24"><rect class="outline" x="7" y="2" width="10" height="20" rx="2"/><line class="detail" x1="10" y1="5" x2="14" y2="5"/></svg>
+                <span class="label">User 1</span>
+            </div>
+            <div id="user2" class="ipsec-component">
+                <svg class="device-icon" viewBox="0 0 24 24"><rect class="outline" x="7" y="2" width="10" height="20" rx="2"/><line class="detail" x1="10" y1="5" x2="14" y2="5"/></svg>
+                <span class="label">User 2</span>
+            </div>
+            <div id="user3" class="ipsec-component">
+                <svg class="device-icon" viewBox="0 0 24 24"><path class="outline" d="M3 14V5a1 1 0 011-1h16a1 1 0 011 1v9H3z"/><path class="lights" d="M2 15h20a1 1 0 011 1v1a1 1 0 01-1 1H2a1 1 0 01-1-1v-1a1 1 0 011-1z"/></svg>
+                <span class="label">User 3</span>
+            </div>
+            <div id="user4" class="ipsec-component">
+                <svg class="device-icon" viewBox="0 0 24 24"><path class="outline" d="M3 14V5a1 1 0 011-1h16a1 1 0 011 1v9H3z"/><path class="lights" d="M2 15h20a1 1 0 011 1v1a1 1 0 01-1 1H2a1 1 0 01-1-1v-1a1 1 0 011-1z"/></svg>
+                <span class="label">User 4</span>
+            </div>
+        </div>
+        
+        <div class="sim-controls">
+             <div></div>
+             <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset All</button>
+             </div>
+        </div>
+    </div>
+
+    <div id="vpn-modal" class="config-modal">
+        <div class="config-modal-content">
+            <h4>VPN Concentrator Configuration</h4>
+            <pre>
+# /etc/ipsec.conf - VPN Concentrator Settings
+conn %default
+    keyexchange=ikev2
+    auto=add
+
+conn site-to-site
+    left=198.134.0.2
+    right=%any
+    
+    # IKEv2 Cipher Suite for Phase 1
+    ike= <select id="ike-select"></select>
+    
+    # Secret for AAA authentication
+    secret= <input type="password" id="vpn-secret" placeholder="Enter Secret">
+            </pre>
+            <div class="config-modal-controls">
+                <button class="sim-reset-btn" id="vpn-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="aaa-modal" class="config-modal">
+        <div class="config-modal-content">
+            <h4>AAA Server Configuration</h4>
+            <pre>
+# /etc/freeradius/3.0/clients.conf - AAA Client Settings
+client vpn_concentrator {
+    ipaddr = 10.1.2.1
+    proto = *
+
+    # Shared secret must match VPN concentrator
+    secret= <input type="password" id="aaa-secret" placeholder="Enter Secret">
+}
+
+# /etc/freeradius/3.0/mods-available/eap
+eap {
+    default_eap_type = <select id="eap-select"></select>
+    ...
+}
+            </pre>
+            <div class="config-modal-controls">
+                <button class="sim-reset-btn" id="aaa-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <pre id="modal-body-content" style="white-space: pre-wrap; font-family: sans-serif;"></pre>
+            <button class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Shared Modal Logic ---
+        const infoModal = document.getElementById("info-modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showInfoModal(message, isCentered = false) {
+            modalBody.textContent = message;
+            infoModal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            infoModal.style.display = "flex";
+        }
+        function closeInfoModal() { infoModal.style.display = "none"; }
+        infoModal.querySelector('.modal-close-btn').onclick = closeInfoModal;
+        
+        // --- Sim-specific JavaScript ---
+        const sim77 = {
+            data: {
+                info: `An IPSec solution is being deployed. The configuration files for both the VPN concentrator and the AAA server are shown in the diagram.\n\nComplete the configuration files to meet the following requirements:\n• The EAP method must use mutual certificate-based authentication (with issued client certificates).\n• The IKEv2 cipher suite must be configured to the most secure authenticated mode of operation.\n• The secret must contain at least one uppercase character, one lowercase character, one numeric character, and one special character, and it must meet a minimum length requirement of eight characters.`,
+                ikeOptions: ["aes256-sha256-modp1024", "3des-sha1-modp1024", "aes256gcm16-sha256-modp1024"],
+                eapOptions: ["eap-md5", "eap-tls", "eap-ttls", "eap-peap"],
+                correctAnswers: {
+                    ike: "aes256gcm16-sha256-modp1024",
+                    eap: "eap-tls",
+                    secret: "S3cur3P@ss!"
+                }
+            },
+            state: {
+                ike: "", eap: "", vpnSecret: "", aaaSecret: ""
+            },
+            setup: function() {
+                // Reset state
+                this.state = { ike: "", eap: "", vpnSecret: "", aaaSecret: "" };
+
+                // Populate IKE dropdown
+                const ikeSelect = document.getElementById('ike-select');
+                ikeSelect.innerHTML = `<option value="" selected disabled>Select Suite</option>` + this.data.ikeOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+
+                // Populate EAP dropdown
+                const eapSelect = document.getElementById('eap-select');
+                eapSelect.innerHTML = `<option value="" selected disabled>Select Type</option>` + this.data.eapOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+                
+                // Clear secret fields
+                document.getElementById('vpn-secret').value = "";
+                document.getElementById('aaa-secret').value = "";
+            },
+            check: function() {
+                // Update state from form elements
+                this.state.ike = document.getElementById('ike-select').value;
+                this.state.eap = document.getElementById('eap-select').value;
+                this.state.vpnSecret = document.getElementById('vpn-secret').value;
+                this.state.aaaSecret = document.getElementById('aaa-secret').value;
+
+                const correct = this.data.correctAnswers;
+                let isCorrect = true;
+                let message = "";
+
+                // Check secrets first
+                if (this.state.vpnSecret !== this.state.aaaSecret) {
+                    isCorrect = false;
+                    message = "Incorrect. The shared secrets on the VPN Concentrator and AAA Server must match.";
+                } else if (this.state.vpnSecret !== correct.secret) {
+                    isCorrect = false;
+                    // Check if it's just wrong or if it fails complexity
+                    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+                    if (!regex.test(this.state.vpnSecret)) {
+                        message = "Incorrect. The secret does not meet the minimum complexity requirements.";
+                    } else {
+                        message = "Incorrect. Please review your selections.";
+                    }
+                }
+
+                // Check dropdowns if secrets are ok so far
+                if (isCorrect && (this.state.ike !== correct.ike || this.state.eap !== correct.eap)) {
+                    isCorrect = false;
+                    message = "Incorrect. Please review the cipher suite and EAP method selections.";
+                }
+                
+                if (isCorrect) {
+                    showInfoModal("Correct! The IPsec and AAA configurations are secure and correct.", true);
+                } else {
+                    showInfoModal(message, true);
+                }
+            },
+            initEventListeners: function() {
+                const vpnModal = document.getElementById('vpn-modal');
+                const aaaModal = document.getElementById('aaa-modal');
+                
+                document.getElementById('vpn-concentrator').addEventListener('click', () => vpnModal.style.display = 'flex');
+                document.getElementById('vpn-close-btn').addEventListener('click', () => vpnModal.style.display = 'none');
+
+                document.getElementById('aaa-server').addEventListener('click', () => aaaModal.style.display = 'flex');
+                document.getElementById('aaa-close-btn').addEventListener('click', () => aaaModal.style.display = 'none');
+
+                document.getElementById('checkBtn').addEventListener('click', () => this.check());
+                document.getElementById('resetBtn').addEventListener('click', () => this.setup());
+                document.getElementById('infoBtn').addEventListener('click', () => showInfoModal(this.data.info));
+            }
+        };
+
+        // Initialize the simulation
+        document.addEventListener('DOMContentLoaded', () => {
+            sim77.setup();
+            sim77.initEventListeners();
+        });
+    </script>
+</body>
+</html>
