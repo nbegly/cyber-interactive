@@ -25,15 +25,27 @@
             border: 1px solid var(--border-color);
         }
         
-        .instructions-box { grid-area: instructions; }
-        .instructions-box h4 { margin-top: 0; }
-        .instructions-box .part-instructions { display: none; }
-        .instructions-box .part-instructions.active { display: block; }
+        .instructions-box { 
+            grid-area: instructions; 
+        }
+
+        .instructions-box h4 { 
+            margin-top: 0; 
+        }
+
+        .instructions-box .part-instructions { 
+            display: none; 
+        }
+
+        .instructions-box .part-instructions.active { 
+            display: block; 
+        }
         
         .tab-nav {
             display: flex;
             margin-bottom: 1rem;
         }
+
         .tab-btn {
             padding: 0.5rem 1rem;
             cursor: pointer;
@@ -44,6 +56,7 @@
             margin-right: 5px;
             border-radius: 4px;
         }
+
         .tab-btn.active {
             background-color: var(--interactive-blue);
             color: white;
@@ -59,14 +72,17 @@
             color: rgb(38, 131, 38);
             font-family: monospace;
         }
+
         .command-item {
             padding: 0.75rem;
             cursor: pointer;
             border-radius: 4px;
         }
+
         .command-item:hover {
             background-color: var(--bg-dark-secondary);
         }
+
         .command-item.selected {
             background-color: rgb(35, 85, 35);
             color: white;
@@ -95,11 +111,13 @@
             align-items: center;
             gap: 1rem;
         }
+
         .prompt-box .prompt-label {
             font-family: monospace;
             font-weight: bold;
             white-space: nowrap;
         }
+
         .prompt-box select {
             width: 100%;
             background: var(--bg-dark);
@@ -108,6 +126,7 @@
             padding: 8px;
             border-radius: 4px;
         }
+
     </style>
 </head>
 <body>
@@ -178,7 +197,6 @@
 
         const simLVM = {
             data: {
-                // ADDED info property for the modal
                 info: `A junior system administrator removed an LVM volume by mistake.\n\nINSTRUCTIONS\nPart 1: Review the output and select the appropriate command to begin the recovery process.\nPart 2: Review the output and select the appropriate command to continue the recovery process.\nPart 3: Review the output and select the appropriate command to complete the recovery process and access the underlying data.\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset All button.`,
                 part1: {
                     commands: {
@@ -444,7 +462,6 @@ Phase 7 - verify link counts...
                 showModal(feedback, true);
             },
             init: function() {
-                // Event Listeners
                 document.querySelectorAll('.tab-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         this.state.answers[this.state.currentPart] = document.getElementById('answer-dropdown').value;
@@ -458,7 +475,6 @@ Phase 7 - verify link counts...
                 });
                 document.getElementById('checkBtn').addEventListener('click', () => this.check());
                 document.getElementById('resetBtn').addEventListener('click', () => this.setup());
-                // FIXED: Added event listener for the info button
                 document.getElementById('infoBtn').addEventListener('click', () => showModal(this.data.info));
                 
                 this.setup();

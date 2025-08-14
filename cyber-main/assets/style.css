@@ -1,4 +1,3 @@
-/* --- UNIVERSAL THEME AND LAYOUT --- */
 :root {
     --bg-dark-main: #121212;
     --bg-dark-secondary: #1e1e1e;
@@ -25,7 +24,6 @@ body {
     padding: 2rem;
 }
 
-/* --- SIMULATION PAGE STYLES --- */
 .sim-container {
     width: 100%;
     max-width: 1400px;
@@ -50,14 +48,30 @@ body {
     transition: background-color 0.2s;
 }
 
-.sim-check-btn { background-color: var(--accent-green); }
-.sim-check-btn:hover { background-color: var(--accent-green-hover); }
-.sim-reset-btn { background-color: var(--danger-red); }
-.sim-reset-btn:hover { background-color: var(--danger-red-hover); }
-.back-btn { background-color: var(--interactive-blue); }
-.back-btn:hover { background-color: var(--interactive-blue-hover); }
+.sim-check-btn { 
+    background-color: var(--accent-green); 
+}
 
-/* --- QUIZ PAGE STYLES --- */
+.sim-check-btn:hover { 
+    background-color: var(--accent-green-hover); 
+}
+
+.sim-reset-btn { 
+    background-color: var(--danger-red); 
+}
+
+.sim-reset-btn:hover { 
+    background-color: var(--danger-red-hover); 
+}
+
+.back-btn { 
+    background-color: var(--interactive-blue); 
+}
+
+.back-btn:hover { 
+    background-color: var(--interactive-blue-hover); 
+}
+
 .main-content-area {
     display: flex;
     flex-direction: column;
@@ -196,7 +210,6 @@ body {
     color: #fff;
 }
 
-/* --- UNIVERSAL MODAL STYLES --- */
 .modal {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
@@ -211,7 +224,9 @@ body {
     border: 1px solid var(--border-color); overflow: auto;
 }
 
-.modal-content.centered-text { text-align: center; }
+.modal-content.centered-text { 
+    text-align: center; 
+}
 
 .modal-close-btn {
     display: block; margin: 20px auto 0 auto;

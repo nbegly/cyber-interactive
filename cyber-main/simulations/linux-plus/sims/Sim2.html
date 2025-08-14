@@ -6,13 +6,13 @@
     <title>Sim 2: Shell Script</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -22,21 +22,23 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
 
-        /* Styles for Sim 2 Drag and Drop */
         #sim2-layout {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
+
         .sim2-snippets-panel {
             flex: 1;
             min-width: 300px;
@@ -46,11 +48,13 @@
             word-wrap: break-word;
             border: 1px solid var(--border-color);
         }
+
         .sim2-snippets-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 10px;
         }
+
         .drag-option {
             background-color: var(--bg-dark-tertiary);
             color: var(--text-light);
@@ -61,10 +65,12 @@
             text-align: center;
             border: 1px solid var(--border-color);
         }
+
         .drag-option:active {
             cursor: grabbing;
             background: var(--accent-green);
         }
+
         .sim2-script-panel {
             background-color: #1e1e1e;
             color: #e0e0e0;
@@ -76,6 +82,7 @@
             flex: 1.5;
             border: 1px solid #333;
         }
+
         .sim2-dropzone {
             display: inline-flex;
             align-items: center;
@@ -92,10 +99,12 @@
             font-weight: 700;
             transition: background-color .2s, border-color .2s;
         }
+
         .sim2-dropzone.drag-over {
             background-color: #34495e;
             border-color: #5dade2;
         }
+
     </style>
 </head>
 <body>
@@ -131,7 +140,6 @@
     </div>
 
     <script>
-        // --- Shared Modal Logic ---
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
         function showModal(message, isCentered = false) {
@@ -143,7 +151,6 @@
         modal.querySelector('.modal-close-btn').onclick = closeModal;
         modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
 
-        // --- Sim-specific JavaScript ---
         const sim2 = {
             data: {
                 info: `DRAG DROP -\nAs a System Administrator, to reduce disk space, your were tasked to create a shell script that does the following: \nAdd relevent content to /tmp/script.sh, so that it finds and compresses related files in /var/log without recursion.\n\nINSTRUCTIONS -\nDrag and drop snippets to fill the blanks to build a script that performs the actual compression of rotated log files.`
@@ -193,7 +200,7 @@
                         zone.classList.remove("drag-over");
                         const data = e.dataTransfer.getData("text/plain");
                         zone.innerText = data;
-                        zone.style.borderColor = "#3498db"; // Reset border color on drop
+                        zone.style.borderColor = "#3498db"; 
                     });
                 });
             },
@@ -205,9 +212,9 @@
                 dropzones.forEach((zone, index) => {
                     if (zone.innerText.trim() !== correctAnswers[index]) {
                         isCorrect = false;
-                        zone.style.borderColor = 'var(--danger-red)'; // Highlight incorrect dropzones
+                        zone.style.borderColor = 'var(--danger-red)'; 
                     } else {
-                        zone.style.borderColor = 'var(--accent-green)'; // Highlight correct dropzones
+                        zone.style.borderColor = 'var(--accent-green)'; 
                     }
                 });
                 
@@ -215,7 +222,6 @@
             }
         };
 
-        // Initialize the simulation when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             sim2.setup();
             document.getElementById('checkBtn').addEventListener('click', () => sim2.check());

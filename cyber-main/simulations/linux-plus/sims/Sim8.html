@@ -6,10 +6,21 @@
     <title>Sim 8: Tar Backup and Restore</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        .sim-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .info-btn { padding: 8px; background-color: var(--interactive-blue); border: none; border-radius: 5px; cursor: pointer; color: white; line-height: 0; }
-        .info-btn:hover { background-color: var(--interactive-blue-hover); }
-        .info-btn svg { width: 24px; height: 24px; fill: currentColor; }
+        .sim-top-bar { 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; 
+        }
+
+        .info-btn { 
+            padding: 8px; background-color: var(--interactive-blue); border: none; border-radius: 5px; cursor: pointer; color: white; line-height: 0; 
+        }
+
+        .info-btn:hover { 
+            background-color: var(--interactive-blue-hover); 
+        }
+
+        .info-btn svg { 
+            width: 24px; height: 24px; fill: currentColor; 
+        }
 
         #sim-main-container {
             background-color: var(--bg-dark-secondary);
@@ -17,10 +28,12 @@
             border-radius: 8px;
             border: 1px solid var(--border-color);
         }
+
         .tab-nav {
             display: flex;
             border-bottom: 1px solid var(--interactive-blue);
         }
+
         .tab-btn {
             padding: 0.75rem 1.5rem;
             cursor: pointer;
@@ -31,11 +44,13 @@
             font-size: 1.1em;
             border-radius: 8px 8px 0 0;
         }
+
         .tab-btn.active {
             background-color: var(--interactive-blue);
             color: white;
             border-color: var(--interactive-blue);
         }
+
         .tab-content {
             padding: 1.5rem;
             background-color: var(--bg-dark);
@@ -43,11 +58,13 @@
             border-top: none;
             border-radius: 0 0 8px 8px;
         }
+
         .command-objects-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
         }
+
         .command-object {
             background-color: #3d3d3d; 
             color: white;
@@ -59,12 +76,15 @@
             cursor: pointer;
             transition: transform 0.1s ease;
         }
+
         .command-object:hover {
             transform: scale(1.05);
         }
+
         .command-object:active {
             transform: scale(0.98);
         }
+
         .command-bar {
             margin-top: 1.5rem;
             background-color: #2a2a2e;
@@ -77,16 +97,19 @@
             color: #dcdcdc;
             border: 1px solid var(--border-color-light);
         }
+
         .command-bar-display {
             flex-grow: 1;
             white-space: pre;
         }
+
         .command-bar-mode {
             background-color: #4a4a4e;
             padding: 0.5rem 1rem;
             border-radius: 4px;
             margin: 0 1rem;
         }
+
         .remove-btn {
             background-color: #c74242;
             color: white;
@@ -97,6 +120,7 @@
             font-family: sans-serif;
             cursor: pointer;
         }
+        
     </style>
 </head>
 <body>

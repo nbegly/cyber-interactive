@@ -6,13 +6,14 @@
     <title>Sim 1: Partition</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
+
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -20,16 +21,19 @@
             border-radius: 5px;
             cursor: pointer;
             color: white;
-            line-height: 0; /* Helps align SVG */
+            line-height: 0; 
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         #sim1-content {
             font-size: 1.2em;
             font-family: monospace;
@@ -38,9 +42,11 @@
             border-radius: 8px;
             border: 1px solid var(--border-color);
         }
+
         #sim1-content div {
             margin-bottom: 1.5em;
         }
+
         #sim1-content select {
             background: var(--bg-dark-tertiary);
             color: white;
@@ -50,6 +56,7 @@
             font-family: monospace;
             font-size: 1em;
         }
+
     </style>
 </head>
 <body>
@@ -84,7 +91,6 @@
     </div>
 
     <script>
-        // --- Shared Modal Logic ---
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
         function showModal(message, isCentered = false) {
@@ -96,7 +102,6 @@
         modal.querySelector('.modal-close-btn').onclick = closeModal;
         modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
 
-        // --- Sim-specific JavaScript ---
         const sim1 = {
             data: {
                 info: `DRAG DROP\nA junior administrator has been tasked with creating a new 10 GB ext4 partition on the /dev/sdc disk.\nYou must create the partition and format it.\n\nINSTRUCTIONS\nDrag and drop the correct command snippets from the left to complete the partition creation and formatting process on the right.`
@@ -122,7 +127,6 @@
             }
         };
 
-        // Initialize the simulation when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             sim1.setup();
             document.getElementById('checkBtn').addEventListener('click', () => sim1.check());
