@@ -54,11 +54,11 @@
         .sim5-output-box { background-color: #000; color: #0f0; padding: 15px; border-radius: 5px; font-family: monospace; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .sim5-output-box a { color: #66ff66; text-decoration: none; cursor: pointer; }
         .sim5-output-box a:hover { text-decoration: underline; }
-        .sim5-fragments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 20px; }
-        .sim5-fragment-btn { background-color: #3e444c; color: #e0e0e0; padding: 12px; border-radius: 8px; cursor: pointer; text-align: center; border: 1px solid #555; }
+        .sim5-fragments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 20px; }
+        .sim5-fragment-btn { background-color: #2b2e33; color: #e0e0e0; padding: 12px; border-radius: 8px; cursor: pointer; text-align: center; border: 1px solid #555; }
         .sim5-command-line-area { display: flex; gap: 10px; background-color: #000; padding: 10px; border-radius: 5px; font-family: monospace; align-items: center; }
         .sim5-command-display { flex-grow: 1; min-height: 24px; }
-        .sim5-action-btn { background-color: #2c3e50; color: #ecf0f1; border: 1px solid #3498db; width: 40px; height: 40px; font-size: 1.5em; cursor: pointer; border-radius: 5px; }
+        .sim5-action-btn { background-color: #234427; color: #ecf0f1; border: 1px solid #2b9b3a; width: 60px; height: 40px; font-size: 1.5em; cursor: pointer; border-radius: 5px; }
         
         /* Part 4 Styles */
         .sim5-part4-layout { display: flex; flex-wrap: wrap; gap: 20px; }
@@ -118,7 +118,7 @@
             },
             data: {
                 info: `Situation: \nA senior administrator has placed a private key for user admin in your home directory. The server you need to remotely access is server1 and SSH is listening on port 2222.\n\nPart 1:\nReview the command output and build the correct command to place the private key into your SSH folder.\n\nPart 2: \nReview the command output and build the correct command to set the file permissions.\n\nPart 3: \nReview the command output and build the correct command to set the correct ownership.\n\nPart 4:\nSelect the proper file to edit for remote server access. Then, build the correct configuration output based on the server name, ports, and files. \n\nIn each part, click on objects to build a complete command. Command objects may be used more than once, but not all will be used. Use ˽ as the spacebar. Click the arrow to remove any unwanted objects from your command.`,
-                allFragments: ["1777", "-R", "0444", "admin", "server2", "0600", "root", "localhost", "comptia", "chcon", "server1", "/", "0500", "~/", "chown", ":", "chmod", "mv", ";", "-", "/etc/ssh", "~/.ssh/", "chage", "0777", "␣"],
+                allFragments: ["1777", "-R", "0444", "admin", "server2", "0600", "root", "localhost", "comptia", "chcon", "server1", "/", "0500", "~/", "chown", ":", "chmod", "mv", ";", "-", "/etc/ssh", "~/.ssh/", "chage", "0777", "[spacebar]"],
                 partsData: [
                     { correctAnswer: "mv server1 ~/.ssh/" },
                     { correctAnswer: "chmod 0600 ~/.ssh/server1" },

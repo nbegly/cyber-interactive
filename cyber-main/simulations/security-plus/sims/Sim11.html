@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sim 11: Cloud Infrastructure</title>
+    <title>Sim 11: Cloud Infrastructure Design</title>
     <!-- Link to the shared stylesheet -->
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
@@ -197,7 +197,7 @@
                  <span id="internet-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></span>
                 <div class="tier" id="tier-1"><div id="zone-1" class="drop-zone"></div></div>
                 <div class="tier tier-bubble" id="tier-2">
-                    <div class="tier-label">PUBLIC</div>
+                    <div class="tier-label">Public Subnet</div>
                     <div class="drop-zone-group">
                         <div id="zone-2" class="drop-zone"></div>
                         <div id="zone-3" class="drop-zone"></div>
@@ -206,7 +206,7 @@
                 <div class="tier" id="tier-3"><div id="zone-4" class="drop-zone"></div></div>
                 <div class="tier tier-bubble" id="tier-4">
                     <div class="subnet-select-wrapper">
-                        <select id="subnet-dropdown" class="subnet-select"><option value="">Select</option><option value="Public">Public</option><option value="Private">Private</option></select>
+                        <select id="subnet-dropdown" class="subnet-select"><option value="">Select</option><option value="Public">Public Subnet</option><option value="Private">Private Subnet</option></select>
                     </div>
                      <div class="drop-zone-group">
                         <div id="zone-5" class="drop-zone"></div>
@@ -215,7 +215,7 @@
                     </div>
                 </div>
                 <div class="tier tier-bubble" id="tier-5">
-                     <div class="tier-label">PRIVATE</div>
+                     <div class="tier-label">Private Subnet</div>
                      <div class="drop-zone-group">
                         <div id="zone-8" class="drop-zone"></div>
                     </div>
@@ -319,7 +319,7 @@
                 // Example: drawLineWithArrow(100, 100, 200, 200);
                 
                 const manualLines = [
-                    [980, 215, 980, 125], 
+                    [980, 215, 980, 115], 
                     [635, 50, 635, 90],
                     [525, 50, 525, 90],
                     [525, 195, 525, 225],
@@ -331,7 +331,7 @@
                     drawManualLine(x1, y1, x2, y2);
                 });
 
-                drawLineWithArrow(980, 125, 680, 125); 
+                drawLineWithArrow(980, 115, 680, 115); 
                 drawLineWithArrow(635, 50, 615, 50);
                 drawLineWithArrow(525, 50, 545, 50);
                 drawLineWithArrow(525, 225, 545, 225);

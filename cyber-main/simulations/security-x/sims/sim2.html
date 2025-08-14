@@ -78,7 +78,7 @@
         .oauth-component .label {
             font-weight: bold;
             color: #0f0;
-            background-color: #000;
+            background-color: #000000;
             border: 1px solid #0f0;
             padding: 5px;
             border-radius: 4px;
@@ -89,15 +89,15 @@
 
         .oauth-component select {
             width: 100%;
-            background: #111;
+            background: #000000;
             color: #0f0;
             border: 1px solid #0f0;
             padding: 5px;
             border-radius: 4px;
         }
         
-        #resource-owner { top: 250px; left: 20px; }
-        #auth-server { top: 230px; left: 300px; }
+        #resource-owner { top: 250px; left: 0px; }
+        #auth-server { top: 230px; left: 260px; }
         #resource-server { top: 80px;  left: 580px; }
         #b2b-client { top: 380px; left: 580px; }
 
@@ -113,7 +113,7 @@
 
     <div class="sim-container">
         <div class="sim-top-bar">
-            <a href="../index.html" class="back-btn">Back to SecX Menu</a>
+            <a href="../index.html" class="back-btn">Back to SecurityX Menu</a>
             <button id="infoBtn" class="info-btn" title="Show Instructions">
                 <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
@@ -130,9 +130,9 @@
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f0"></path>
                         </marker>
                     </defs>
-                    <path class="arrow-path" d="M 220 295 L 300 295"></path>
-                    <path class="arrow-path" d="M 500 295 Q 540 295 540 200 L 580 200"></path>
-                    <path class="arrow-path" d="M 500 295 Q 540 295 540 380 L 580 380"></path>
+                    <path class="arrow-path" d="M 180 275 L 280 275"></path>
+                    <path class="arrow-path" d="M 450 275 Q 520 275 540 170 L 560 170"></path>
+                    <path class="arrow-path" d="M 450 275 Q 520 275 540 460 L 560 460"></path>
                 </svg>
 
                 <div id="resource-owner" class="oauth-component">

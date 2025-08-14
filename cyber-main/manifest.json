@@ -1,6 +1,6 @@
 {
   "name": "Interactive Cybersecurity Simulations",
-  "short_name": "NPSB Sim",
+  "short_name": "NPSBSims",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#121212",

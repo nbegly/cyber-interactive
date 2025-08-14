@@ -17,6 +17,29 @@
             font-family: monospace;
             overflow: hidden;
         }
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
         .ipsec-component {
             position: absolute;
             width: 150px;
