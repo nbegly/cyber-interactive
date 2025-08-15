@@ -6,13 +6,13 @@
     <title>Sim 1: Incident Response</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -22,16 +22,17 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
         
-        /* Container for terminal and its overlay */
         .terminal-wrapper {
             position: relative;
         }
@@ -49,17 +50,21 @@
             font-size: 14px;
             line-height: 1.5;
         }
+
         .terminal-line {
             white-space: pre-wrap;
             word-break: break-all;
         }
+
         .prompt-line {
             display: flex;
         }
+
         .prompt {
-            color: #1eff8e; /* Green prompt */
-            white-space: nowrap; /* Prevent prompt from wrapping */
+            color: #1eff8e; 
+            white-space: nowrap; 
         }
+
         .user-input {
             background-color: transparent;
             border: none;
@@ -67,16 +72,17 @@
             font-family: inherit;
             font-size: inherit;
             flex-grow: 1;
-            padding-left: 0.5em; /* Space between prompt and input */
+            padding-left: 0.5em; 
         }
+
         .user-input:focus {
             outline: none;
         }
+
         .executed-command {
-             padding-left: 0.5em; /* Space between prompt and executed command */
+             padding-left: 0.5em; 
         }
 
-        /* Login Modal Styles */
         #login-modal {
             position: absolute;
             top: 0;
@@ -90,6 +96,7 @@
             align-items: center;
             flex-direction: column;
         }
+
         .login-box {
             background-color: var(--bg-dark-secondary);
             padding: 2rem;
@@ -98,10 +105,12 @@
             width: 300px;
             text-align: center;
         }
+
         .login-box h4 {
             margin-top: 0;
             margin-bottom: 1.5rem;
         }
+
         .login-box input {
             width: 100%;
             padding: 8px;
@@ -111,6 +120,7 @@
             border-radius: 4px;
             color: white;
         }
+
         .login-box button {
             width: 100%;
             padding: 10px;
@@ -120,9 +130,11 @@
             color: white;
             cursor: pointer;
         }
+
         .login-box button:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         #login-error {
             color: #ff4d4d;
             margin-top: 1rem;
@@ -173,7 +185,6 @@
     </div>
 
     <script>
-        // --- Shared Modal Logic for Instructions ---
         const infoModal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
         function showInfoModal(message) {
@@ -184,23 +195,20 @@
         infoModal.querySelector('.modal-close-btn').onclick = closeInfoModal;
         infoModal.onclick = e => { if (e.target.id === 'modal') closeInfoModal(); };
 
-        // --- Sim-specific JavaScript ---
         const sim75 = {
             data: {
                 info: `This system was recently patched following the exploitation of a vulnerability by an attacker to enable data exfiltration.\n\nDespite the vulnerability being patched, it is likely that a malicious TCP service is still running and the adversary has achieved persistence by creating a systemd service.\n\nINSTRUCTIONS\nUsing the following credentials:\n• Username: labadmin\n• Password: Passw0rd!\n\nInvestigate to identify indicators of compromise and then remediate them. You will need to make changes to remove the malicious persistence agent by disabling the service's ability to start on boot and stopping the current process.\n\nExamples of commands to use:\nkill, killall, lsof, man, --help, netstat, ps, systemctl`
             },
             state: {},
             setup: function() {
-                // Show login modal and hide terminal content initially
                 document.getElementById('login-modal').style.display = 'flex';
                 document.getElementById('login-error').textContent = '';
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
                 document.getElementById('username').focus();
 
-                // Define the initial state of the simulated system
                 this.state = {
-                    progress: 0, // 0: Start, 1: Listed, 2: Identified, 3: Disabled, 4: Stopped (Success)
+                    progress: 0, 
                     isComplete: false,
                     processes: {
                         '1': { user: 'root', pid: '1', cpu: '0.0', mem: '0.1', tty: '?', stat: 'Ss', command: 'systemd' },
@@ -230,7 +238,7 @@
                 };
                 
                 const terminal = document.getElementById('terminal');
-                terminal.innerHTML = ''; // Clear terminal on reset
+                terminal.innerHTML = ''; 
             },
             
             login: function() {
@@ -346,16 +354,13 @@ SIMULATION COMPLETE.`;
             
             addOutput: function(input, output) {
                 const terminal = document.getElementById('terminal');
-                // *** FIX: Find the element with the ID 'userInput' and remove its parent div.
                 const activePrompt = document.getElementById('userInput');
                 if (activePrompt && activePrompt.parentElement) {
                     activePrompt.parentElement.remove();
                 }
 
                 const escapedInput = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                // Render the static line that was just executed
                 terminal.innerHTML += `<div class="terminal-line"><span class="prompt">labadmin@sim-host:~$</span><span class="executed-command">${escapedInput}</span></div>`;
-                // Render the output below it
                 if (output) { terminal.innerHTML += `<div class="terminal-line">${output}</div>`; }
                 
                 this.addPrompt();
@@ -365,7 +370,6 @@ SIMULATION COMPLETE.`;
                 const terminal = document.getElementById('terminal');
                 if (this.state.isComplete) { terminal.scrollTop = terminal.scrollHeight; return; }
                 
-                // Add the new interactive prompt line
                 terminal.innerHTML += `<div class="prompt-line"><span class="prompt">labadmin@sim-host:~$</span><input type="text" id="userInput" class="user-input" autocomplete="off"></div>`;
                 
                 const userInput = document.getElementById('userInput');
@@ -375,11 +379,9 @@ SIMULATION COMPLETE.`;
             }
         };
 
-        // Initialize the simulation when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             sim75.setup();
             
-            // --- UI BUTTON LISTENERS ---
             document.getElementById('resetBtn').addEventListener('click', () => sim75.setup());
             document.getElementById('infoBtn').onclick = () => { showInfoModal(sim75.data.info); };
             document.getElementById('loginBtn').addEventListener('click', () => sim75.login());
@@ -387,7 +389,6 @@ SIMULATION COMPLETE.`;
                 if (e.key === 'Enter') { sim75.login(); }
             });
 
-            // --- DELEGATED EVENT LISTENER FOR TERMINAL INPUT ---
             const terminal = document.getElementById('terminal');
             terminal.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && e.target.matches('#userInput')) {
@@ -396,7 +397,6 @@ SIMULATION COMPLETE.`;
                 }
             });
 
-            // Focus terminal input when the terminal area is clicked
             terminal.addEventListener('click', (e) => {
                 const userInput = document.getElementById('userInput');
                 if (userInput) { userInput.focus(); }

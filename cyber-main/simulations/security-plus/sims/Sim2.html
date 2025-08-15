@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sim 2: Wireless Network Setup</title>
-    <!-- Link to the shared stylesheet -->
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -21,51 +20,61 @@
             border-radius: 5px;
             cursor: pointer;
             color: white;
-            line-height: 0; /* Helps align SVG */
+            line-height: 0; 
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         #sim2-diagram { 
             position: relative; 
             max-width: 600px; 
             margin: 40px auto 0 auto; 
             text-align: center; 
         }
+
         .sim2-clickable { 
             display: inline-block; 
             margin: 20px; 
             cursor: pointer; 
             color: var(--text-light); 
         }
+
         .sim2-clickable:hover { 
             filter: brightness(1.2); 
             color: var(--accent-green-hover); 
         }
+
         .sim2-clickable svg { 
             width: 80px; 
             height: 80px; 
             fill: currentColor; 
         }
+
         .sim2-clickable p { 
             margin-top: 5px; 
             font-weight: bold; 
         }
+
         .sim2-modal-grid { 
             display: grid; 
             grid-template-columns: 150px 1fr; 
             gap: 10px; 
             align-items: center;
         }
+
         .sim2-modal-grid label { 
             font-weight: bold; 
             text-align: right;
         }
+
         .sim2-modal-grid input, .sim2-modal-grid select { 
             width: 100%; 
             background: var(--bg-dark-tertiary); 
@@ -74,10 +83,12 @@
             padding: 5px; 
             border-radius: 4px; 
         }
+
         .sim2-modal-footer { 
             text-align: right; 
             margin-top: 20px; 
         }
+
         .sim2-modal-footer button {
             padding: 8px 15px;
             border: none;
@@ -86,16 +97,28 @@
             cursor: pointer;
             margin-left: 10px;
         }
-        .sim2-modal-footer .save-btn { background-color: var(--accent-green); }
-        .sim2-modal-footer .save-btn:hover { background-color: var(--accent-green-hover); }
-        .sim2-modal-footer .close-btn { background-color: var(--danger-red); }
-        .sim2-modal-footer .close-btn:hover { background-color: var(--danger-red-hover); }
+
+        .sim2-modal-footer .save-btn { 
+            background-color: var(--accent-green); 
+        }
+
+        .sim2-modal-footer .save-btn:hover { 
+            background-color: var(--accent-green-hover); 
+        }
+
+        .sim2-modal-footer .close-btn { 
+            background-color: var(--danger-red); 
+        }
+
+        .sim2-modal-footer .close-btn:hover { 
+            background-color: var(--danger-red-hover); 
+        }
+
     </style>
 </head>
 <body>
 
     <div class="sim-container">
-        <!-- Top bar with Back and Info buttons -->
         <div class="sim-top-bar">
             <a href="../index.html" class="back-btn">Back to Menu</a>
             <button id="infoBtn" class="info-btn" title="Show Instructions">
@@ -103,7 +126,6 @@
             </button>
         </div>
 
-        <!-- Core HTML content for the simulation -->
         <h3>Sim 2: Wireless Network Setup</h3>
         <div id="sim2-diagram">
             <div class="sim2-clickable" data-target="wifi-controller">
@@ -120,7 +142,6 @@
             </div>
         </div>
         <div class="sim-controls">
-            <!-- Empty div for spacing -->
             <div></div>
             <div>
                 <button class="sim-check-btn" id="checkBtn">Check Answer</button>
@@ -129,16 +150,13 @@
         </div>
     </div>
 
-    <!-- Universal Modal Container -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <div id="modal-body-content"></div>
-            <!-- Close button is now dynamically added by the showModal function if needed -->
         </div>
     </div>
 
     <script>
-        // --- Shared Modal Logic ---
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
         function showModal(content, isCentered = false, options = {}) {
@@ -161,17 +179,20 @@
             modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
             modal.style.display = "flex";
         }
-        function closeModal() { modal.style.display = "none"; }
-        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+        function closeModal() { 
+            modal.style.display = "none"; 
+        }
 
-        // --- Sim-specific JavaScript ---
+        modal.onclick = e => { 
+            if (e.target.id === 'modal') closeModal(); 
+        };
+
         const sim2 = {
             state: {},
             data: {
                 info: `SIMULATION\nA systems administrator needs to install a new wireless network for authenticated guest access. The wireless network should support 802.1X using the most secure encryption and protocol available.\n\nINSTRUCTIONS\nPerform the following steps:\n     Configure the RADIUS server.\n     Configure the WiFi controller.\n     Preconfigure the client for an incoming guest. The Guest AD credentials are:\n          User: guest01\n          Password: guestpass\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.`,
             },
             setup: function() {
-                // Reset state on setup
                 this.state = {
                     radius: { clientIp: '', authType: '' },
                     wifi: { sharedKey: '', aaaIp: '', psk: '', authType: '' },
@@ -215,7 +236,7 @@
                             <label>Authentication type:</label><select id="wifi-auth-type"><option value=""></option>${wifiAuthOptions.map(o => `<option value="${o}" ${stateToUpdate.authType === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
                             <label>Controller IP:</label><input type="text" value="192.168.1.10" disabled>
                         </div>`;
-                } else { // wireless-client
+                } else { 
                     const clientAuthOptions = ['WPA2 Personal', 'WPA2 - PSK', 'WPA2 Enterprise', 'WEP'];
                     modalHtml = `
                         <h4>Wireless Client Configuration</h4>
@@ -280,7 +301,6 @@
             }
         };
 
-        // Initialize the simulation when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             sim2.setup();
             document.getElementById('checkBtn').addEventListener('click', () => sim2.check());

@@ -6,13 +6,13 @@
     <title>Sim 2: OAuth Workflow</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -22,16 +22,17 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
 
-        /* UPDATED: Removed all complex layout rules */
         #sim76-content {
             background-color: var(--bg-dark-secondary);
             padding: 1rem;
@@ -41,7 +42,6 @@
             font-family: monospace;
         }
 
-        /* UPDATED: Using the simplest margin:auto centering */
         #diagram-wrapper {
             margin: 0 auto;
             position: relative;
@@ -62,15 +62,18 @@
             height: 64px;
             margin-bottom: 10px;
         }
+
         .device-icon .outline {
             stroke: #0f0;
             stroke-width: 1.5;
             fill: none;
         }
+
         .device-icon .detail {
             stroke: #0f0;
             stroke-width: 1;
         }
+
          .device-icon .lights {
             fill: #0f0;
         }
@@ -96,10 +99,21 @@
             border-radius: 4px;
         }
         
-        #resource-owner { top: 250px; left: 0px; }
-        #auth-server { top: 230px; left: 260px; }
-        #resource-server { top: 80px;  left: 580px; }
-        #b2b-client { top: 380px; left: 580px; }
+        #resource-owner { 
+            top: 250px; left: 0px; 
+        }
+
+        #auth-server { 
+            top: 230px; left: 260px; 
+        }
+
+        #resource-server { 
+            top: 80px;  left: 580px; 
+        }
+
+        #b2b-client { 
+            top: 380px; left: 580px; 
+        }
 
         .arrow-path {
             fill: none;
@@ -192,7 +206,6 @@
     </div>
 
     <script>
-        // --- Shared Modal Logic ---
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
         function showModal(message, isCentered = false) {
@@ -204,7 +217,6 @@
         modal.querySelector('.modal-close-btn').onclick = closeModal;
         modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
 
-        // --- Sim-specific JavaScript ---
         const sim76 = {
             data: {
                 info: `You are tasked with integrating a new B2B client application with an existing OAuth workflow that must meet the following requirements:\n\n• The application does not need to know the users’ credentials.\n• An approval interaction between the users and the HTTP service must be orchestrated.\n• The application must have limited access to users’ data.\n\nINSTRUCTIONS\nUse the drop-down menus to select the action items for the appropriate locations. All placeholders must be filled.`,
@@ -251,7 +263,6 @@
             }
         };
 
-        // Initialize the simulation when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             sim76.setup();
             document.getElementById('checkBtn').addEventListener('click', sim76.check.bind(sim76));

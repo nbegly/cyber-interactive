@@ -6,13 +6,13 @@
     <title>Sim 13: VPN Configuration</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -22,14 +22,17 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         .sim13-container { 
             background-color: var(--bg-dark-secondary); 
             padding: 20px; 
@@ -37,6 +40,7 @@
             margin-top: 20px;
             position: relative;
         }
+
         #line-canvas {
             position: absolute;
             top: 0;
@@ -45,6 +49,7 @@
             height: 100%;
             pointer-events: none;
         }
+
         .sim13-diagram { 
             display: flex; 
             align-items: center; 
@@ -52,29 +57,33 @@
             gap: 20px; 
             min-height: 250px; 
         }
+
         .sim13-endpoint { 
             text-align: center;
             color: var(--accent-green);
         }
+
         .sim13-endpoint-icon svg { 
             width: 60px;
             height: 60px;
             fill: currentColor;
         }
+
         .sim13-vpn-icon { 
             font-size: 3rem; 
             cursor: pointer; 
         }
+
         .sim13-endpoint-label { 
             margin-top: 10px; 
             color: var(--text-light);
         }
 
-        /* Modal specific styles */
         .sim13-modal-body .tabs { 
             display: flex; 
             border-bottom: 1px solid var(--border-color); 
             margin-bottom: 15px; 
+
         }
         .sim13-modal-body .tab-btn { 
             padding: 10px 15px; 
@@ -84,25 +93,31 @@
             color: var(--text-light); 
             border-bottom: 3px solid transparent; 
         }
+
         .sim13-modal-body .tab-btn.active { 
             border-bottom-color: var(--accent-green); 
             font-weight: bold; 
         }
+
         .sim13-modal-body .tab-content { 
             display: none; 
         }
+
         .sim13-modal-body .tab-content.active { 
             display: block; 
         }
+
         .sim13-form-grid { 
             display: grid; 
             grid-template-columns: 150px 1fr; 
             gap: 10px; 
             align-items: center; 
         }
+
         .sim13-form-grid label { 
             text-align: right; 
         }
+
         .sim13-form-grid input, .sim13-form-grid select { 
             width: 100%; 
             padding: 8px; 
@@ -111,23 +126,29 @@
             border: 1px solid var(--border-color); 
             border-radius: 4px; 
         }
+
         .sim13-form-grid input:disabled { 
             background-color: var(--bg-dark-tertiary); 
             color: #aaa; 
         }
+
         .modal-footer { 
             text-align: right; 
             margin-top: 20px;
         }
+
         .modal-footer .modal-cancel-btn {
             background-color: var(--danger-red);
         }
+
         .modal-footer .modal-cancel-btn:hover {
             background-color: var(--danger-red-hover);
         }
+
         .modal-footer .modal-save-btn {
             background-color: var(--accent-green);
         }
+        
         .modal-footer .modal-save-btn:hover {
             background-color: var(--accent-green-hover);
         }

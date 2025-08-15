@@ -14,11 +14,13 @@
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
+
         @media (max-width: 768px) {
             .list-group {
                 grid-template-columns: 1fr;
             }
         }
+
         .list-group-item { 
             background-color: var(--bg-dark-tertiary); 
             border: 1px solid var(--border-color); 
@@ -31,9 +33,11 @@
             text-align: center;
             font-size: 1.1em;
         }
+
         .list-group-item:hover { 
             background-color: var(--accent-green-hover); 
         }
+
         .jumbotron { 
             text-align: center; 
             padding: 2rem; 
@@ -60,46 +64,8 @@
         </ul>
     </div>
 
-    <div id="welcome-modal" class="modal">
-        <div class="modal-content centered-text">
-            <pre id="modal-message"></pre>
-            <button id="close-modal-btn">Close</button>
-        </div>
-    </div>
-
     <script>
-        // --- Welcome Modal Logic (shows once per session) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('welcome-modal');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            
-            const showModal = () => {
-                const welcomeText = `Welcome to the Linux+ Simulation Quiz.
-Everything is interactive.
 
-To see the objective for any simulation, click on the eye icon inside the simulation page.
-
-To reset a simulation, use the reset button on the simulation page.`;
-                document.getElementById('modal-message').textContent = welcomeText;
-                modal.style.display = 'flex';
-            };
-
-            const closeModal = () => {
-                modal.style.display = 'none';
-            };
-
-            closeModalBtn.addEventListener('click', closeModal);
-
-            // Check if the welcome message has been shown in this session
-            if (!sessionStorage.getItem('welcomeShown')) {
-                showModal();
-                // Set the flag in session storage so it doesn't show again
-                sessionStorage.setItem('welcomeShown', 'true');
-            }
-        });
-
-
-        // --- Service Worker Registration ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('../../sw.js')

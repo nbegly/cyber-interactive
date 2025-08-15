@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sim 12: Malicious Attack</title>
-    <!-- Link to the shared stylesheet -->
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -23,14 +22,17 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         .sim12-container { 
             background-color: var(--bg-dark-secondary); 
             padding: 20px; 
@@ -38,9 +40,10 @@
             margin-top: 20px;
             transform: scale(0.87);
             transform-origin: top center;
-            height: 800px; /* Adjust height to compensate for scaling */
-            position: relative; /* For positioning controls */
+            height: 800px; 
+            position: relative; 
         }
+
         .sim12-diagram { 
             display: flex; 
             flex-direction: column; 
@@ -49,6 +52,7 @@
             height: 100%;
             position: relative;
         }
+
         #line-canvas {
             position: absolute;
             top: 0;
@@ -58,6 +62,7 @@
             z-index: 0;
             pointer-events: none;
         }
+
         .sim12-network { 
             display: flex; 
             flex-direction: column; 
@@ -68,43 +73,52 @@
             padding: 20px; 
             width: 80%; 
         }
+
         .sim12-network h4 { 
             margin: 0 0 15px 0; 
             color: var(--accent-green); 
         }
+
         .sim12-device-row { 
             display: flex; 
             justify-content: space-around; 
             width: 100%; 
         }
+
         .sim12-device-unit { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             gap: 10px; 
         }
+
         .sim12-device { 
             text-align: center; 
             cursor: pointer; 
             z-index: 1;
         }
+
         .sim12-device-icon { 
             color: var(--accent-green);
         }
+
         .sim12-device-icon svg {
             width: 48px;
             height: 48px;
             fill: currentColor;
         }
+
         .sim12-device-label { 
             font-size: 0.9rem; 
             margin-top: 5px; 
         }
+
         .sim12-device-controls {
             border: 1px solid var(--border-color);
             padding: 5px;
             border-radius: 4px;
         }
+
         .sim12-device-controls label { 
             display: block; 
             margin: 5px; 
@@ -112,10 +126,12 @@
             text-align: left; 
             cursor: pointer;
         }
+
         .sim12-device-controls input { 
             vertical-align: middle; 
             margin-right: 5px;
         }
+
         .sim12-center-row { 
             display: flex; 
             align-items: center; 
@@ -124,23 +140,26 @@
             margin: 20px 0; 
             position: relative;
         }
+
         #firewall-icon {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
         }
+
         .sim-controls {
             position: absolute;
             bottom: 20px;
             right: 20px;
             padding: 5px;
             gap: 10px;
-            
         }
+
         .modal-wide .modal-content {
             width: 80vw;
             max-width: 1400px;
         }
+
     </style>
 </head>
 <body>
@@ -301,10 +320,6 @@
                 ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
                 ctx.lineWidth = 2;
                 ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
-
-                // ADD YOUR LINE AND ARROW COORDINATES HERE
-                // Format: drawLineWithArrow(startX, startY, endX, endY);
-                // Example: drawLineWithArrow(100, 100, 200, 200);
                 
                 const manualLines = [
                     [680, 400, 680, 420], 

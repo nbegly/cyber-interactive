@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sim 9: Identify the Compromise</title>
-    <!-- Link to the shared stylesheet -->
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -23,25 +22,30 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         .compromise-container { 
             background-color: var(--bg-dark-secondary); 
             padding: 20px; 
             border-radius: 8px; 
             margin-top: 20px;
         }
+
         .tabs { 
             display: flex; 
             border-bottom: 1px solid var(--border-color); 
             margin-bottom: 15px; 
         }
+
         .tab-btn { 
             padding: 10px 15px; 
             cursor: pointer; 
@@ -51,16 +55,20 @@
             border-bottom: 3px solid transparent; 
             font-size: 1em;
         }
+
         .tab-btn.active { 
             border-bottom-color: var(--accent-green); 
             font-weight: bold; 
         }
+
         .tab-content { 
             display: none; 
         }
+
         .tab-content.active { 
             display: block; 
         }
+
         .terminal { 
             background-color: var(--bg-dark-main); 
             color: #f0f0f0; 
@@ -70,19 +78,23 @@
             white-space: pre-wrap; 
             min-height: 150px;
         }
+
         .answer-area { 
             margin-top: 20px; 
             padding-top: 20px; 
             border-top: 1px solid var(--border-color); 
         }
+
         .answer-group { 
             margin-bottom: 15px; 
         }
+
         .answer-group label { 
             display: inline-block; 
             margin-right: 15px; 
             cursor: pointer;
         }
+        
     </style>
 </head>
 <body>

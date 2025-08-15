@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sim 8: Vulnerability Assessment</title>
-    <!-- Link to the shared stylesheet -->
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -23,25 +22,30 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         .vuln-container { 
             background-color: var(--bg-dark-secondary); 
             padding: 20px; 
             border-radius: 8px; 
             margin-top: 20px;
         }
+
         .vuln-controls-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             gap: 15px; 
         }
+
         .vuln-network-btn { 
             background-color: var(--bg-dark-tertiary); 
             color: white; 
@@ -52,33 +56,37 @@
             cursor: pointer; 
             transition: background-color 0.2s; 
         }
+
         .vuln-network-btn:hover { 
             background-color: var(--interactive-blue-hover); 
         }
 
-        /* Modal specific styles for this sim */
         .sim8-modal-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
             gap: 20px; 
         }
+
         .sim8-device-card { 
             background-color: var(--bg-dark-secondary); 
             padding: 15px; 
             border-radius: 8px; 
             border: 1px solid var(--border-color); 
         }
+
         .sim8-device-card h4 { 
             margin-top: 0; 
             color: var(--accent-green); 
             border-bottom: 1px solid var(--accent-green); 
             padding-bottom: 5px; 
         }
+
         .sim8-vuln-info { 
             font-size: 0.9em; 
             margin-bottom: 15px; 
             line-height: 1.5; 
         }
+
         .sim8-remediation-group select { 
             width: 100%; 
             padding: 8px; 
@@ -88,6 +96,7 @@
             border-radius: 4px; 
             margin-top: 5px;
         }
+        
     </style>
 </head>
 <body>

@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sim 4: Attacks</title>
-    <!-- Link to the shared stylesheet -->
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         .sim-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
+
         .info-btn {
             padding: 8px;
             background-color: var(--interactive-blue);
@@ -23,14 +22,17 @@
             color: white;
             line-height: 0;
         }
+
         .info-btn:hover {
             background-color: var(--interactive-blue-hover);
         }
+
         .info-btn svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
         .sim4-question-grid { 
             display: grid; 
             grid-template-columns: 2fr 1fr 1.5fr 1.5fr; 
@@ -40,13 +42,16 @@
             border-bottom: 1px solid var(--border-color); 
             padding-bottom: 15px;
         }
+
         .sim4-question-grid:last-of-type { 
             border-bottom: none; 
         }
+        
         .sim4-header-grid {
             font-weight: bold;
             color: var(--accent-green);
         }
+
         .sim4-question-grid select { 
             width: 100%; 
             background: var(--bg-dark-tertiary); 
@@ -55,6 +60,7 @@
             padding: 8px; 
             border-radius: 4px; 
         }
+
     </style>
 </head>
 <body>
@@ -69,10 +75,8 @@
 
         <h3>Sim 4: Identify and Remediate Attacks</h3>
         <div id="sim4-questions-container">
-            <!-- Questions will be dynamically inserted here by the script -->
         </div>
         <div class="sim-controls">
-             <!-- Empty div for spacing -->
             <div></div>
             <div>
                 <button class="sim-check-btn" id="checkBtn">Check Answer</button>
@@ -81,7 +85,6 @@
         </div>
     </div>
 
-    <!-- Universal Modal Container -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <div id="modal-body-content"></div>
@@ -90,7 +93,6 @@
     </div>
 
     <script>
-        // --- Shared Modal Logic ---
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
         function showModal(content, isCentered = true) {
@@ -109,7 +111,6 @@
         function closeModal() { modal.style.display = "none"; }
         modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
 
-        // --- Sim-specific JavaScript ---
         const sim4 = {
             data: {
                 info: "SIMULATION\nSelect the appropriate attack and remediation from each drop-down list to label the corresponding attack with its remediation.\n\nINSTRUCTIONS\nNot all attacks and remediation actions will be used.\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.",
@@ -166,7 +167,6 @@
             }
         };
 
-        // Initialize the simulation when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             sim4.setup();
             document.getElementById('checkBtn').addEventListener('click', () => sim4.check());

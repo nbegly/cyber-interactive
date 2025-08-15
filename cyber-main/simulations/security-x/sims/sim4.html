@@ -6,10 +6,21 @@
     <title>Sim 4: Network Security</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        .sim-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .info-btn { padding: 8px; background-color: var(--interactive-blue); border: none; border-radius: 5px; cursor: pointer; color: white; line-height: 0; }
-        .info-btn:hover { background-color: var(--interactive-blue-hover); }
-        .info-btn svg { width: 24px; height: 24px; fill: currentColor; }
+        .sim-top-bar { 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; 
+        }
+
+        .info-btn { 
+            padding: 8px; background-color: var(--interactive-blue); border: none; border-radius: 5px; cursor: pointer; color: white; line-height: 0; 
+        }
+
+        .info-btn:hover { 
+            background-color: var(--interactive-blue-hover); 
+        }
+
+        .info-btn svg { 
+            width: 24px; height: 24px; fill: currentColor; 
+        }
 
         #sim78-content {
             background-color: var(--bg-dark-secondary);
@@ -22,12 +33,14 @@
             grid-template-columns: 1fr 1fr;
             grid-gap: 2rem;
         }
+
         .site-container {
             border: 2px solid var(--interactive-blue);
             border-radius: 8px;
             padding: 1rem;
             position: relative;
         }
+
         .site-container::before {
             content: attr(data-site-name);
             position: absolute;
@@ -38,11 +51,13 @@
             font-weight: bold;
             color: var(--interactive-blue);
         }
+
         .components-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
         }
+
         .component {
             background-color: var(--bg-dark-tertiary);
             border: 1px solid var(--border-color);
@@ -52,15 +67,18 @@
             cursor: pointer;
             transition: all 0.2s ease-in-out;
         }
+
         .component:hover {
             border-color: var(--border-color-light);
         }
+
         .component.selected {
             background-color: green;
             border-color: rgb(46, 161, 46);
             color: white;
             transform: scale(1.05);
         }
+
         #action-container {
             grid-column: 1 / -1;
             margin-top: 1rem;
@@ -68,11 +86,13 @@
             border: 1px solid var(--border-color-light);
             border-radius: 8px;
         }
+
         #action-container label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
         }
+
         #action-container select {
             width: 100%;
             background: var(--bg-dark-tertiary);
@@ -81,6 +101,7 @@
             padding: 8px;
             border-radius: 4px;
         }
+
     </style>
 </head>
 <body>
@@ -163,7 +184,6 @@
                 const siteBGrid = document.getElementById('site-b-grid');
                 const actionSelect = document.getElementById('corrective-action');
 
-                // Create component elements
                 const createComponentDiv = (name, site) => {
                     const id = name.toLowerCase().replace(/\s+/g, '-') + (site ? `-${site}` : '');
                     const div = document.createElement('div');
@@ -185,7 +205,6 @@
                      siteBGrid.appendChild(createComponentDiv(name, 'b'));
                 });
 
-                // Populate action dropdown
                 actionSelect.innerHTML = `<option value="" selected disabled>Select corrective action</option>` + this.data.actions.map(a => `<option value="${a}">${a}</option>`).join('');
                 
                 document.querySelectorAll('.component.selected').forEach(c => c.classList.remove('selected'));
@@ -205,7 +224,6 @@
                 const correctComps = this.data.correctAnswers.components;
                 const userComps = this.state.selectedComponents;
                 
-                // Check if sets are equal (same size and all elements from one are in the other)
                 const componentsAreCorrect = correctComps.size === userComps.size && [...correctComps].every(id => userComps.has(id));
                 const actionIsCorrect = selectedAction === this.data.correctAnswers.action;
 
