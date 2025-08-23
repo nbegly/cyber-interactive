@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sim 1: Data Exfiltration Analysis</title>
     <link rel="stylesheet" href="../../../assets/style.css">
-
     <style>
         body {
             background-color: var(--bg-dark-main);
@@ -35,36 +34,13 @@
             margin-bottom: 1rem;
         }
 
-        .info-btn, .sim-check-btn, .sim-reset-btn, .modal-close-btn {
-            padding: 10px 15px;
-            background-color: #2b9a2b;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-            font-size: 1em;
-            font-family: var(--sim-font);
-        }
-
-        .info-btn:hover, .sim-check-btn:hover, .sim-reset-btn:hover, .modal-close-btn:hover {
-            background-color: green;
-        }
-
-        .info-btn { 
-            padding: 8px; line-height: 0; 
-        }
-
-        .info-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
         .tabs { 
             display: flex; 
             border-bottom: 1px solid var(--border-color); 
             margin-bottom: 15px; 
             flex-wrap: wrap;
         }
+
         .tab-btn { 
             padding: 10px 15px; 
             cursor: pointer; 
@@ -74,11 +50,13 @@
             border-bottom: 3px solid transparent; 
             font-size: 1em;
         }
+
         .tab-btn.active { 
             border-bottom-color: var(--accent-green); 
             color: var(--text-light);
             font-weight: bold; 
         }
+
         .tab-content { 
             display: none; 
         }
@@ -98,6 +76,7 @@
             overflow-x: auto;
             min-height: 300px;
         }
+
         .answer-section { 
             margin-top: 20px; 
             padding: 20px; 
@@ -105,18 +84,30 @@
             border-radius: 8px;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
+            font-size: small;
         }
+
+        .answer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+            flex: 1; 
+            min-width: 250px;
+        }
+
         .answer-group {
             margin-bottom: 15px;
             flex: 1;
             min-width: 250px;
         }
+
         .answer-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
         }
+
         .answer-group select {
             width: 100%;
             padding: 8px;
@@ -125,17 +116,20 @@
             border: 1px solid var(--border-color);
             border-radius: 4px;
         }
+
         .radio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 10px;
         }
+
         .radio-grid label {
             font-weight: normal;
             display: flex;
             align-items: center;
             cursor: pointer;
         }
+
         .radio-grid input {
             margin-right: 8px;
         }
@@ -157,6 +151,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .modal-content {
             background-color: var(--bg-dark-secondary);
             padding: 25px;
@@ -165,8 +160,15 @@
             width: 90%;
             max-width: 500px;
         }
-        .modal-content.centered-text { text-align: center; }
-        .modal-close-btn { display: block; margin: 20px auto 0; }
+
+        .modal-content.centered-text { 
+            text-align: center; 
+        }
+
+        .modal-close-btn { 
+            display: block; margin: 20px auto 0; 
+        }
+        
     </style>
 </head>
 <body>
@@ -202,6 +204,7 @@
         </div>
 
         <div class="answer-section">
+        <div class="answer-column">
             <div class="answer-group">
                 <label for="command1">Select the command that generated the output in tab 1:</label>
                 <select id="command1" name="command1"></select>
@@ -210,6 +213,7 @@
                 <label for="command2">Select the command that generated the output in tab 2:</label>
                 <select id="command2" name="command2"></select>
             </div>
+        </div>
             <div class="answer-group">
                 <label>Identify the file that performed the exfiltration:</label>
                 <div id="exfilFile" class="radio-grid"></div>
@@ -217,8 +221,8 @@
         </div>
 
         <div class="sim-controls">
-            <button class="sim-reset-btn" id="resetBtn">Reset All</button>
             <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+            <button class="sim-reset-btn" id="resetBtn">Reset All</button>
         </div>
     </div>
 
@@ -329,12 +333,10 @@ If at any time you would like to bring back the initial state of the simulation,
             setup: function() {
                 this.state = { command1: null, command2: null, exfilFile: null };
 
-                // Populate terminals
                 for (const key in this.data.terminals) {
                     document.getElementById(key.replace('tab', 'terminal')).textContent = this.data.terminals[key].trim();
                 }
 
-                // Populate dropdowns
                 const cmd1Select = document.getElementById('command1');
                 const cmd2Select = document.getElementById('command2');
                 cmd1Select.innerHTML = '<option value="">Select command</option>';
@@ -342,14 +344,12 @@ If at any time you would like to bring back the initial state of the simulation,
                 this.data.options.command1.forEach(opt => cmd1Select.innerHTML += `<option value="${opt}">${opt}</option>`);
                 this.data.options.command2.forEach(opt => cmd2Select.innerHTML += `<option value="${opt}">${opt}</option>`);
 
-                // Populate radio buttons
                 const exfilContainer = document.getElementById('exfilFile');
                 exfilContainer.innerHTML = '';
                 this.data.options.exfilFile.forEach(opt => {
                     exfilContainer.innerHTML += `<label><input type="radio" name="exfilFile" value="${opt}"> ${opt}</label>`;
                 });
 
-                // Attach event listeners
                 cmd1Select.addEventListener('change', (e) => this.state.command1 = e.target.value);
                 cmd2Select.addEventListener('change', (e) => this.state.command2 = e.target.value);
                 document.querySelectorAll('input[name="exfilFile"]').forEach(radio => {

@@ -32,7 +32,7 @@ body {
 
 .sim-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
     margin-top: 20px;
 }
@@ -70,6 +70,29 @@ body {
 
 .back-btn:hover { 
     background-color: var(--interactive-blue-hover); 
+}
+
+.info-btn { 
+    padding: 8px; line-height: 0; 
+    background-color: var(--interactive-blue);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+    color: white;
+    line-height: 0;    
+}
+
+.info-btn:hover { 
+    background-color: var(--interactive-blue-hover); 
+}
+
+.info-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
 }
 
 .main-content-area {
@@ -239,4 +262,8 @@ pre {
     font-family: 'Courier New', Courier, monospace;
     background-color: var(--bg-dark-main);
     padding: 15px; border-radius: 5px;
+}
+
+h6 {
+    font-family: 'Courier New', Courier, monospace;
 }
