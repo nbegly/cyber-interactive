@@ -216,7 +216,7 @@
         .back-btn {
             display: inline-block;
             padding: 8px 16px;
-            background-color: var(--sidebar-active); 
+            background-color: #34495e; 
             color: #fff;
             text-decoration: none; 
             border-radius: 5px;
@@ -267,7 +267,7 @@
 </fieldset>
 
                 <div class="mb-3">
-                    <label for="numQuestions" class="form-label">Number of Questions: (max 358)</label>
+                    <label for="numQuestions" class="form-label">Number of Questions: (max 377)</label>
                     <input type="number" class="form-control" id="numQuestions" value="25" min="1">
                 </div>
 
@@ -665,7 +665,7 @@
         category: "2.5 Explain concepts related to vulnerability response, handling, and management.",
         answers: [
             { text: "A. Testing", correct: false, explain: "Incorrect. Testing should ideally occur *before* applying the patch to a production system." },
-            { text: "B. Implementation", correct: false,explain: "Incorrect. Applying the patch *is* the implementation step. This has already been done." },
+            { text: "B. Implementation", correct: false, explain: "Incorrect. Applying the patch *is* the implementation step. This has already been done." },
             { text: "C. Validation", correct: true, explain: "Correct. After a patch has been applied (implementation), the next step is to validate that the patch was installed correctly and that it successfully remediated the vulnerability, typically by running another vulnerability scan." },
             { text: "D. Rollback", correct: false, explain: "Incorrect. A rollback is a contingency action taken only if the validation step fails and the patch causes problems." }
         ]
@@ -4817,7 +4817,7 @@
         ]
     }
     ];    
-    
+
     allQuestions.forEach((q, index) => { q.displayId = `Q${index + 1}`; });
 
         let questions = [];
