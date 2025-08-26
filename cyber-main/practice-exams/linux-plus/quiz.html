@@ -422,7 +422,16 @@
     },
     {
         id: 6,
-        q: "A user is asking the systems administrator for assistance with writing a script to verify whether a file exists. Given the following:<br><br> <img src='../../assets/quiz-images/0001.png' alt='System output'> <br><br>\nWhich of the following commands should replace the <CONDITIONAL> string?",
+        q: `A user is asking the systems administrator for assistance with writing a script to verify whether a file exists. Given the following:<p><h6>
+        #!/bin/bash
+        filename=$1
+        <CONDITIONAL>
+        echo "$filename exists"
+        else
+        echo "$filename does not exist"
+        fi
+        </h6>
+        Which of the following commands should replace the <h6><CONDITIONAL></h6> string?`,
         type: "single",
         category: "4.2 Given a scenario, perform automated tasks using shell scripting",
         answers: [
@@ -3543,19 +3552,16 @@ category: "2.5 Given a scenario, manage Linux using systemd",
             { text: "C. The remote SSH server is using SSH protocol version 1.", correct: false, explain: "Incorrect." },
             { text: "D. The SSH host key on the remote server has expired.", correct: false, explain: "Incorrect." }
         ]
-    },
-    {
-        id: 264,
-        q: "A systems administrator just downloaded a source code package with the file extension TGZ. Which of the following commands would decompress and unarchive the package?",
-        type: "single",
- category: "1.6 Given a scenario, perform backup and restore operations for a Linux server",
-         answers: [
-            { text: "A. tar –xf", correct: false, explain: "Incorrect." },
-            { text: "B. tar –zcvpf", correct: false, explain: "Incorrect." },
-            { text: "C. tar –xvf", correct: false, explain: "Incorrect." },
-            { text: "D. tar –zxvf", correct: true, explain: "Correct." }
-        ]
-    },
+    }
+
+
+
+
+
+
+
+
+
     {
         id: 265,
         q: "A Linux administrator would like to run the cleanup script /home/admin/script.sh at 9:00 p.m. on March 31. Which of the following commands should the administrator use to accomplish this task?",
@@ -4602,19 +4608,14 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
             { text: "C. sudo killall -9 httpd", correct: false, explain: "Incorrect." },
             { text: "D. sudo killall -TERM httpd", correct: false, explain: "Incorrect." }
         ]
-    },
+    }
+    
+    
+
+
+
+
     {
-        id: 352,
-        q: "The journalctl entries have filled a Linux machine's /var volume. Which of the following is the best command for a systems administrator to use to free up the disk space occupied by these entries?",
-        type: "single",
- category: "3.1 Summarize authorization, authentication, and accounting methods",
-         answers: [
-            { text: "A. journalctl --rotate && journalctl --vacuum-time=1s", correct: true, explain: "Correct." },
-            { text: "B. systemctl stop systemd-journald && systemctl start systemd-journald", correct: false, explain: "Incorrect." },
-            { text: "C. rm -rf /var/log/journal && systemctl restart systemd-journald", correct: false, explain: "Incorrect." },
-            { text: "D. pkill -HUP systemd-journald && systemctl restart systemd-journald", correct: false, explain: "Incorrect." }
-        ]
-    },    {
         id: 353,
         q: "A user on a Linux workstation needs to remotely start an application on a Linux server and then forward the graphical display of that application back to the Linux workstation. Which of the following would enable the user to perform this action?",
         type: "single",

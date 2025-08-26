@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CompTIA Simulation Hub</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="./assets/style.css">
     <style>
         .list-group { 
             list-style: none; 
@@ -35,12 +36,18 @@
             border-radius: 8px; 
             margin-bottom: 2rem; 
         }
+        #navigator-toolbox {
+        display: none !important;
+        }
+        #nav-bar {
+            visibility: collapse !important;
+        }
     </style>
 </head>
 <body>
     <div class="sim-container">
         <div class="jumbotron">
-            <h1 class="display-4"><img src='assets/quiz-images/9999.png' alt='nPower'><br>Interactive Cybersecurity Training Hub</h1>
+            <h1 class="display-4"><img src='./assets/9999.png' alt='nPower'><br>Interactive Cybersecurity Training Hub</h1>
             <p class="lead">Please select a category to begin.</p>
         </div>
         <ul class="list-group">
@@ -49,5 +56,12 @@
             <li><a href="practice-exams/index.html" class="list-group-item">Practice Exam Questions</a></li>
         </ul>
     </div>
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+}
+</script>
 </body>
 </html>
