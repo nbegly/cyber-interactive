@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Copy Board</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { margin: 5px; padding: 10px 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Quick Copy Board</h2>
+<button data-snippet='<span style="font-family: monospace;">' onclick="copyText(this.dataset.snippet)">Span head</button>
+<button data-snippet='</span>' onclick="copyText(this.dataset.snippet)">Span close</button>
+<button data-snippet='<pre class="h6">' onclick="copyText(this.dataset.snippet)">Pre Class head</button>
+<button data-snippet='</pre>' onclick="copyText(this.dataset.snippet)">Pre close</button>
+<button data-snippet='<p>' onclick="copyText(this.dataset.snippet)">Paragraph</button>
+<button data-snippet='<br>' onclick="copyText(this.dataset.snippet)">Break</button>
+
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+      });
+    }
+  </script>
+</body>
+</html>
