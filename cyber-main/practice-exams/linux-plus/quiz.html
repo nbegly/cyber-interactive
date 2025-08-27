@@ -603,10 +603,10 @@ Sep 15 17:24:03 server sshd[8460]: pam_unix(sshd:session): session closed for us
         type: "single",
         category: "3.2 Given a scenario, configure and implement firewalls on a Linux system",
         answers: [
-            { text: `A. echo 1 > /proc/sys/net/ipv4/ipv_forward`, correct: false, explain: "Incorrect." },
-            { text: `B. sysctl -w net.ipv4.ip_forward $=1$`, correct: true, explain: "Correct." },
-            { text: `C. firewall-cmd --enable ipv4_forwarding`, correct: false, explain: "Incorrect." },
-            { text: `D. systemctl start ipv4_forwarding`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">echo 1 > /proc/sys/net/ipv4/ipv_forward</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">sysctl -w net.ipv4.ip_forward $=1$</span>`, correct: true, explain: "Correct." },
+            { text: `C. <span style="font-family: monospace;">firewall-cmd --enable ipv4_forwarding</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">systemctl start ipv4_forwarding</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -645,10 +645,10 @@ Cannot connect to App Server.</pre><p>
         type: "single",
         category: "2.5 Given a scenario, manage Linux using systemd",
         answers: [
-            { text: `A. hostnamectl status --no-ask-password`, correct: false, explain: "Incorrect." },
-            { text: `B. hostnamectl set-hostname \"$(perl -le \"print\" $\"A\"\\x 86)\"`, correct: false, explain: "Incorrect." },
-            { text: `C. hostnamectl set-hostname Comptia-WebNode -H root@192.168.2.14`, correct: true, explain: "Correct." },
-            { text: `D. hostnamectl set-hostname Comptia-WebNode --transient`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">hostnamectl status --no-ask-password</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">hostnamectl set-hostname \"$(perl -le \"print\" $\"A\"\\x 86)\"</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">hostnamectl set-hostname Comptia-WebNode -H root@192.168.2.14</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">hostnamectl set-hostname Comptia-WebNode --transient</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
