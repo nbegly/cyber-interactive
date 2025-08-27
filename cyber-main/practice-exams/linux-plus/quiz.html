@@ -633,10 +633,10 @@ Cannot connect to App Server.</pre><p>
         type: "single",
         category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
         answers: [
-            { text: `A. semanage port -d -t http_port_t -p tcp 6379`, correct: false, explain: "Incorrect." },
-            { text: `B. semanage port -a -t http_port_t -p tcp 6379`, correct: true, explain: "Correct." },
-            { text: `C. semanage port -a http_port_t -p top 6379`, correct: false, explain: "Incorrect." },
-            { text: `D. semanage port -1 -t http_port_tcp 6379`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">semanage port -d -t http_port_t -p tcp 6379</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">semanage port -a -t http_port_t -p tcp 6379</span>`, correct: true, explain: "Correct." },
+            { text: `C. <span style="font-family: monospace;">semanage port -a http_port_t -p top 6379</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">semanage port -1 -t http_port_tcp 6379</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -653,14 +653,14 @@ Cannot connect to App Server.</pre><p>
     },
     {
         id: 20,
-        q: "A systems administrator wants to back up the directory /data and all its contents to /backup/data on a remote server named remote. Which of the following commands will achieve the desired effect?",
+        q: `A systems administrator wants to back up the directory <span style="font-family: monospace;">/data</span> and all its contents to <span style="font-family: monospace;">/backup/data</span> on a remote server named remote. Which of the following commands will achieve the desired effect?`,
         type: "single",
         category: "1.6 Given a scenario, perform backup and restore operations for a Linux server",
         answers: [
-            { text: `A. scp -p /data remote:/backup/data`, correct: false, explain: "Incorrect." },
-            { text: `B. ssh -i /remote:/backup//data`, correct: false, explain: "Incorrect." },
-            { text: `C. rsync -a /data remote:/backup/`, correct: true, explain: "Correct." },
-            { text: `D. cp -r /data/remote/backup/`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">scp -p /data remote:/backup/data</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">ssh -i /remote:/backup//data</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">rsync -a /data remote:/backup/</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">cp -r /data/remote/backup/</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -669,17 +669,17 @@ Cannot connect to App Server.</pre><p>
         type: "single",
         category: "4.4 Given a scenario, implement version control using Git",
         answers: [
-            { text: `A. git clone https://github.com/comptia/linux+-\n\ngit git push origin`, correct: false, explain: "Incorrect." },
-            { text: `B. git clone\n\nhttps://github.com/comptia/linux+-.git git fetch New-Branch`, correct: false, explain: "Incorrect." },
-            { text: `C. git clone https://github.com/comptia/linux+-\n\ngit git status`, correct: false, explain: "Incorrect." },
-            { text: `D. git clone https://github.com/comptia/linuxt+-.git\n git checkout -b <new-branch>`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">git clone https://github.com/comptia/linux+-\n\ngit git push origin</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">git clone\n\nhttps://github.com/comptia/linux+-.git git fetch New-Branch</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">git clone https://github.com/comptia/linux+-\n\ngit git status</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">git clone https://github.com/comptia/linuxt+-.git\n git checkout -b <new-branch></span>`, correct: true, explain: "Correct." }
         ]
     },
     {
         id: 22,
         q: `An administrator attempts to rename a file on a server but receives the following error.<p><pre class="h6">
 mv: cannot move 'files/readme.txt' to 'files/readme.txt.orig': Operation not permitted.</pre><p>
-        The administrator then runs a few commands and obtains the following output:<p><pre class="h6"> 
+        The administrator then runs a few commands and obtains the following output:<pre class="h6"> 
 $ ls -ld files/
 drwxrwxrwt.1 users users 20 Sep 10 15:15 files/
 
@@ -691,10 +691,10 @@ drwxr-xr-x.1 users users 32 Sep 10 15:15 ..
         type: "single",
         category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
         answers: [
-            { text: `A. chgrp reet files`, correct: false, explain: "Incorrect." },
-            { text: `B. chacl -R 644 files`, correct: false, explain: "Incorrect." },
-            { text: `C. chown users files`, correct: false, explain: "Incorrect." },
-            { text: `D. chmod -t files`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">chgrp reet files</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">chacl -R 644 files</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">chown users files</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">chmod -t files</span>`, correct: true, explain: "Correct." }
         ]
     },
     {
@@ -703,15 +703,15 @@ drwxr-xr-x.1 users users 32 Sep 10 15:15 ..
         type: "single",
         category: "1.5 Given a scenario, manage a Linux system using common shell operations",
         answers: [
-            { text: `A. uname -n`, correct: false, explain: "Incorrect." },
-            { text: `B. uname -s`, correct: false, explain: "Incorrect." },
-            { text: `C. uname -o`, correct: true, explain: "Correct." },
-            { text: `D. uname -m`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">uname -n</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">uname -s</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">uname -o</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">uname -m</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
         id: 24,
-        q: "A systems engineer is adding a new 1GB XFS filesystem that should be temporarily mounted under/ops/app. Which of the following is the correct list of commands to achieve this goal?",
+        q: `A systems engineer is adding a new 1GB XFS filesystem that should be temporarily mounted under <span style="font-family: monospace;">/ops/app</span>. Which of the following is the correct list of commands to achieve this goal?`,
         type: "single",
         category: "1.3 Given a scenario, manage storage in a Linux system",
         answers: [
@@ -739,10 +739,10 @@ mount /dev/app_vg/app /opt/app</pre><p>`, correct: true, explain: "Correct." }
         type: "single",
         category: "1.6 Given a scenario, perform backup and restore operations for a Linux server",
         answers: [
-            { text: `A. unzip -v`, correct: false, explain: "Incorrect." },
-            { text: `B. bzip2 -z`, correct: false, explain: "Incorrect." },
-            { text: `C. gzip`, correct: false, explain: "Incorrect." },
-            { text: `D. funzip`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">unzip -v</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">bzip2 -z</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">gzip</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">funzip</span>`, correct: true, explain: "Correct." }
         ]
     },
     {
@@ -758,13 +758,13 @@ Workstation output 2:<p><pre class="h6">
 default via 5.189.153.1 dev eth0
 5.189.153.0/24 dev eth0 proto kernel scope link src 5.189.153.89</pre><p>
 Server output 1:<p><pre class="h6">
-target     prot opt source          destination
-REJECT     tcp  --  101.68.78.194   0.0.0.0/0    tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
-REJECT     tcp  --  222.186.180.130 0.0.0.0/0    tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
-REJECT     tcp  --  104.131.1.39    0.0.0.0/0    tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
-REJECT     tcp  --  68.183.196.11   0.0.0.0/0    tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
-REJECT     tcp  --  5.189.153.89    0.0.0.0/0    tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
-REJECT     tcp  --  41.93.32.148    0.0.0.0/0    tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable</pre><p>
+target  prot opt source          destination
+REJECT  tcp  --  101.68.78.194   0.0.0.0/0  tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
+REJECT  tcp  --  222.186.180.130 0.0.0.0/0  tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
+REJECT  tcp  --  104.131.1.39    0.0.0.0/0  tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
+REJECT  tcp  --  68.183.196.11   0.0.0.0/0  tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
+REJECT  tcp  --  5.189.153.89    0.0.0.0/0  tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable
+REJECT  tcp  --  41.93.32.148    0.0.0.0/0  tcp dpt:22 ctstate NEW, UNTRACKED reject-with icmp-port-unreachable</pre><p>
 Server output 2:<p><pre class="h6">
 sshd.service - OpenSSH server daemon
     Loaded: loaded (/usr/lib/systemd/system/sshd.service; disabled; vendor preset: enabled)
@@ -792,10 +792,10 @@ default via 104.21.75.254 dev eth0
         type: "single",
         category: "3.1 Summarize authorization, authentication, and accounting methods",
         answers: [
-            { text: `A. /etc/systemd/journald.conf`, correct: true, explain: "Correct." },
-            { text: `B. /etc/systemd/systemd-journalctl.conf`, correct: false, explain: "Incorrect." },
-            { text: `C. /usr/lib/systemd/journalctl.conf`, correct: false, explain: "Incorrect." },
-            { text: `D. /etc/systemd/systemd-journald.conf`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">/etc/systemd/journald.conf</span>`, correct: true, explain: "Correct." },
+            { text: `B. <span style="font-family: monospace;">/etc/systemd/systemd-journalctl.conf</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">/usr/lib/systemd/journalctl.conf</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">/etc/systemd/systemd-journald.conf</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -828,22 +828,22 @@ default via 104.21.75.254 dev eth0
         type: "single",
         category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
         answers: [
-            { text: `A. chown web:web /home/web`, correct: false, explain: "Incorrect." },
-            { text: `B. chmod -R 400 /home/web`, correct: false, explain: "Incorrect." },
-            { text: `C. echo \"umask 377\" >> /home/web/.bashrc`, correct: true, explain: "Correct." },
-            { text: `D. setfacl read /home/web`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">chown web:web /home/web</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">chmod -R 400 /home/web</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">echo \"umask 377\" >> /home/web/.bashrc</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">setfacl read /home/web</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
         id: 31,
-        q: "A systems administrator is tasked with preventing logins from accounts other than root, while the file/etc/nologin exists. Which of the following PAM modules will accomplish this task?",
+        q: `A systems administrator is tasked with preventing logins from accounts other than root, while the file <span style="font-family: monospace;">/etc/nologin</span> exists. Which of the following PAM modules will accomplish this task?`,
         type: "single",
         category: "3.1 Summarize authorization, authentication, and accounting methods",
         answers: [
-            { text: `A. pam_login.so`, correct: false, explain: "Incorrect." },
-            { text: `B. pam_access.so`, correct: false, explain: "Incorrect." },
-            { text: `C. pam_logindef.so`, correct: false, explain: "Incorrect." },
-            { text: `D. pam_nologin.so`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">pam_login.so</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">pam_access.so</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">pam_logindef.so</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">pam_nologin.so</span>`, correct: true, explain: "Correct." }
         ]
     },
     {
