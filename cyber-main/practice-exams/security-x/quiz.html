@@ -10701,32 +10701,54 @@
             const objectiveStats = {};
 
             questions.forEach((q, index) => {
-                if (isCorrect(index)) {
-                    correctCount++;
-                } else if (isAnswered(q)) {
-                    incorrectCount++;
-                }
-                if (q.flagged) {
-                    flaggedCount++;
-                }
-
                 const category = q.category;
+                
                 if (!objectiveStats[category]) {
                     objectiveStats[category] = { total: 0, correct: 0, incorrect: 0, flagged: 0 };
                 }
 
                 objectiveStats[category].total++;
+
                 if (isCorrect(index)) {
+                    correctCount++;
                     objectiveStats[category].correct++;
-                } else if (isAnswered(q)) {
+                } 
+
+                else if (isAnswered(q)) {
+                    incorrectCount++;
                     objectiveStats[category].incorrect++;
                 }
+                
                 if (q.flagged) {
+                    flaggedCount++;
                     objectiveStats[category].flagged++;
                 }
             });
 
             const overallPercentage = totalQuestions > 0 ? ((correctCount / totalQuestions) * 100).toFixed(1) : 0;
+
+            const reportData = {
+                overallStats: {
+                    totalQuestions: totalQuestions,
+                    correctCount: correctCount,
+                    incorrectCount: incorrectCount,
+                    flaggedCount: flaggedCount,
+                    overallPercentage: parseFloat(overallPercentage)
+                },
+                objectiveStats: objectiveStats
+            };
+
+            const jsonData = JSON.stringify(reportData, null, 2);
+            console.log(jsonData);
+
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'stats.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
 
             let reportHtml = `<div class="quiz-card">`;
             

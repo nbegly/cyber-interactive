@@ -578,27 +578,26 @@
             const objectiveStats = {};
 
             questions.forEach((q, index) => {
-                if (isCorrect(index)) {
-                    correctCount++;
-                } else if (isAnswered(q)) {
-                    incorrectCount++;
-                }
-                if (q.flagged) {
-                    flaggedCount++;
-                }
-
                 const category = q.category;
+                
                 if (!objectiveStats[category]) {
                     objectiveStats[category] = { total: 0, correct: 0, incorrect: 0, flagged: 0 };
                 }
 
                 objectiveStats[category].total++;
+
                 if (isCorrect(index)) {
+                    correctCount++;
                     objectiveStats[category].correct++;
-                } else if (isAnswered(q)) {
+                } 
+
+                else if (isAnswered(q)) {
+                    incorrectCount++;
                     objectiveStats[category].incorrect++;
                 }
+                
                 if (q.flagged) {
+                    flaggedCount++;
                     objectiveStats[category].flagged++;
                 }
             });
@@ -627,6 +626,7 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
+
 
 
             let reportHtml = `<div class="quiz-card">`;
