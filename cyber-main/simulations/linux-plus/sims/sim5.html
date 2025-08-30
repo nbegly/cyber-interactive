@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 5: SSH Key</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        
+        #sim-content-wrapper { 
+            display: flex; flex-direction: column; gap: 15px; 
+        }
+
+        .sim5-tabs { 
+            display: flex; gap: 5px; margin-bottom: 15px; 
+        }
+
+        .sim5-tabs .tab-button {
+            background: var(--bg-dark-tertiary);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            margin-right: 5px;
+            padding: 10px 15px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+        }
+
+        .sim5-tabs .tab-button.active-tab {
+            background: var(--accent-green);
+            color: var(--bg-dark-primary);
+            font-weight: bold;
+        }
+
+        .sim5-main-panel { 
+            background-color: var(--bg-dark-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; 
+        }
+
+        .sim5-output-header { 
+            font-weight: bold; margin-bottom: 10px; 
+        }
+
+        .sim5-output-box { 
+            background-color: #000; color: #0f0; padding: 15px; border-radius: 5px; font-family: monospace; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
+        }
+
+        .sim5-output-box a { 
+            color: #66ff66; text-decoration: none; cursor: pointer; 
+        }
+
+        .sim5-output-box a:hover { 
+            text-decoration: underline; 
+        }
+
+        .sim5-fragments-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 20px; 
+        }
+
+        .sim5-fragment-btn { 
+            background-color: #2b2e33; color: #e0e0e0; padding: 12px; border-radius: 8px; cursor: pointer; text-align: center; border: 1px solid #555; 
+        }
+
+        .sim5-command-line-area { 
+            display: flex; gap: 10px; background-color: #000; padding: 10px; border-radius: 5px; font-family: monospace; align-items: center; 
+        }
+
+        .sim5-command-display { 
+            flex-grow: 1; min-height: 24px; 
+        }
+
+        .sim5-action-btn { 
+            background-color: #234427; color: #ecf0f1; border: 1px solid #2b9b3a; width: 60px; height: 40px; font-size: 1.5em; cursor: pointer; border-radius: 5px; 
+        }
+        
+        .sim5-part4-layout { 
+            display: flex; flex-wrap: wrap; gap: 20px; 
+        }
+
+        .sim5-part4-panel { 
+            flex: 1; background-color: var(--bg-dark-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; min-width: 300px;
+        }
+
+        .sim5-part4-panel h4 { 
+            margin-top: 0; margin-bottom: 15px; 
+        }
+
+        .sim5-part4-radios label { 
+            display: block; margin-bottom: 15px; 
+        }
+
+        .sim5-part4-editor-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
+        }
+
+        .sim5-part4-editor-grid select { 
+            background: #333; color: white; border: 1px solid #555; padding: 5px; border-radius: 4px; width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Linux+ Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 5: SSH Key</h3>
+        <p>A senior administrator has placed a private key in your home directory. Configure it correctly.</p>
+
+        <div id="sim-content-wrapper">
+             </div>
+        
+        <div class="sim-controls">
+            <div></div> <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <pre id="modal-body-content" style="white-space: pre-wrap; font-family: sans-serif;"></pre>
+            <button class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(message, isCentered = false) {
+            modalBody.textContent = message;
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { modal.style.display = "none"; }
+        modal.querySelector('.modal-close-btn').onclick = closeModal;
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim5 = {
+            dom: {
+                wrapper: document.getElementById('sim-content-wrapper')
+            },
+            data: {
+                info: `Situation: \nA senior administrator has placed a private key for user admin in your home directory. The server you need to remotely access is server1 and SSH is listening on port 2222.\n\nPart 1:\nReview the command output and build the correct command to place the private key into your SSH folder.\n\nPart 2: \nReview the command output and build the correct command to set the file permissions.\n\nPart 3: \nReview the command output and build the correct command to set the correct ownership.\n\nPart 4:\nSelect the proper file to edit for remote server access. Then, build the correct configuration output based on the server name, ports, and files. \n\nIn each part, click on objects to build a complete command. Command objects may be used more than once, but not all will be used. Use ˽ as the spacebar. Click the arrow to remove any unwanted objects from your command.`,
+                allFragments: ["1777", "-R", "0444", "admin", "server2", "0600", "root", "localhost", "comptia", "chcon", "server1", "/", "0500", "~/", "chown", ":", "chmod", "mv", ";", "-", "/etc/ssh", "~/.ssh/", "chage", "0777", "[spacebar]"],
+                partsData: [
+                    { correctAnswer: "mv server1 ~/.ssh/" },
+                    { correctAnswer: "chmod 0600 ~/.ssh/server1" },
+                    { correctAnswer: "chown admin ~/.ssh/server1" },
+                    { correctAnswer: { file: "~/.ssh/config", config: ["Hostname", "server1", "User", "admin", "Port", "2222", "IdentityFile", "~/.ssh/server1"] } }
+                ],
+                dropdownOptions: ["2222", "User", "INFO", "LogLevel", "server1", "Port", "Host", "RemoteServer", "Yes", "Hostname", "admin", "22", "4444", "Compression", "comptia", "IdentityFile", "~/.ssh/authorized_keys", "~/.ssh/server1", "~/.ssh/id_rsa"]
+            },
+            state: {},
+            setup: function() {
+                this.state = {
+                    activePart: 0,
+                    userCommands: ["", "", ""],
+                    part4Answers: { file: null, config: Array(8).fill("") },
+                    shuffledFragments: [...this.data.allFragments].sort(() => Math.random() - 0.5)
+                };
+                this.render();
+            },
+            render: function() {
+                const tabsHtml = [0, 1, 2, 3].map(i => `<button class="tab-button ${this.state.activePart === i ? 'active-tab' : ''}" data-part="${i}">Part ${i + 1}</button>`).join('');
+                let contentHtml = '';
+
+                if (this.state.activePart < 3) {
+                    const fragmentsHtml = this.state.shuffledFragments.map(f => `<div class="sim5-fragment-btn" data-fragment="${f}">${f}</div>`).join('');
+                    const commandList = ["ls -l ~", "ls -l ~/.ssh", "ls -Z ~/.ssh", "cat ~/.ssh/authorized_keys", "cat ~/.ssh/known_hosts"];
+                    const clickableCommandsHtml = commandList.map(cmd => `<a class="sim5-cmd-link" data-cmd="${cmd}">${cmd}</a>`).join('');
+
+                    contentHtml = `
+                        <div class="sim5-main-panel">
+                            <div class="sim5-output-header">Local host command output</div>
+                            <div class="sim5-output-box">${clickableCommandsHtml}</div>
+                        </div>
+                        <div class="sim5-fragments-grid">${fragmentsHtml}</div>
+                        <div class="sim5-command-line-area">
+                            <span>[comptia@localhost ~]$</span>
+                            <div class="sim5-command-display">${this.state.userCommands[this.state.activePart]}</div>
+                            <button class="sim5-action-btn" id="sim5-backspace-btn">⌫</button>
+                        </div>
+                        <button class="sim-check-btn" id="sim5-check-btn">Check Answer</button>`;
+                } else { 
+                    const radioOptions = ["~/.ssh/config", "~/.ssh/authorized_keys", "~/.ssh/known_hosts", "~/.ssh/server1"];
+                    const dropdownOptionsHtml = `<option value="" selected>Select output</option>` + this.data.dropdownOptions.map(o => `<option value="${o}">${o}</option>`).join('');
+                    let selectsHtml = '';
+                    for (let i = 0; i < 4; i++) {
+                        selectsHtml += `<select data-index="${i*2}">${dropdownOptionsHtml}</select><select data-index="${i*2+1}">${dropdownOptionsHtml}</select>`;
+                    }
+                    contentHtml = `
+                        <div class="sim5-part4-layout">
+                            <div class="sim5-part4-panel">
+                                <h4>Select the proper file to edit for remote server access:</h4>
+                                <div class="sim5-part4-radios">${radioOptions.map(opt => `<label><input type="radio" name="ssh_file" value="${opt}" ${this.state.part4Answers.file === opt ? 'checked' : ''}> ${opt}</label>`).join('')}</div>
+                            </div>
+                            <div class="sim5-part4-panel">
+                                <h4>Complete the SSH configuration file content below:</h4>
+                                <div class="sim5-part4-editor">
+                                    <b>Host server1</b>
+                                    <div class="sim5-part4-editor-grid">${selectsHtml}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="sim-check-btn" id="sim5-check-btn">Check Answer</button>`;
+                }
+                this.dom.wrapper.innerHTML = `<div class="sim5-tabs">${tabsHtml}</div>` + contentHtml;
+                this.attachEvents();
+            },
+            getDynamicOutput: function(cmd) {
+                const part = this.state.activePart;
+                if (cmd === 'ls -l ~') {
+                    return part >= 1 ? "drwxr-xr-x. 2 comptia comptia 4096 Jun 17 14:00 Documents" : "drwxr-xr-x. 2 comptia comptia 4096 Jun 17 14:00 Documents\n-rw-r--r--. 1 comptia comptia 1234 Jun 17 15:00 server1";
+                }
+                if (cmd === 'ls -l ~/.ssh' || cmd === 'ls -Z ~/.ssh') {
+                    if (part >= 2) return "total 8\n-rw-------. 1 comptia comptia 1234 Jun 17 15:00 server1\n-rw-r--r--. 1 comptia comptia 399 Jun 17 15:30 known_hosts";
+                    if (part >= 1) return "total 8\n-rw-r--r--. 1 comptia comptia 1234 Jun 17 15:00 server1\n-rw-r--r--. 1 comptia comptia 399 Jun 17 15:30 known_hosts";
+                    return "total 4\n-rw-r--r--. 1 comptia comptia 399 Jun 17 15:30 known_hosts";
+                }
+                return { "cat ~/.ssh/authorized_keys": `ssh-rsa AAAAB3... user@example.com`, "cat ~/.ssh/known_hosts": `|1|Fp21h3gP|3gO...|*REDACTED*`}[cmd] || "Command not found.";
+            },
+            attachEvents: function() {
+                this.dom.wrapper.querySelector('.sim5-tabs').addEventListener('click', e => {
+                    if (e.target.matches('.tab-button')) {
+                        this.state.activePart = parseInt(e.target.dataset.part, 10);
+                        this.render();
+                    }
+                });
+
+                if (this.state.activePart < 3) {
+                    this.dom.wrapper.querySelector('.sim5-output-box').addEventListener('click', e => {
+                        if (e.target.matches('.sim5-cmd-link')) {
+                            const cmd = e.target.dataset.cmd;
+                            const outputText = this.getDynamicOutput(cmd);
+                            const output = `[comptia@localhost ~]$ ${cmd}\n\n${outputText}`;
+                            showModal(output);
+                        }
+                    });
+                    this.dom.wrapper.querySelector('.sim5-fragments-grid').addEventListener('click', e => {
+                        if (e.target.matches('.sim5-fragment-btn')) {
+                            const fragment = e.target.dataset.fragment;
+                            this.state.userCommands[this.state.activePart] += (fragment === '␣' ? ' ' : fragment);
+                            this.render();
+                        }
+                    });
+                    this.dom.wrapper.querySelector('#sim5-backspace-btn').onclick = () => {
+                        let cmd = this.state.userCommands[this.state.activePart];
+                        this.state.userCommands[this.state.activePart] = cmd.slice(0, -1);
+                        this.render();
+                    };
+                } else { 
+                    this.dom.wrapper.querySelectorAll('input[name="ssh_file"]').forEach(radio => radio.onchange = e => { this.state.part4Answers.file = e.target.value; });
+                    this.dom.wrapper.querySelectorAll('.sim5-part4-editor-grid select').forEach(select => {
+                        const index = parseInt(select.dataset.index, 10);
+                        select.value = this.state.part4Answers.config[index] || ""; // Restore state
+                        select.onchange = e => { this.state.part4Answers.config[index] = e.target.value; };
+                    });
+                }
+                
+                this.dom.wrapper.querySelector('#sim5-check-btn').onclick = () => this.check();
+            },
+            check: function() {
+                let isCorrect = false;
+                if (this.state.activePart < 3) {
+                    const userAnswer = this.state.userCommands[this.state.activePart].trim().replace(/\s+/g, ' ');
+                    const correctAnswer = this.data.partsData[this.state.activePart].correctAnswer.trim().replace(/\s+/g, ' ');
+                    isCorrect = (userAnswer === correctAnswer);
+                } else { 
+                    const correctData = this.data.partsData[3].correctAnswer;
+                    const isFileCorrect = this.state.part4Answers.file === correctData.file;
+                    
+                    const userConfig = this.state.part4Answers.config;
+                    const correctConfigPairs = [ ["Hostname", "server1"], ["User", "admin"], ["Port", "2222"], ["IdentityFile", "~/.ssh/server1"] ];
+                    
+                    let configCorrect = true;
+                    if (correctConfigPairs.length * 2 !== userConfig.filter(Boolean).length) {
+                        configCorrect = false;
+                    } else {
+                        for(const correctPair of correctConfigPairs) {
+                            let foundMatch = false;
+                            for(let j = 0; j < 4; j++) {
+                                if(userConfig[j*2] === correctPair[0] && userConfig[j*2+1] === correctPair[1]) {
+                                    foundMatch = true;
+                                    break;
+                                }
+                            }
+                            if(!foundMatch) { configCorrect = false; break; }
+                        }
+                    }
+                    isCorrect = isFileCorrect && configCorrect;
+                }
+                showModal(isCorrect ? "Correct!" : "Incorrect. Please review your selections.", true);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim5.setup();
+            document.getElementById('resetBtn').addEventListener('click', () => sim5.setup());
+            document.getElementById('infoBtn').onclick = () => {
+                showModal(sim5.data.info);
+            };
+        });
+    </script>
+</body>
+</html>

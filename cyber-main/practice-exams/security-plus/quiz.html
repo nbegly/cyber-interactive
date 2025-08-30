@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../../auth.js"></script>
     <meta charset="UTF-8">
     <title>Security+ Prep Quiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,77 +8,73 @@
     <link rel="manifest" href="../../manifest.json">
     
     <style>
-        /* --- NEW CSS FOR THE BUTTON --- */
         .top-right-nav {
             position: fixed;
             top: 15px;
             right: 15px;
-            z-index: 1060; /* Ensures it's above all other elements */
+            z-index: 1060;
         }
 
-        /* Permanent Green-on-Black Theme Variables */
         :root {
-          --main-bg: #121212;
-          --card-bg: #1e1e1e;
-          --text-color: #e0e0e0;
-          --sidebar-bg: #1a1a1a;
-          --sidebar-active: #4CAF50; /* Green */
-          --sidebar-text: #e0e0e0;
-          --answer-bg: #2c2c2c;
-          --answer-active: #388E3C; /* Darker Green */
-          --btn-next: #4CAF50; /* Green */
-          --btn-prev: #2c2c2c;
-          --btn-next-text: #fff;
-          --modal-bg: #2c2c2c;
-          --modal-header-bg: #1e1e1e;
-          --progress-bar-bg: #4CAF50; /* Green */
+            --main-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --sidebar-bg: #1a1a1a;
+            --sidebar-active: #4CAF50;
+            --sidebar-text: #e0e0e0;
+            --answer-bg: #2c2c2c;
+            --answer-active: #388E3C;
+            --btn-next: #4CAF50; 
+            --btn-prev: #2c2c2c;
+            --btn-next-text: #fff;
+            --modal-bg: #2c2c2c;
+            --modal-header-bg: #1e1e1e;
+            --progress-bar-bg: #4CAF50;
         }
 
-        /* General Body Styling */
         body {
-          background: var(--main-bg);
-          color: var(--text-color);
-          font-family: 'Segoe UI', Arial, sans-serif;
-          min-height: 100vh;
+            background: var(--main-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
         }
 
-        /* Other existing styles... */
         .quiz-sidebar {
-          background: var(--sidebar-bg);
-          border-radius: 18px;
-          box-shadow: 0 2px 12px #0008;
-          padding: 1rem 0.5rem;
-          min-height: 90vh;
-          height: 100%;
-          position: relative;
-          display: flex;
-          flex-direction: column;
+            background: var(--sidebar-bg);
+            border-radius: 18px;
+            box-shadow: 0 2px 12px #0008;
+            padding: 1rem 0.5rem;
+            min-height: 90vh;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .quiz-sidebar .sidebar-btn {
-          display: block;
-          border: none;
-          background: none;
-          width: 100%;
-          text-align: left;
-          color: var(--sidebar-text);
-          border-radius: 8px;
-          margin-bottom: 8px;
-          padding: 10px 16px;
-          transition: background 0.2s;
-          font-weight: 500;
+            display: block;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            color: var(--sidebar-text);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 10px 16px;
+            transition: background 0.2s;
+            font-weight: 500;
         }
 
         .quiz-sidebar .sidebar-btn.active,
         .quiz-sidebar .sidebar-btn:focus {
-          background: var(--sidebar-active);
-          color: #fff;
-          outline: none;
+            background: var(--sidebar-active);
+            color: #fff;
+            outline: none;
         }
 
         .quiz-sidebar .sidebar-btn.missed {
-          background: #5c4033;
-          color: #f5e9e2;
+            background: #5c4033;
+            color: #f5e9e2;
         }
 
         .quiz-sidebar .sidebar-btn.flagged {
@@ -89,17 +84,17 @@
         }
         
         #quizContainer {
-    height: 100vh;
-}
+            height: 100vh;
+        }
 
         .reset-quiz-container {
-          position: sticky;
-          bottom: 0;
-          background: var(--sidebar-bg);
-          padding-top: 5px;
-          padding-bottom: 5px;
-          z-index: 10;
-          margin-top: auto;
+            position: sticky;
+            bottom: 0;
+            background: var(--sidebar-bg);
+            padding-top: 5px;
+            padding-bottom: 5px;
+            z-index: 10;
+            margin-top: auto;
         }
 
         .reset-quiz-btn {
@@ -125,13 +120,13 @@
         }
         
         .quiz-card, #quizSetup .card {
-          border-radius: 18px;
-          background: var(--card-bg);
-          border: 1px solid #2c2c2c;
-          box-shadow: 0 2px 16px #0008;
-          padding: 2rem;
-          margin: 1rem 0 2rem 0;
-          width: 90%;
+            border-radius: 18px;
+            background: var(--card-bg);
+            border: 1px solid #2c2c2c;
+            box-shadow: 0 2px 16px #0008;
+            padding: 2rem;
+            margin: 1rem 0 2rem 0;
+            width: 90%;
         }
 
         #quizSetup .card {
@@ -148,56 +143,56 @@
         }
 
         #sidebarList {
-            flex-grow: 1; /* Allows this element to take up the available vertical space */
-            overflow-y: auto; /* Adds a scrollbar only when the content overflows */
-            margin-bottom: 1rem; /* Adds some space above the reset button container */
+            flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bottom: 1rem; 
         }
 
         .answer-option {
-          border-radius: 10px;
-          background: var(--answer-bg);
-          margin-bottom: 14px;
-          padding: 12px 20px;
-          border: 2px solid transparent;
-          cursor: pointer;
-          transition: background 0.18s, border 0.18s;
+            border-radius: 10px;
+            background: var(--answer-bg);
+            margin-bottom: 14px;
+            padding: 12px 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: background 0.18s, border 0.18s;
         }
 
         .answer-option.selected {
-          background: var(--answer-active);
-          border-color: var(--sidebar-active);
-          font-weight: 600;
+            background: var(--answer-active);
+            border-color: var(--sidebar-active);
+            font-weight: 600;
         }
 
         .answer-option:hover {
-          opacity: 0.8;
+            opacity: 0.8;
         }
         
         .nav-btns {
-          display: flex;
-          gap: 15px;
-          justify-content: center;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
         }
 
         .nav-btn {
-          min-width: 140px;
-          padding: 12px 0;
-          border-radius: 10px;
-          font-size: 1.13rem;
-          font-weight: 600;
-          border: none;
-          transition: 0.15s;
+            min-width: 140px;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-size: 1.13rem;
+            font-weight: 600;
+            border: none;
+            transition: 0.15s;
         }
 
         .nav-btn.prev {
-          background: var(--btn-prev);
-          color: var(--text-color);
-          border: 1px solid var(--sidebar-active);
+            background: var(--btn-prev);
+            color: var(--text-color);
+            border: 1px solid var(--sidebar-active);
         }
 
         .nav-btn.next {
-          background: var(--btn-next);
-          color: var(--btn-next-text);
+            background: var(--btn-next);
+            color: var(--btn-next-text);
         }
 
         .progress-bar {
@@ -205,37 +200,73 @@
         }
         
         .modal-content {
-          border-radius: 16px;
-          background: var(--modal-bg);
-          color: var(--text-color);
-          border: 1px solid #444;
+            border-radius: 16px;
+            background: var(--modal-bg);
+            color: var(--text-color);
+            border: 1px solid #444;
         }
 
         .modal-header {
-          background: var(--modal-header-bg);
-          border-bottom: 1px solid #444;
-          border-top-left-radius: 16px;
-          border-top-right-radius: 16px;
+            background: var(--modal-header-bg);
+            border-bottom: 1px solid #444;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
         }
 
         .back-btn {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: var(--sidebar-active); /* Uses your green theme color */
-    color: #fff;
-    text-decoration: none; /* Removes the underline */
-    border-radius: 5px;
-    font-weight: 500;
-    border: none;
-}
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #34495e; 
+            color: #fff;
+            text-decoration: none; 
+            border-radius: 5px;
+            font-weight: 500;
+            border: none;
+        }
 
-.back-btn:hover {
-    opacity: 0.9;
-    color: #fff;
-}
+        .back-btn:hover {
+            opacity: 0.9;
+            color: #fff;
+        }
+
         .btn-close {
             filter: invert(1) grayscale(100%) brightness(200%);
         }
+
+        .progress-bar-objective {
+            display: flex;
+            height: 1.2rem;
+            overflow: hidden;
+            background-color: #3e3e3e;
+            border-radius: .375rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+        }
+        .progress-bar-correct { background-color: #4CAF50; }
+        .progress-bar-incorrect { background-color: #dc3545; } 
+        .progress-bar-flagged { background-color: #ffc107; } 
+        .table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: left;
+        }
+
+        .log-table th,
+        .log-table td {
+            padding: 0.25rem;
+            font-size: medium !important;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid var(--border-color);
+        }
+
+        .log-table thead {
+            background-color: var(--bg-dark-tertiary);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
     </style>
 </head>
 <body>
@@ -258,8 +289,8 @@
 </fieldset>
 
                 <div class="mb-3">
-                    <label for="numQuestions" class="form-label">Number of Questions: (max 358)</label>
-                    <input type="number" class="form-control" id="numQuestions" value="10" min="1">
+                    <label for="numQuestions" class="form-label">Number of Questions: (max 582)</label>
+                    <input type="number" class="form-control" id="numQuestions" value="25" min="1">
                 </div>
 
                 <div class="form-check mb-4">
@@ -294,7 +325,7 @@
                     <div class="progress mb-4" style="height: 16px; background-color: #444; width: 100vh;">
                         <div class="progress-bar" id="progressBar" style="width: 0%;">0%</div>
                     </div>
-                    <div id="quizArea" style="width:100%;"></div>
+                    <div id="quizArea" style="width:100%; overflow-wrap: break-word;"></div>
                 </div>
             </div>
         </div>
@@ -311,11 +342,9 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-    // --- DATA AND STATE MANAGEMENT ---
     const examCategories = [
         "1.1 Compare and contrast various types of security controls.",
         "1.2 Summarize fundamental security concepts.",
@@ -546,7 +575,13 @@
 },
 {
     id: 17,
-    q: "A security analyst is reviewing logs that show multiple login rejections for different usernames (administrator, jsmith, guest, etc.) but all with the same password ('Spring2023'). Which of the following attacks is most likely occurring?",
+    q: `A security analyst is reviewing the following logs: <pre class="h6">
+        [10:00:00 AM] Login rejected - username administrator - password Spring2023
+        [10:00:00 AM] Login rejected - username administrator - password Spring2023
+        [10:00:00 AM] Login rejected - username administrator - password Spring2023
+        [10:00:00 AM] Login rejected - username administrator - password Spring2023
+        </pre>
+        "Which of the following attacks is most likely occurring?`,
     type: "single",
     category: "2.4 Given a scenario, analyze indicators of malicious activity.",
     answers: [
@@ -1198,7 +1233,14 @@
 },
 {
     id: 71,
-    q: "A security analyst reviews domain activity logs and notices the following: UserID jsmith, password authentication: succeeded, MFA: failed (invalid code) repeated multiple times. Which of the following is the best explanation for what the security analyst has discovered?",
+    q: `A security analyst reviews domain activity logs and notices the following: <pre class="h6">
+
+        UserID jsmith, password authenticatio: succeeded. MFA: failed (invalid code)
+        UserID jsmith, password authenticatio: succeeded. MFA: failed (invalid code)
+        UserID jsmith, password authenticatio: succeeded. MFA: failed (invalid code)
+        UserID jsmith, password authenticatio: succeeded. MFA: failed (invalid code)
+        </pre>
+        Which of the following is the best explanation for what the security analyst has discovered?`,
     type: "single",
     category: "2.4 Given a scenario, analyze indicators of malicious activity.",
     answers: [
@@ -1294,7 +1336,35 @@
     },
     {
         id: 79,
-        q: "An administrator is reviewing a single server's security logs and discovers a long list of 'Audit Failure' logon events from 'Microsoft Windows security' with Event ID 4625 occurring every two seconds. Which of the following best describes the action captured in this log file?",
+        q: `An administrator is reviewing a single server's security logs and discovers the following:
+        <br></br>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Keywords</th>
+                    <th>Date and Time</th>
+                    <th>Source</th>
+                    <th>Event ID</th>
+                    <th>Task Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:05 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:07 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:09 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:11 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:13 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:15 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:17 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:19 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:21 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:23 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:25 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+                <tr><td>Audit Failure</td><td>09/16/2022 11:13:27 AM</td><td>Microsoft Windows security</td><td>4625</td><td>Logon</td></tr>
+            </tbody>
+        </table>
+        <br></br>
+        Which of the following best describes the action captured in this log file?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -1536,7 +1606,24 @@
     },
     {
         id: 99,
-        q: "After reviewing the following vulnerability scanning report: Server:192.168.14.6, Service: Telnet, Port: 23, Severity: High, Vulnerability: Use of an insecure network protocol. A security analyst performs a test with nmap that returns: '_ Telnet server supports encryption'. Which of the following would the security analyst conclude for this reported vulnerability?",
+        q: `After reviewing the following vulnerability scanning report: <br></br>
+        <pre class="h6">
+        Server:192.168.14.6
+        Service: Telnet
+        Port: 23 Protocol: TCP
+        Status: Open Severity: High
+        Vulnerability: Use of an insecure network protocol
+        </pre>
+        A security analyst performs the following test: <br></br>
+        <pre class="h6">
+        nmap -p 23 192.168.14.6 --script telnet-encryption
+        
+        PORT    STATE   SERVICE REASON
+        23/tcp  open    telnet  syn-ack
+        |   telnet encryption:
+        |_  Telnet server supports encryption
+        </pre>
+        Which of the following would the security analyst conclude for this reported vulnerability?`,
         type: "single",
         category: "4.3 Explain various activities associated with vulnerability management.",
         answers: [
@@ -2462,7 +2549,17 @@
     },
     {
         id: 175,
-        q: "A systems administrator is advised that an external web server is not functioning property. The administrator reviews firewall logs containing many SYN packets from various source IPs to the web server's port 443, all at the same time. Which of the following attacks is likely occurring?",
+        q: `A systems administrator is advised that an external web server is not functioning property. The administrator reviews the following firewall logs containing traffic going to the web server: <br></br>
+        <pre class="h6">
+Date      | Time        | SourceIP      | SPort | Flag | DestIP      | DPort  
+2023-01-25  01:45:09.102  98.123.45.100   4560    SYN    100.50.20.7   443  
+2023-01-25  01:45:09.102  95.123.45.101   3361    SYN    100.50.20.7   443  
+2023-01-25  01:45:09.102  99.123.45.102   3662    SYN    100.50.20.7   443  
+2023-01-25  01:45:09.102  89.123.45.103   5663    SYN    100.50.20.7   443  
+2023-01-25  01:45:09.102  98.123.45.104   4064    SYN    100.50.20.7   443  
+2023-01-25  01:45:09.102  80.123.45.105   4365    SYN    100.50.20.7   443  
+        </pre>
+        Which of the following attacks is likely occurring?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -2924,7 +3021,7 @@
         type: "single",
         category: "4.1 Given a scenario, apply common security techniques to computing resources.",
         answers: [
-            { text: "A.<br><br> <img src='../../assets/quiz-images/1001.png' alt='System output'> <br><br>", correct: true, explain: "Correct. This string is a classic example of a payload for a Cross-Site Scripting (XSS) attack. Input sanitization is the process of cleaning up user-provided data to remove or neutralize malicious characters or scripts like this one, preventing them from being executed in a user's browser." },
+            { text: `A. &lt;script&gt;alert ("Warning!");&lt;/script&gt;`, correct: true, explain: "Correct. This string is a classic example of a payload for a Cross-Site Scripting (XSS) attack. Input sanitization is the process of cleaning up user-provided data to remove or neutralize malicious characters or scripts like this one, preventing them from being executed in a user's browser." },
             { text: "B. nmap - 10.11.1.130", correct: false, explain: "Incorrect. This is a command for a network scanning tool; it is not an input that would be sanitized by a web application." },
             { text: "C. Email message: 'Click this link to get your free gift card.'", correct: false, explain: "Incorrect. This represents a phishing email, which is mitigated by user training and email filters, not input sanitization on a web form." },
             { text: "D. Browser message: 'Your connection is not private.'", correct: false, explain: "Incorrect. This is a certificate warning from a browser, indicating an issue with TLS/SSL, not a problem with input." }
@@ -3273,7 +3370,12 @@
     },
     {
         id: 242,
-        q: "A security analyst is creating a timeline of events from a breach where an attacker sent fraudulent wire transfers from a hardened PC. The analyst finds the following command on a different PC: `PS>.\\mimikatz.exe \"sekurlsa::pth /user:localadmin ...\"`. Which of the following best describes how the attacker gained access to the hardened PC?",
+        q: `An organization experienced a security breach that allowed an attacker to send fraudulent wire transfers from a hardened PC exclusively to the attacker's bank through remote connections. A security analyst is creating a timeline of events and has found a different PC on the network containing malware. Upon reviewing the command history, the analyst finds the following: 
+        <br></br>
+        <pre class="h6">
+            PS>.mimikatz.exe "sekurlsa::pth /user:localadmin /domain:corp-domain.com/ntlm:B4B9B02E1F29A3CF193EAB28C8D617D3F327
+        </pre>
+        Which of the following best describes how the attacker gained access to the hardened PC?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -3298,7 +3400,23 @@
     },
     {
         id: 244,
-        q: "A security analyst is reviewing the logs on an organization's DNS server and notices an unusual snippet with `qry_type: AXFR` that returns a long list of internal hostnames and IP addresses. Which of the following attack techniques was most likely used?",
+        q: `A security analyst is reviewing the logs on an organization's DNS server and notices the following unusual snippet:<br></br>
+        <pre class="h6">
+            Log from named: post-processed 20230102 0045L
+            ...
+            qry_source: 124.22.158.37 TCP/53
+            qry_dest: 52.165.16.154 TCP/53
+            qry_dest: 10.100.50.5 TCP/53
+            qry_type: AXFR
+            |  zone int.comptia.org
+            ---------------------| www A 10.100.50.21
+            ---------------------| dns A 10.100.5.5
+            ---------------------| adds A 10.101.10.10
+            ---------------------| fshare A 10.101.10.20
+            ---------------------| sip A 10.100.5.11
+            ...
+        </pre>
+        Which of the following attack techniques was most likely used?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -3471,7 +3589,29 @@
     },
     {
         id: 258,
-        q: "A systems administrator notices that a testing system is down. While investigating, the systems administrator finds that the servers are online and accessible from any device on the server network. The administrator reviews a monitoring table showing the test servers have received an enormous amount of traffic compared to what they have sent. Which of the following is the most likely cause of the outage?",
+        q: `A systems administrator notices that a testing system is down. While investigating, the systems administrator finds that the servers are online and accessible from any device on the server network. The administrator reviews a monitoring table showing the test servers have received an enormous amount of traffic compared to what they have sent. 
+        <br></br>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Server name</th>
+                    <th>IP</th>
+                    <th>Traffic sent</th>
+                    <th>Traffic received</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>File01</td><td>10.12.14.13</td><td>2654812</td><td>23185</td><td>Up</td></tr>
+                <tr><td>DC01</td><td>10.12.15.2</td><td>168741</td><td>65481</td><td>Up</td></tr>
+                <tr><td>Test01</td><td>10.25.1.3</td><td>14872</td><td>654123168</td><td>Down</td></tr>
+                <tr><td>Test02</td><td>10.25.1.4</td><td>16941</td><td>651321685</td><td>Down</td></tr>
+                <tr><td>DC02</td><td>10.12.15.3</td><td>32145</td><td>32158</td><td>Up</td></tr>
+                <tr><td>Finance01</td><td>10.18.1.14</td><td>12374</td><td>6548</td><td>Up</td></tr>
+            </tbody>
+        </table>
+        <br></br>
+        Which of the following is the most likely cause of the outage?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -3666,7 +3806,14 @@
     },
     {
         id: 274,
-        q: "A security analyst received a tip that sensitive proprietary information was leaked to the public. The analyst is reviewing the PCAP and notices traffic between an internal server and an external host that includes the following: `...proto IPv6 (41), length 331) 10.5.1.1 > 52.165.16.154: IP6...`. Which of the following was most likely used to exfiltrate the data?",
+        q: `A security analyst received a tip that sensitive proprietary information was leaked to the public. The analyst is <p>reviewing the PCAP and notices traffic between an internal server and an external host that includes the following: <br></br>
+        <pre class="h6">
+        12:47:22.327233 IP (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto IPv6 (41), length 331)
+            10.5.1.1 > 52.165.16.154: IP6 (hlim 227, next-header TCP (6), length 271)
+                2001:67c:2158:a019::ace:53104.53104 > 2001:5ef5:79fd:380c:dddd:a601:24fa.13788: Flags [P.], seq 97:348,
+                ack 102, win 16444, length 251 
+        </pre>
+        Which of the following was most likely used to exfiltrate the data?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -3837,7 +3984,13 @@
     },
     {
         id: 288,
-        q: "A company's online shopping website became unusable shortly after midnight on January 30, 2023. When a security analyst reviewed the database server, the analyst noticed the following code used for backing up data: `IF DATE() = '01/30/2023' THEN BEGIN DROP DATABASE WebShopOnline; END`. Which of the following should the analyst do next?",
+        q: `A company's online shopping website became unusable shortly after midnight on January 30, 2023. When a security analyst reviewed the database server, the analyst noticed the following code used for backing up data: <br></br>
+        <pre class="h6">
+        IF DATE() = '01/30/2023' THEN BEGIN 
+          DROP DATABASE WebShopOnline; 
+        END 
+        </pre>
+        Which of the following should the analyst do next?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -4115,16 +4268,16 @@
     },
     {
         id: 311,
-        q: "Which of the following has been implemented when a host-based firewall on a legacy Linux system allows connections from only specific internal IP addresses?",
+        q: "An employee receives a text message from an unrecognized number claiming to be the Chief Executive Officer and asking the employee to purchase gift cards. Which of the following types of attacks describes this example?",
         type: "single",
-        category: "1.1 Compare and contrast various types of security controls.",
+        category: "2.2 Explain common threat vectors and attack surfaces.",
         answers: [
-            { text: "A. Compensating control", correct: true, explain: "Correct. A compensating control is a measure used to mitigate risk when a primary control is not feasible. Since the legacy system cannot be easily updated (primary control), using a host-based firewall to restrict access is a compensating control to reduce its exposure." },
-            { text: "B. Network segmentation", correct: false, explain: "Incorrect. Network segmentation involves isolating a part of the network. A host-based firewall is a control on the host itself, not the network." },
-            { text: "C. Transfer of risk", correct: false, explain: "Incorrect. This involves shifting risk to a third party, like buying insurance." },
-            { text: "D. SNMP traps", correct: false, explain: "Incorrect. SNMP traps are alerts from a network device to a central management station. This is a monitoring function, not an access control." }
-        ]
-    },
+            { text: "A. Watering-hole", correct: false, explain: "Explanation not available." },
+            { text: "B. Disinformation", correct: false, explain: "Explanation not available." },
+            { text: "C. Phishing", correct: false, explain: "Explanation not available." },
+            { text: "D. Impersonation", correct: true, explain: "Explanation not available." }
+  ]
+},
     {
         id: 312,
         q: "A new security regulation was announced that will take effect in the coming year. A company must comply with it to remain in business. Which of the following activities should the company perform next?",
@@ -4187,7 +4340,12 @@
     },
     {
         id: 317,
-        q: "A systems administrator receives an alert that a company’s internal file server is very slow and is only working intermittently. The systems administrator reviews the server management software and finds the server has 99.6% CPU and 97% memory usage. Which of the following indicators most likely triggered this alert?",
+        q: `A systems administrator receives an alert that a company’s internal file server is very slow and is only working intermittently. The systems administrator reviews the server management software and finds the following information about the server:<br></br>
+        <pre class="h6">
+            ServerName | #Connections | CPU%  | MEM% | Read/s | Write/s
+            Filesev01  | 12           | 99.6% | 97%  | 50KB/s | 100KB/s
+        </pre>
+        Which of the following indicators most likely triggered this alert?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -4235,12 +4393,16 @@
     },
     {
         id: 321,
-        q: "While reviewing logs, a security administrator identifies the following code:<br><br> <img src='../../assets/quiz-images/1002.png' alt='System output'> <br><br>Which of the following best describes the vulnerability being exploited?",
+        q: `While reviewing logs, a security administrator identifies the following code:<br></br> 
+        <pre class="h6">
+            &lt;script&gt;function (send_info)&lt;/script&gt;
+        </pre>    
+        Which of the following best describes the vulnerability being exploited?`,
         type: "single",
         category: "2.3 Explain various types of vulnerabilities.",
         answers: [
-            { text: "A. XSS", correct: true, explain: "Correct. The presence of \`<script>\` tags in log data, especially from user input fields, is a strong indicator of an attempted Cross-Site Scripting (XSS) attack. Attackers inject malicious scripts into trusted websites, which are then executed by the victim's browser, potentially leading to session hijacking or data theft." },
-            { text: "B. SQLi", correct: false, explain: "Incorrect. A SQL injection (SQLi) attack would involve SQL commands like \`SELECT\`, \`INSERT`, or \`DROP`, not JavaScript tags." },
+            { text: "A. XSS", correct: true, explain: "Correct. The presence of script tags in log data, especially from user input fields, is a strong indicator of an attempted Cross-Site Scripting (XSS) attack. Attackers inject malicious scripts into trusted websites, which are then executed by the victim's browser, potentially leading to session hijacking or data theft." },
+            { text: "B. SQLi", correct: false, explain: "Incorrect. A SQL injection (SQLi) attack would involve SQL commands like SELECT, INSERT, or DROP, not JavaScript tags." },
             { text: "C. DDoS", correct: false, explain: "Incorrect. A DDoS attack involves a flood of traffic, not the injection of script code." },
             { text: "D. CSRF", correct: false, explain: "Incorrect. A Cross-Site Request Forgery (CSRF) attack tricks a logged-in user into submitting a malicious request, but it does not typically involve injecting scripts in this manner." }
         ]
@@ -4673,7 +4835,12 @@
     },
     {
         id: 357,
-        q: "A security analyst is reviewing logs and discovers the following: \`User-Agent: ${/bin/sh id}\`. Which of the following should be used to best mitigate this type of attack?",
+        q: `A security analyst is reviewing logs and discovers the following:<br></br>
+        <pre class="h6">
+            149.32.228.10 - - [28/Jan/2023:16:32:45 -0300] "GET / HTTP/1.0"
+            User-Agent: \${/bin/sh/ id} 200 397
+        </pre>
+        Which of the following should be used to best mitigate this type of attack?`,
         type: "single",
         category: "4.1 Given a scenario, apply common security techniques to computing resources.",
         answers: [
@@ -4901,26 +5068,26 @@
     },
     {
         id: 376,
-        q: "A systems administrator successfully configures VPN access to a cloud environment. Which of the following capabilities should the administrator use to best facilitate remote administration?",
+        q: "Which of the following is a possible factor for MFA?",
         type: "single",
-        category: "3.2 Given a scenario, apply security principles to secure enterprise infrastructure.",
+        category: "4.6 Given a scenario, implement and maintain identity and access management.",
         answers: [
-            { text: "A. A jump host in the shared services security zone", correct: true, explain: "Correct. Best practice dictates that even after connecting via VPN, administrators should not have direct access to production servers. They should first connect to a hardened jump host (or bastion host) in a secure zone. This provides a single, controlled, and audited entry point for all administrative activities, significantly enhancing security." },
-            { text: "B. An SSH server within the corporate LAN", correct: false, explain: "Incorrect. This would be for administering the on-premises LAN, not the cloud environment." },
-            { text: "C. A reverse proxy on the firewall", correct: false, explain: "Incorrect. A reverse proxy is for publishing web services, not for administrative access." },
-            { text: "D. An MDM solution with conditional access", correct: false, explain: "Incorrect. MDM is for managing devices, not for facilitating server administration." }
+            { text: "A. Something you exhibit", correct: false, explain: "Explanation not available." },
+            { text: "B. Something you have", correct: true, explain: "Explanation not available." },
+            { text: "C. Somewhere you are", correct: false, explain: "Explanation not available." },
+            { text: "D. Someone you know", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 377,
-        q: "An organization is required to provide assurance that its controls are properly designed and operating effectively. Which of the following reports will best achieve the objective?",
+        q: "A user downloaded software from an online forum. After the user installed the software, the security team observed external network traffic connecting to the user's computer on an uncommon port. Which of the following is the most likely explanation of this unauthorized connection?",
         type: "single",
-        category: "5.5 Explain types and purposes of audits and assessments.",
+        category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
-            { text: "A. Red teaming", correct: false, explain: "Incorrect. Red teaming demonstrates how an organization can be breached, it does not provide assurance about the overall control environment." },
-            { text: "B. Penetration testing", correct: false, explain: "Incorrect. A penetration test report focuses on specific exploitable vulnerabilities." },
-            { text: "C. Independent audit", correct: true, explain: "Correct. An independent, third-party audit (resulting in a report like a SOC 2 Type 2 or ISO 27001 certification) is the standard method for providing formal assurance to stakeholders that an organization's security controls are well-designed and have been operating effectively over a period of time." },
-            { text: "D. Vulnerability assessment", correct: false, explain: "Incorrect. A vulnerability assessment lists potential weaknesses but does not provide assurance on control effectiveness." }
+            { text: "A. The software had a hidden keylogger.", correct: false, explain: "Explanation not available." },
+            { text: "B. The software was ransomware.", correct: false, explain: "Explanation not available." },
+            { text: "C. The user's computer had a fileless virus.", correct: false, explain: "Explanation not available." },
+            { text: "D. The software contained a backdoor.", correct: true, explain: "Explanation not available." }
         ]
     },
     {
@@ -5473,7 +5640,11 @@
     },
     {
         id: 423,
-        q: "A security administrator observed the following in a web server log while investigating an incident: `GET ../../../../etc/passwd`. Which of the following attacks did the security administrator most likely see?",
+        q: `A security administrator observed the following in a web server log while investigating an incident: <br></br>
+        <pre class="h6">
+        "GET ../../../../etc/passwd" 
+        </pre>
+        Which of the following attacks did the security administrator most likely see?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -5631,7 +5802,37 @@
     },
     {
         id: 436,
-        q: "A security administrator documented DNS A and CNAME records with an address of 192.168.1.1. Two weeks later, the records were changed to point to a malicious address of 233.123.123.23. The service owner validated that the new address was not part of the company network. Which of the following was the company most likely experiencing?",
+        q: `A security administrator documented the following records during an assessment of network services:<br></br>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Record</th>
+                    <th>Type</th>
+                    <th>Address</th>
+                    <th>TTL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>@</td><td>A</td><td>233.123.123.23</td><td>14400</td></tr>
+                <tr><td>WWW</td><td>CNAME</td><td>233.123.123.23</td><td>14400</td></tr>
+            </tbody>
+        </table><br></br>
+        Two weeks later, the administrator performed a log review and noticed the records were changed as follows:<br></br>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Record</th>
+                    <th>Type</th>
+                    <th>Address</th>
+                    <th>TTL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>@</td><td>A</td><td>192.168.1.1</td><td>14400</td></tr>
+                <tr><td>WWW</td><td>CNAME</td><td>192.168.1.1</td><td>14400</td></tr>
+            </tbody>
+        </table><br></br>
+        When consulting the service owner, the administrator validated that the new address was not part of the company network. Which of the following was the company most likely experiencing?`,
         type: "single",
         category: "2.4 Given a scenario, analyze indicators of malicious activity.",
         answers: [
@@ -5775,7 +5976,14 @@
     },
     {
         id: 448,
-        q: "While investigating a possible incident, a security analyst discovers the following log entry: `GET /query.php?q=123'; INSERT INTO users VALUES ('temp', 'pass123') # HTTP/1.0`. Which of the following should the analyst do first?",
+        q: `While investigating a possible incident, a security analyst discovers the following log entry:<br></br>
+        <pre class="h6">
+67.110.34.157 - - [28/Jul/2022:10:26:59 -0300] "GET /query.php?q=wireless%20headphones / HTTP/1.0" 200 12737
+132.18.222.103 - - [28/Jul/2022:10:27:10 -0300] "GET /query.php?q=123''; INSERT INTO users VALUES('temp','pass123')#
+    / HTTP/1.0" 200 935
+12.45.101.121 - - [28/Jul/2022:10:27:22 -0300] "GET /query.php?q=mp3%20players / HTTP/1.0" 200 14650
+        </pre>
+        Which of the following should the analyst do first?`,
         type: "single",
         category: "4.8 Explain appropriate incident response activities.",
         answers: [
@@ -6123,28 +6331,28 @@
             { text: "D. FIM", correct: false, explain: "Incorrect. File Integrity Monitoring checks for changes to files; it does not control app installation." }
         ]
     },
-    {
+        {
         id: 477,
-        q: "Which of the following would most likely be deployed to obtain and analyze attacker activity and techniques?",
+        q: "A security security consultant is working with a client that wants to physically isolate its secure systems. Which of the following best describes this architecture?",
         type: "single",
-        category: "1.2 Summarize fundamental security concepts.",
+        category: "3.1 Compare and contrast security implications of different architecture models.",
         answers: [
-            { text: "A. Firewall", correct: false, explain: "Incorrect. A firewall is a preventative control." },
-            { text: "B. IDS", correct: false, explain: "Incorrect. An IDS detects attacks on production systems but isn't designed as a tool to safely analyze attacker behavior." },
-            { text: "C. Honeypot", correct: true, explain: "Correct. A honeypot is a decoy system specifically designed to be an attractive target for attackers. It is heavily monitored and isolated from production systems, allowing security professionals to safely observe and analyze attacker activities, tools, and techniques." },
-            { text: "D. Layer 3 switch", correct: false, explain: "Incorrect. This is a standard piece of network equipment." }
+            { text: "A. SDN", correct: false, explain: "Explanation not available." },
+            { text: "B. Air gapped", correct: true, explain: "Explanation not available." },
+            { text: "C. Containerized", correct: false, explain: "Explanation not available." },
+            { text: "D. Highly available", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 478,
-        q: "An employee who was working remotely lost a mobile device containing company data. Which of the following provides the best solution to prevent future data loss?",
+        q: "A company is in the process of migrating to cloud-based services. The company’s IT department has limited resources for migration and ongoing support. Which of the following best meets the company’s needs?",
         type: "single",
-        category: "4.1 Given a scenario, apply common security techniques to computing resources.",
+        category: "3.2 Given a scenario, apply security principles to secure enterprise infrastructure.",
         answers: [
-            { text: "A. MDM", correct: false, explain: "Incorrect. Mobile Device Management is the platform used to enforce controls, but FDE is the specific control that protects the data." },
-            { text: "B. DLP", correct: false, explain: "Incorrect. Data Loss Prevention is for stopping data from being sent over a network, not for protecting a lost physical device." },
-            { text: "C. FDE", correct: true, explain: "Correct. Full-Disk Encryption (FDE) is the best solution. It encrypts all data stored on the mobile device. If the device is lost, the data remains unreadable to anyone without the proper credentials, thus preventing a data breach." },
-            { text: "D. EDR", correct: false, explain: "Incorrect. Endpoint Detection and Response is for detecting active threats on a device, not protecting data on a lost one." }
+            { text: "A. IPS", correct: false, explain: "Explanation not available." },
+            { text: "B. WAF", correct: false, explain: "Explanation not available." },
+            { text: "C. SASE", correct: true, explain: "Explanation not available." },
+            { text: "D. IAM", correct: false, explain: "Explanation not available." }
         ]
     },
     {
@@ -6173,50 +6381,50 @@
     },
     {
         id: 481,
-        q: "Which of the following is the best way to validate the integrity and availability of a disaster recovery site?",
+        q: "A security report shows that during a two-week test period, 80% of employees unwittingly disclosed their SSO credentials when accessing an external website. The organization purposely created the website to simulate a cost-free password complexity test. Which of the following would best help reduce the number of visits to similar websites in the future?",
         type: "single",
-        category: "3.4 Explain the importance of resilience and recovery in security architecture.",
+        category: "5.6 Given a scenario, implement security awareness practices.",
         answers: [
-            { text: "A. Lead a simulated failover.", correct: true, explain: "Correct. A simulated failover is the most effective validation method. It involves actively switching services to the disaster recovery (DR) site to confirm that systems can be brought online, data is complete and uncorrupted (integrity), and the services are accessible to users (availability)." },
-            { text: "B. Conduct a tabletop exercise.", correct: false, explain: "Incorrect. A tabletop exercise tests the DR plan and human processes, but it does not technically validate the site's functionality." },
-            { text: "C. Periodically test the generators.", correct: false, explain: "Incorrect. This only tests one component and does not validate the entire recovery process." },
-            { text: "D. Develop requirements for database encryption.", correct: false, explain: "Incorrect. This is a security design element, not a validation test." }
+            { text: "A. Block all outbound traffic from the intranet.", correct: false, explain: "Explanation not available." },
+            { text: "B. Introduce a campaign to recognize phishing attempts.", correct: true, explain: "Explanation not available." },
+            { text: "C. Restrict internet access for the employees who disclosed credentials.", correct: false, explain: "Explanation not available." },
+            { text: "D. Implement a deny list of websites.", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 482,
-        q: "Which of the following allows an exploit to go undetected by the operating system?",
+        q: "Which of the following documents details how to accomplish a technical security task?",
         type: "single",
-        category: "2.3 Explain various types of vulnerabilities.",
+        category: "5.1 Summarize elements of effective security governance.",
         answers: [
-            { text: "A. Firmware vulnerabilities", correct: false, explain: "Incorrect. Exploiting a firmware vulnerability can lead to stealthy malware, but the general technique for hiding code in a running OS is memory injection." },
-            { text: "B. Side loading", correct: false, explain: "Incorrect. Side loading is the act of installing an unauthorized app." },
-            { text: "C. Memory injection", correct: true, explain: "Correct. Memory injection techniques (like DLL injection or process hollowing) allow an attacker to run their malicious code within the memory space of a legitimate, trusted process. Because the code is executing under the guise of a normal process, it can often evade detection by the operating system and host-based security tools." },
-            { text: "D. Encrypted payloads", correct: false, explain: "Incorrect. Encryption helps evade network detection, but memory injection is the technique used to run the exploit stealthily on the host." }
+            { text: "A. Standard", correct: false, explain: "Explanation not available." },
+            { text: "B. Policy", correct: false, explain: "Explanation not available." },
+            { text: "C. Guideline", correct: false, explain: "Explanation not available." },
+            { text: "D. Procedure", correct: true, explain: "Explanation not available." }
         ]
     },
     {
         id: 483,
-        q: "A penetration test has demonstrated that domain administrator accounts were vulnerable to pass-the-hash attacks. Which of the following would have been the best strategy to prevent the threat actor from using domain administrator accounts?",
+        q: "While conducting a business continuity tabletop exercise, the security team becomes concerned by potential impact if a generator was to develop a fault during failover. Which of the following is the team most likely to consider in regard to risk management activities?",
         type: "single",
-        category: "4.6 Given a scenario, implement and maintain identity and access management.",
+        category: "5.2 Explain elements of the risk management process.",
         answers: [
-            { text: "A. Audit each domain administrator account weekly for password compliance.", correct: false, explain: "Incorrect. Pass-the-hash attacks don't require the password, so password compliance is irrelevant. Also, auditing is detective, not preventative." },
-            { text: "B. Implement a privileged access management solution.", correct: true, explain: "Correct. A Privileged Access Management (PAM) solution is the best strategy. It vaults the powerful administrator credentials, requiring administrators to check them out for temporary use through a monitored proxy session. This prevents an attacker from ever capturing the underlying hash on a workstation, thus defeating pass-the-hash attacks." },
-            { text: "C. Create IDS policies to monitor domain controller access.", correct: false, explain: "Incorrect. This is a detective control, not a preventative one." },
-            { text: "D. Use Group Policy to enforce password expiration.", correct: false, explain: "Incorrect. Password expiration has no effect on a stolen hash, which can be reused indefinitely." }
+            { text: "A. RPO", correct: false, explain: "Explanation not available." },
+            { text: "B. ARO", correct: false, explain: "Explanation not available." },
+            { text: "C. BIA", correct: true, explain: "Explanation not available." },
+            { text: "D. MTTR", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 484,
-        q: "Which of the following is an example of memory injection?",
+        q: "Which of the following is prevented by proper data sanitization?",
         type: "single",
-        category: "2.3 Explain various types of vulnerabilities.",
+        category: "4.2 Explain the security implications of proper hardware, software, and data asset management.",
         answers: [
-            { text: "A. Two processes access the same variable, allowing one to cause a privilege escalation.", correct: false, explain: "Incorrect. This describes a race condition." },
-            { text: "B. A process receives an unexpected amount of data, which causes malicious code to be executed.", correct: false, explain: "Incorrect. This describes a buffer overflow." },
-            { text: "C. Malicious code is copied to the allocated space of an already running process.", correct: true, explain: "Correct. This is the definition of memory injection. An attacker writes malicious code into the memory of a legitimate process and then tricks that process into executing it." },
-            { text: "D. An executable is overwritten on the disk, and malicious code runs the next time it is executed.", correct: false, explain: "Incorrect. This describes a Trojan or file infector virus, which is a file-system-based attack, not a memory-based one." }
+            { text: "A. Hackers’ ability to obtain data from used hard drives", correct: true, explain: "Explanation not available." },
+            { text: "B. Devices reaching end-of-life and losing support", correct: false, explain: "Explanation not available." },
+            { text: "C. Disclosure of sensitive data through incorrect classification", correct: false, explain: "Explanation not available." },
+            { text: "D. Incorrect inventory data leading to a laptop shortage", correct: false, explain: "Explanation not available." }
         ]
     },
     {
@@ -6259,136 +6467,140 @@
     },
     {
         id: 488,
-        q: "Which of the following is an example of a data protection strategy that uses tokenization?",
+        q: "A certificate authority needs to post information about expired certificates. Which of the following would accomplish this task?",
         type: "single",
         category: "1.4 Explain the importance of using appropriate cryptographic solutions.",
         answers: [
-            { text: "A. Encrypting databases containing sensitive data", correct: false, explain: "Incorrect. This is a description of encryption, not tokenization." },
-            { text: "B. Replacing sensitive data with surrogate values", correct: true, explain: "Correct. This is the definition of tokenization. A sensitive piece of data (like a credit card number) is replaced with a non-sensitive, algorithmically unrelated value called a token (the surrogate value). The token can be used in systems without exposing the original sensitive data." },
-            { text: "C. Removing sensitive data from production systems", correct: false, explain: "Incorrect. This describes data minimization." },
-            { text: "D. Hashing sensitive data in critical systems", correct: false, explain: "Incorrect. This describes hashing, a one-way process for integrity verification." }
+            { text: "A. TPM", correct: false, explain: "Explanation not available." },
+            { text: "B. CRL", correct: true, explain: "Explanation not available." },
+            { text: "C. PKI", correct: false, explain: "Explanation not available." },
+            { text: "D. CSR", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 489,
-        q: "Which of the following is a type of vulnerability that refers to the unauthorized installation of applications on a device through means other than the official application store?",
+        q: "Which of the following can best contribute to prioritizing patch applications?",
         type: "single",
-        category: "2.3 Explain various types of vulnerabilities.",
+        category: "4.3 Explain various activities associated with vulnerability management.",
         answers: [
-            { text: "A. Cross-site scripting", correct: false, explain: "Incorrect. XSS is a web application vulnerability." },
-            { text: "B. Buffer overflow", correct: false, explain: "Incorrect. This is a memory corruption vulnerability." },
-            { text: "C. Jailbreaking", correct: false, explain: "Incorrect. Jailbreaking is the act of modifying the OS to allow unauthorized installations. Side loading is the installation act itself." },
-            { text: "D. Side loading", correct: true, explain: "Correct. Side loading is the process of installing an application on a mobile device from an unofficial source. This bypasses the security checks and vetting process of the official app store, creating a significant vulnerability." }
+            { text: "A. CVSS", correct: true, explain: "Explanation not available." },
+            { text: "B. SCAP", correct: false, explain: "Explanation not available." },
+            { text: "C. OSINT", correct: false, explain: "Explanation not available." },
+            { text: "D. CVE", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 490,
-        q: "Which of the following types of identification methods can be performed on a deployed application during runtime?",
+        q: "A systems administrator creates a script that validates OS version, patch levels, and installed applications when users log in. Which of the following examples best describes the purpose of this script?",
         type: "single",
-        category: "4.3 Explain various activities associated with vulnerability management.",
+        category: "4.7 Explain the importance of automation and orchestration related to secure operations.",
         answers: [
-            { text: "A. Dynamic analysis", correct: true, explain: "Correct. Dynamic Application Security Testing (DAST), or dynamic analysis, analyzes an application for vulnerabilities while it is running. It interacts with the application as an attacker would, sending various inputs and monitoring the responses to identify security flaws." },
-            { text: "B. Code review", correct: false, explain: "Incorrect. A code review is a form of static analysis, which is performed on the code before runtime." },
-            { text: "C. Package monitoring", correct: false, explain: "Incorrect. This involves analyzing the software bill of materials (SBOM), which is a form of static analysis." },
-            { text: "D. Bug bounty", correct: false, explain: "Incorrect. A bug bounty is a program that uses testers who may perform dynamic analysis, but it's not the method itself." }
+            { text: "A. Resource scaling", correct: false, explain: "Explanation not available." },
+            { text: "B. Policy enumeration", correct: false, explain: "Explanation not available." },
+            { text: "C. Baseline enforcement", correct: true, explain: "Explanation not available." },
+            { text: "D. Guard rails implementation", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 491,
-        q: "Which of the following cryptographic solutions is used to hide the fact that communication is occurring?",
+        q: "A security analyst learns that an attack vector, which was used as a part of a recent incident, was a well-known IoT device exploit. The analyst needs to review logs to identify the time of initial exploit. Which of the following logs should the analyst review first?",
         type: "single",
-        category: "1.4 Explain the importance of using appropriate cryptographic solutions.",
+        category: "4.9 Given a scenario, use data sources to support an investigation.",
         answers: [
-            { text: "A. Steganography", correct: true, explain: "Correct. Unlike encryption which hides the content of a message, steganography's goal is to hide the existence of the message itself. It works by concealing data within another file, such as an image or audio file, so that the communication itself goes undetected." },
-            { text: "B. Data masking", correct: false, explain: "Incorrect. Data masking obscures data but doesn't hide the communication." },
-            { text: "C. Tokenization", correct: false, explain: "Incorrect. Tokenization replaces sensitive data with a surrogate value." },
-            { text: "D. Private key", correct: false, explain: "Incorrect. A private key is a tool used in cryptography, not a method for concealing communication." }
+            { text: "A. Endpoint", correct: false, explain: "Explanation not available." },
+            { text: "B. Application", correct: false, explain: "Explanation not available." },
+            { text: "C. Firewall", correct: true, explain: "Explanation not available." },
+            { text: "D. NAC", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 492,
-        q: "Which of the following steps should be taken before mitigating a vulnerability in a production server?",
+        q: "A company’s gate access logs show multiple entries from an employee’s ID badge within a two-minute period. Which of the following is this an example of?",
         type: "single",
-        category: "1.3 Explain the importance of change management processes and the impact to security.",
+        category: "2.4 Given a scenario, analyze indicators of malicious activity",
         answers: [
-            { text: "A. Escalate the issue to the SDLC team.", correct: false, explain: "Incorrect. The SDLC team is involved in development, not patching production servers." },
-            { text: "B. Use the IR plan to evaluate the changes.", correct: false, explain: "Incorrect. The Incident Response (IR) plan is for handling active breaches, not planned changes." },
-            { text: "C. Perform a risk assessment to classify the vulnerability.", correct: false, explain: "Incorrect. This step should have already been completed to decide that mitigation is necessary." },
-            { text: "D. Refer to the change management policy.", correct: true, explain: "Correct. Any change to a production server, including applying a patch, must follow the organization's formal change management policy. This ensures the change is properly documented, tested, approved, and scheduled to minimize the risk of causing an unintended outage." }
+            { text: "A. RFID cloning", correct: true, explain: "Explanation not available." },
+            { text: "B. Side-channel attack", correct: false, explain: "Explanation not available." },
+            { text: "C. Shoulder surfing", correct: false, explain: "Explanation not available." },
+            { text: "D. Tailgating", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 493,
-        q: "A security engineer needs to quickly identify a signature from a known malicious file. Which of the following analysis methods would the security engineer most likely use?",
+        q: "Which of the following most accurately describes the order in which a security engineer should implement secure baselines?",
         type: "single",
-        category: "4.3 Explain various activities associated with vulnerability management.",
+        category: "4.1 Given a scenario, apply common security techniques to computing resources.",
         answers: [
-            { text: "A. Static", correct: true, explain: "Correct. Static analysis is the examination of a file without executing it. To get a signature (like a hash) of a file, an engineer would use static analysis tools. This is a fast and safe way to identify a known malicious file by comparing its hash to a list of known bad hashes." },
-            { text: "B. Sandbox", correct: false, explain: "Incorrect. A sandbox is used for dynamic analysis to observe behavior, which is a much slower process." },
-            { text: "C. Network traffic", correct: false, explain: "Incorrect. This is a form of dynamic analysis." },
-            { text: "D. Package monitoring", correct: false, explain: "Incorrect. This involves analyzing the dependencies of an application, not a single file's signature." }
+            { text: "A. Deploy, maintain, establish", correct: false, explain: "Explanation not available." },
+            { text: "B. Establish, maintain, deploy", correct: false, explain: "Explanation not available." },
+            { text: "C. Establish, deploy, maintain", correct: true, explain: "Explanation not available." },
+            { text: "D. Deploy, establish, maintain", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 494,
-        q: "Which of the following should a company use to provide proof of external network security testing?",
+        q: `A SOC analyst establishes a remote control session on an end user’s machine and discovers the following in a file: <br></br>
+        <pre class="h6">
+            gmail.com[ENT]my.name@gmail.com[ENT]NoOneCanGuessThis123![ENT]Hello Susan, it was great to see you the other 
+            day! Let’s plan a followup[BACKSPACE]follow-up meeting soon. Here is the link to register. [RTN][CTRL]c 
+            [CTRL]v [RTN]after[BACKSPACE]After you register give me a call on my cellphone.
+        </pre>
+            Which of the following actions should the SOC analyst perform first?`,
         type: "single",
-        category: "5.5 Explain types and purposes of audits and assessments.",
+        category: "4.8 Explain appropriate incident response activities.",
         answers: [
-            { text: "A. Business impact analysis", correct: false, explain: "Incorrect. A BIA is an internal document assessing potential disruption impacts." },
-            { text: "B. Supply chain analysis", correct: false, explain: "Incorrect. This analyzes risks from vendors." },
-            { text: "C. Vulnerability assessment", correct: false, explain: "Incorrect. While this is a form of testing, a third-party attestation is the formal proof provided to external parties." },
-            { text: "D. Third-party attestation", correct: true, explain: "Correct. The best way to provide proof to external stakeholders (like customers or regulators) is through a third-party attestation. This involves hiring an independent security firm to conduct the network security testing and then provide a formal report or letter of attestation summarizing the findings. This independent verification carries more weight than an internal report." }
+            { text: "A. Advise the user to change passwords.", correct: false, explain: "Explanation not available." },
+            { text: "B. Reimage the end user’s machine.", correct: true, explain: "Explanation not available." },
+            { text: "C. Check the policy on personal email at work.", correct: false, explain: "Explanation not available." },
+            { text: "D. Check host firewall logs.", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 495,
-        q: "A security administrator is addressing an issue with a legacy system that communicates data using an unencrypted protocol to transfer sensitive data to a third party. No software updates that use an encrypted protocol are available, so a compensating control is needed. Which of the following are the most appropriate for the administrator to suggest? (Choose two.)",
-        type: "multi",
-        category: "2.5 Explain the purpose of mitigation techniques used to secure the enterprise.",
+        q: "Which of the following is a reason environmental variables are a concern when reviewing potential system vulnerabilities?",
+        type: "single",
+        category: "4.3 Explain various activities associated with vulnerability management.",
         answers: [
-            { text: "A. Tokenization", correct: false, explain: "Incorrect. Tokenization protects the data itself but is a complex change to the application, not a simple compensating control for the protocol." },
-            { text: "B. Cryptographic downgrade", correct: false, explain: "Incorrect. This is an attack, not a control." },
-            { text: "C. SSH tunneling", correct: true, explain: "Correct. An SSH tunnel is an excellent compensating control. It can wrap the insecure traffic from the legacy system in an encrypted SSH session, protecting the data in transit without any changes to the legacy application." },
-            { text: "D. Segmentation", correct: true, explain: "Correct. Network segmentation is another appropriate compensating control. By placing the legacy system in a highly restricted network segment, the administrator can limit which other devices can communicate with it, reducing the risk of an attacker sniffing the unencrypted traffic." },
-            { text: "E. Patch installation", correct: false, explain: "Incorrect. The scenario explicitly states that no updates are available." },
-            { text: "F. Data masking", correct: false, explain: "Incorrect. Data masking is not suitable for protecting data in transit." }
+            { text: "A. The contents of environmental variables could affect the scope and impact of an exploited vulnerability.", correct: true, explain: "Explanation not available." },
+            { text: "B. In-memory environmental variable values can be overwritten and used by attackers to insert malicious code.", correct: false, explain: "Explanation not available." },
+            { text: "C. Environmental variables define cryptographic standards for the system and could create vulnerabilities if deprecated algorithms are used.", correct: false, explain: "Explanation not available." },
+            { text: "D. Environmental variables will determine when updates are run and could mitigate the likelihood of vulnerability exploitation.", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 496,
-        q: "Which of the following should an organization focus on the most when making decisions about vulnerability prioritization?",
+        q: "A company wants to track modifications to the code that is used to build new virtual servers. Which of the following will the company most likely deploy?",
         type: "single",
-        category: "4.3 Explain various activities associated with vulnerability management.",
+        category: "4.7 Explain the importance of automation and orchestration related to secure operations.",
         answers: [
-            { text: "A. Exposure factor", correct: false, explain: "Incorrect. This is a metric used in quantitative risk analysis, but CVSS is the standard for vulnerability prioritization." },
-            { text: "B. CVSS", correct: true, explain: "Correct. The Common Vulnerability Scoring System (CVSS) is the industry standard for rating the severity of vulnerabilities. It provides a numerical score that allows organizations to prioritize remediation efforts by focusing on the most critical vulnerabilities first." },
-            { text: "C. CVE", correct: false, explain: "Incorrect. A CVE is a unique identifier for a vulnerability, not a severity rating." },
-            { text: "D. Industry impact", correct: false, explain: "Incorrect. While a consideration, CVSS provides the standardized score used for prioritization." }
+            { text: "A. Change management ticketing system", correct: false, explain: "Explanation not available." },
+            { text: "B. Behavioral analyzer", correct: false, explain: "Explanation not available." },
+            { text: "C. Collaboration platform", correct: false, explain: "Explanation not available." },
+            { text: "D. Version control tool", correct: true, explain: "Explanation not available." }
         ]
     },
     {
         id: 497,
-        q: "An organization needs to monitor its users’ activities in order to prevent insider threats. Which of the following solutions would help the organization achieve this goal?",
+        q: "A security security consultant is working with a client that wants to physically isolate its secure systems. Which of the following best describes this architecture?",
         type: "single",
-        category: "4.5 Given a scenario, modify enterprise capabilities to enhance security.",
+        category: "3.1 Compare and contrast security implications of different architecture models.",
         answers: [
-            { text: "A. Behavioral analytics", correct: true, explain: "Correct. User and Entity Behavior Analytics (UEBA) or behavioral analytics solutions are specifically designed to detect insider threats. They work by establishing a baseline of normal activity for each user and then using machine learning to detect suspicious deviations from that baseline." },
-            { text: "B. Access control lists", correct: false, explain: "Incorrect. ACLs are a preventive control that limits access; they do not monitor behavior." },
-            { text: "C. Identity and access management", correct: false, explain: "Incorrect. IAM systems manage access but do not typically perform behavioral analysis." },
-            { text: "D. Network intrusion detection system", correct: false, explain: "Incorrect. A NIDS is good for detecting external threats but less effective at identifying insiders who are abusing their legitimate access." }
+            { text: "A. SDN", correct: false, explain: "Explanation not available." },
+            { text: "B. Air gapped", correct: false, explain: "Explanation not available." },
+            { text: "C. Containerized", correct: false, explain: "Explanation not available." },
+            { text: "D. Highly available", correct: false, explain: "Explanation not available." }
         ]
     },
     {
         id: 498,
-        q: "Which of the following describes the first stage in the incident response process?",
+        q: "After creating a contract for IT contractors, the human resources department changed several clauses. The contract has gone through three revisions. Which of the following processes should the human resources department follow to track revisions?",
         type: "single",
-        category: "4.8 Explain appropriate incident response activities.",
+        category: "1.3 Explain the importance of change management processes and the impact to security.",
         answers: [
-            { text: "A. Detection", correct: false, explain: "Incorrect. According to standard frameworks like NIST, Detection is the second phase. The first phase is preparing for an incident before it happens." },
-            { text: "B. Declaration", correct: false, explain: "Incorrect. This is part of the initial analysis, not the first stage." },
-            { text: "C. Containment", correct: false, explain: "Incorrect. Containment is the third stage." },
-            { text: "D. Preparation", correct: true, explain: "Correct. The first stage of the incident response lifecycle is Preparation. This involves creating plans, forming a team, acquiring tools, and conducting training—all the activities necessary to be ready to respond when an incident occurs." }
+            { text: "A. Version validation", correct: false, explain: "Explanation not available." },
+            { text: "B. Version changes", correct: false, explain: "Explanation not available." },
+            { text: "C. Version updates", correct: false, explain: "Explanation not available." },
+            { text: "D. Version control", correct: true, explain: "Explanation not available." }
         ]
     },
     {
@@ -6898,15 +7110,548 @@
             { text: "C. SFTP", correct: false, explain: "Incorrect. SFTP is a secure file transfer protocol and is unrelated to remediating SMBv1." },
             { text: "D. DLP", correct: false, explain: "Incorrect. A DLP solution is for preventing data exfiltration." }
         ]
+    },
+    {
+        id: 541,
+        q: "An engineer needs to find a solution that creates an added layer of security by preventing unauthorized access to internal company resources. Which of the following would be the best solution?",
+        type: "single",
+        category: "3.2 Given a scenario, apply security principles to secure enterprise infrastructure.",
+        answers: [
+            { text: "A. RDP server", correct: false, explain: "Explanation not available." },
+            { text: "B. Jump server", correct: true, explain: "Explanation not available." },
+            { text: "C. Proxy server", correct: false, explain: "Explanation not available." },
+            { text: "D. Hypervisor", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 542,
+        q: "A systems administrator is changing the password policy within an enterprise environment and wants this update implemented on all systems as quickly as possible. Which of the following operating system security measures will the administrator most likely use?",
+        type: "single",
+        category: "4.5 Given a scenario, modify enterprise capabilities to enhance security.",
+        answers: [
+            { text: "A. Deploying PowerShell scripts", correct: false, explain: "Explanation not available." },
+            { text: "B. Pushing GPO update", correct: true, explain: "Explanation not available." },
+            { text: "C. Enabling PAP", correct: false, explain: "Explanation not available." },
+            { text: "D. Updating EDR profiles", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 543,
+        q: "A company requires hard drives to be securely wiped before sending decommissioned systems to recycling. Which of the following best describes this policy?",
+        type: "single",
+        category: "4.2 Explain the security implications of proper hardware, software, and data asset management.",
+        answers: [
+            { text: "A. Enumeration", correct: false, explain: "Explanation not available." },
+            { text: "B. Sanitization", correct: false, explain: "Explanation not available." },
+            { text: "C. Destruction", correct: false, explain: "Explanation not available." },
+            { text: "D. Inventory", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 544,
+        q: "Which of the following should an internal auditor check for first when conducting an audit of the organization’s risk management program?",
+        type: "single",
+        category: "5.1 Summarize elements of effective security governance.",
+        answers: [
+            { text: "A. Policies and procedures", correct: true, explain: "Explanation not available." },
+            { text: "B. Asset management", correct: false, explain: "Explanation not available." },
+            { text: "C. Vulnerability assessment", correct: false, explain: "Explanation not available." },
+            { text: "D. Business impact analysis", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 545,
+        q: "Which of the following activities are associated with vulnerability management? (Choose two.)",
+        type: "multi",
+        category: "4.3 Explain various activities associated with vulnerability management.",
+        answers: [
+            { text: "A. Reporting", correct: true, explain: "Explanation not available." },
+            { text: "B. Prioritization", correct: true, explain: "Explanation not available." },
+            { text: "C. Exploiting", correct: false, explain: "Explanation not available." },
+            { text: "D. Correlation", correct: false, explain: "Explanation not available." },
+            { text: "E. Containment", correct: false, explain: "Explanation not available." },
+            { text: "F. Tabletop exercise", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 546,
+        q: "An administrator wants to perform a risk assessment without using proprietary company information. Which of the following methods should the administrator use to gather information?",
+        type: "single",
+        category: "4.3 Explain various activities associated with vulnerability management.",
+        answers: [
+            { text: "A. Network scanning", correct: false, explain: "Explanation not available." },
+            { text: "B. Penetration testing", correct: false, explain: "Explanation not available." },
+            { text: "C. Open-source intelligence", correct: true, explain: "Explanation not available." },
+            { text: "D. Configuration auditing", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 547,
+        q: "A systems administrator is concerned about vulnerabilities within cloud computing instances. Which of the following is most important for the administrator to consider when architecting a cloud computing environment?",
+        type: "single",
+        category: "2.3 Explain various types of vulnerabilities.",
+        answers: [
+            { text: "A. SQL injection", correct: false, explain: "Explanation not available." },
+            { text: "B. TOC/TOU", correct: false, explain: "Explanation not available." },
+            { text: "C. VM escape", correct: true, explain: "Explanation not available." },
+            { text: "D. Tokenization", correct: false, explain: "Explanation not available." },
+            { text: "E. Password spraying", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 548,
+        q: "A database administrator is updating the company’s SQL database, which stores credit card information for pending purchases. Which of the following is the best method to secure the data against a potential breach?",
+        type: "single",
+        category: "3.3 Compare and contrast concepts and strategies to protect data.",
+        answers: [
+            { text: "A. Hashing", correct: false, explain: "Explanation not available." },
+            { text: "B. Obfuscation", correct: false, explain: "Explanation not available." },
+            { text: "C. Tokenization", correct: true, explain: "Explanation not available." },
+            { text: "D. Masking", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 549,
+        q: "Which of the following is a benefit of vendor diversity?",
+        type: "single",
+        category: "3.1 Compare and contrast security implications of different architecture models.",
+        answers: [
+            { text: "A. Patch availability", correct: false, explain: "Explanation not available." },
+            { text: "B. Zero-day resiliency", correct: true, explain: "Explanation not available." },
+            { text: "C. Secure configuration guide applicability", correct: false, explain: "Explanation not available." },
+            { text: "D. Load balancing", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 550,
+        q: "An employee used a company’s billing system to issue fraudulent checks. The administrator is looking for evidence of other occurrences of this activity. Which of the following should the administrator examine?",
+        type: "single",
+        category: "4.9 Given a scenario, use data sources to support an investigation.",
+        answers: [
+            { text: "A. Application logs", correct: true, explain: "Explanation not available." },
+            { text: "B. Vulnerability scanner logs", correct: false, explain: "Explanation not available." },
+            { text: "C. IDS/IPS logs", correct: false, explain: "Explanation not available." },
+            { text: "D. Firewall logs", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 551,
+        q: "An organization is looking to optimize its environment and reduce the number of patches necessary for operating systems. Which of the following will best help to achieve this objective?",
+        type: "single",
+        category: "3.1 Compare and contrast security implications of different architecture models.",
+        answers: [
+            { text: "A. Microservices", correct: false, explain: "Explanation not available." },
+            { text: "B. Virtualization", correct: false, explain: "Explanation not available." },
+            { text: "C. Real-time operating system", correct: false, explain: "Explanation not available." },
+            { text: "D. Containers", correct: true, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 552,
+        q: "Which of the following tasks is typically included in the BIA process?",
+        type: "single",
+        category: "5.2 Explain elements of the risk management process.",
+        answers: [
+            { text: "A. Estimating the recovery time of systems", correct: true, explain: "Explanation not available." },
+            { text: "B. Identifying the communication strategy", correct: false, explain: "Explanation not available." },
+            { text: "C. Evaluating the risk management plan", correct: false, explain: "Explanation not available." },
+            { text: "D. Establishing the backup and recovery procedures", correct: false, explain: "Explanation not available." },
+            { text: "E. Developing the incident response plan", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 553,
+        q: "Which of the following is a risk of conducting a vulnerability assessment?",
+        type: "single",
+        category: "4.3 Explain various activities associated with vulnerability management.",
+        answers: [
+            { text: "A. A disruption of business operations", correct: true, explain: "Explanation not available." },
+            { text: "B. Unauthorized access to the system", correct: false, explain: "Explanation not available." },
+            { text: "C. Reports of false positives", correct: false, explain: "Explanation not available." },
+            { text: "D. Finding security gaps in the system", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 554,
+        q: "Which of the following techniques would attract the attention of a malicious attacker in an insider threat scenario?",
+        type: "single",
+        category: "1.2 Summarize fundamental security concepts.",
+        answers: [
+            { text: "A. Creating a false text file in /docs/salaries", correct: true, explain: "Explanation not available." },
+            { text: "B. Setting weak passwords in /etc/shadow", correct: false, explain: "Explanation not available." },
+            { text: "C. Scheduling vulnerable jobs in /etc/crontab", correct: false, explain: "Explanation not available." },
+            { text: "D. Adding a fake account to /etc/passwd", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 555,
+        q: "An organization maintains intellectual property that it wants to protect. Which of the following concepts would be most beneficial to add to the company’s security awareness training program?",
+        type: "single",
+        category: "5.6 Given a scenario, implement security awareness practices.",
+        answers: [
+            { text: "A. Insider threat detection", correct: true, explain: "Explanation not available." },
+            { text: "B. Simulated threats", correct: false, explain: "Explanation not available." },
+            { text: "C. Phishing awareness", correct: false, explain: "Explanation not available." },
+            { text: "D. Business continuity planning", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 556,
+        q: "An organization plans to expand its operations internationally and needs to keep data at the new location secure. The organization wants to use the most secure architecture model possible. Which of the following models offers the highest level of security?",
+        type: "single",
+        category: "3.1 Compare and contrast security implications of different architecture models.",
+        answers: [
+            { text: "A. Cloud-based", correct: false, explain: "Explanation not available." },
+            { text: "B. Peer-to-peer", correct: false, explain: "Explanation not available." },
+            { text: "C. On-premises", correct: true, explain: "Explanation not available." },
+            { text: "D. Hybrid", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 557,
+        q: "Which of the following is the most relevant reason a DPO would develop a data inventory?",
+        type: "single",
+        category: "5.1 Summarize elements of effective security governance.",
+        answers: [
+            { text: "A. To manage data storage requirements better", correct: false, explain: "Explanation not available." },
+            { text: "B. To determine the impact in the event of a breach", correct: true, explain: "Explanation not available." },
+            { text: "C. To extend the length of time data can be retained", correct: false, explain: "Explanation not available." },
+            { text: "D. To automate the reduction of duplicated data", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 558,
+        q: "Which of the following cryptographic solutions protects data at rest?",
+        type: "single",
+        category: "1.4 Explain the importance of using appropriate cryptographic solutions.",
+        answers: [
+            { text: "A. Digital signatures", correct: false, explain: "Explanation not available." },
+            { text: "B. Full disk encryption", correct: true, explain: "Explanation not available." },
+            { text: "C. Private key", correct: false, explain: "Explanation not available." },
+            { text: "D. Steganography", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 559,
+        q: "Which of the following should an organization use to protect its environment from external attacks conducted by an unauthorized hacker?",
+        type: "single",
+        category: "3.2 Given a scenario, apply security principles to secure enterprise infrastructure.",
+        answers: [
+            { text: "A. ACL", correct: false, explain: "Explanation not available." },
+            { text: "B. IDS", correct: false, explain: "Explanation not available." },
+            { text: "C. HIDS", correct: false, explain: "Explanation not available." },
+            { text: "D. NIPS", correct: true, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 560,
+        q: "Which of the following would enable a data center to remain operational through a multiday power outage?",
+        type: "single",
+        category: "3.4 Explain the importance of resilience and recovery in security architecture.",
+        answers: [
+            { text: "A. Generator", correct: true, explain: "Explanation not available." },
+            { text: "B. Uninterruptible power supply", correct: false, explain: "Explanation not available." },
+            { text: "C. Replication", correct: false, explain: "Explanation not available." },
+            { text: "D. Parallel processing", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 561,
+        q: "Which of the following best describes the risk present after controls and mitigating factors have been applied?",
+        type: "single",
+        category: "5.2 Explain elements of the risk management process.",
+        answers: [
+            { text: "A. Residual", correct: true, explain: "Explanation not available." },
+            { text: "B. Avoided", correct: false, explain: "Explanation not available." },
+            { text: "C. Inherent", correct: false, explain: "Explanation not available." },
+            { text: "D. Operational", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 562,
+        q: "A site reliability engineer is designing a recovery strategy that requires quick failover to an identical site if the primary facility goes down. Which of the following types of sites should the engineer consider?",
+        type: "single",
+        category: "3.4 Explain the importance of resilience and recovery in security architecture.",
+        answers: [
+            { text: "A. Recovery site", correct: false, explain: "Explanation not available." },
+            { text: "B. Hot site", correct: true, explain: "Explanation not available." },
+            { text: "C. Cold site", correct: false, explain: "Explanation not available." },
+            { text: "D. Warm site", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 563,
+        q: "Which of the following would an organization most likely use to minimize the loss of data on a file server in the event data needs to be restored?",
+        type: "single",
+        category: "3.4 Explain the importance of resilience and recovery in security architecture.",
+        answers: [
+            { text: "A. Snapshots", correct: true, explain: "Explanation not available." },
+            { text: "B. Journaling", correct: false, explain: "Explanation not available." },
+            { text: "C. Obfuscation", correct: false, explain: "Explanation not available." },
+            { text: "D. Tokenization", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 564,
+        q: "Which of the following is a type of vulnerability that may result from outdated algorithms or keys?",
+        type: "single",
+        category: "2.3 Explain various types of vulnerabilities.",
+        answers: [
+            { text: "A. Hash collision", correct: false, explain: "Explanation not available." },
+            { text: "B. Cryptographic", correct: true, explain: "Explanation not available." },
+            { text: "C. Buffer overflow", correct: false, explain: "Explanation not available." },
+            { text: "D. Input validation", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 565,
+        q: "A company wants to prevent proprietary and confidential company information from being shared to outsiders. Which of the following would this best describe?",
+        type: "single",
+        category: "5.3 Explain the processes associated with third-party risk assessment and management.",
+        answers: [
+            { text: "A. MOA", correct: false, explain: "Explanation not available." },
+            { text: "B. SLA", correct: false, explain: "Explanation not available." },
+            { text: "C. MSA", correct: false, explain: "Explanation not available." },
+            { text: "D. NDA", correct: true, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 566,
+        q: "A security administrator needs to reduce the attack surface in the company's data centers. Which of the following should the security administrator do to complete this task?",
+        type: "single",
+        category: "2.5 Explain the purpose of mitigation techniques used to secure the enterprise.",
+        answers: [
+            { text: "A. Implement a honeynet.", correct: false, explain: "Explanation not available." },
+            { text: "B. Define Group Policy on the servers.", correct: false, explain: "Explanation not available." },
+            { text: "C. Configure the servers for high availability.", correct: false, explain: "Explanation not available." },
+            { text: "D. Upgrade end-of-support operating systems.", correct: true, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 567,
+        q: "Which of the following is a prerequisite for a DLP solution?",
+        type: "single",
+        category: "3.3 Compare and contrast concepts and strategies to protect data.",
+        answers: [
+            { text: "A. Data destruction", correct: false, explain: "Explanation not available." },
+            { text: "B. Data sanitization", correct: false, explain: "Explanation not available." },
+            { text: "C. Data classification", correct: true, explain: "Explanation not available." },
+            { text: "D. Data masking", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 568,
+        q: "A business provides long-term cold storage services to banks that are required to follow regulator-imposed data retention guidelines. Banks that use these services require that data is disposed of in a specific manner at the conclusion of the regulatory threshold for data retention. Which of the following aspects of data management is the most important to the bank in the destruction of this data?",
+        type: "single",
+        category: "4.2 Explain the security implications of proper hardware, software, and data asset management.",
+        answers: [
+            { text: "A. Encryption", correct: false, explain: "Explanation not available." },
+            { text: "B. Classification", correct: false, explain: "Explanation not available." },
+            { text: "C. Certification", correct: true, explain: "Explanation not available." },
+            { text: "D. Procurement", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 569,
+        q: "The physical security team at a company receives reports that employees are not displaying their badges. The team also observes employees tailgating at controlled entrances. Which of the following topics will the security team most likely emphasize in upcoming security training?",
+        type: "single",
+        category: "5.6 Given a scenario, implement security awareness practices.",
+        answers: [
+            { text: "A. Social engineering", correct: false, explain: "Explanation not available." },
+            { text: "B. Situational awareness", correct: true, explain: "Explanation not available." },
+            { text: "C. Phishing", correct: false, explain: "Explanation not available." },
+            { text: "D. Acceptable use policy", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 570,
+        q: "Which of the following would most likely be a hacktivist's motive?",
+        type: "single",
+        category: "2.1 Compare and contrast common threat actors and motivations.",
+        answers: [
+            { text: "A. Financial gain", correct: false, explain: "Explanation not available." },
+            { text: "B. Espionage", correct: false, explain: "Explanation not available." },
+            { text: "C. Philosophical beliefs", correct: true, explain: "Explanation not available." },
+            { text: "D. Revenge", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 571,
+        q: "During a recent log review, an analyst discovers evidence of successful injection attacks. Which of the following will best address this issue?",
+        type: "single",
+        category: "4.1 Given a scenario, apply common security techniques to computing resources.",
+        answers: [
+            { text: "A. Authentication", correct: false, explain: "Explanation not available." },
+            { text: "B. Secure cookies", correct: false, explain: "Explanation not available." },
+            { text: "C. Static code analysis", correct: false, explain: "Explanation not available." },
+            { text: "D. Input validation", correct: true, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 572,
+        q: "Which of the following is the first step to secure a newly deployed server?",
+        type: "single",
+        category: "4.1 Given a scenario, apply common security techniques to computing resources.",
+        answers: [
+            { text: "A. Close unnecessary service ports.", correct: true, explain: "Explanation not available." },
+            { text: "B. Update the current version of the software.", correct: false, explain: "Explanation not available." },
+            { text: "C. Add the device to the ACL.", correct: false, explain: "Explanation not available." },
+            { text: "D. Upgrade the OS version.", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 573,
+        q: "A security analyst receives an alert that there was an attempt to download known malware. Which of the following actions would allow the best chance to analyze the malware?",
+        type: "single",
+        category: "4.8 Explain appropriate incident response activities.",
+        answers: [
+            { text: "A. Review the IPS logs and determine which command-and-control IPs were blocked.", correct: false, explain: "Explanation not available." },
+            { text: "B. Analyze application logs to see how the malware attempted to maintain persistence.", correct: false, explain: "Explanation not available." },
+            { text: "C. Run vulnerability scans to check for systems and applications that are vulnerable to the malware", correct: false, explain: "Explanation not available." },
+            { text: "D. Obtain and execute the malware in a sandbox environment and perform packet captures.", correct: true, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 574,
+        q: "Which of the following should be used to ensure a user has the permissions needed to effectively do an assigned job role?",
+        type: "single",
+        category: "2.5 Explain the purpose of mitigation techniques used to secure the enterprise.",
+        answers: [
+            { text: "A. Changing default passwords", correct: false, explain: "Explanation not available." },
+            { text: "B. Implementing least privilege", correct: true, explain: "Explanation not available." },
+            { text: "C. Enforcing baseline configurations", correct: false, explain: "Explanation not available." },
+            { text: "D. Applying network segmentation", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 575,
+        q: "An unexpected and out-of-character email message from a Chief Executive Officer's corporate account asked an employee to provide financial information and to change the recipient's contact number. Which of the following attack vectors is most likely being used?",
+        type: "single",
+        category: "2.2 Explain common threat vectors and attack surfaces.",
+        answers: [
+            { text: "A. Business email compromise", correct: true, explain: "Explanation not available." },
+            { text: "B. Phishing", correct: false, explain: "Explanation not available." },
+            { text: "C. Brand impersonation", correct: false, explain: "Explanation not available." },
+            { text: "D. Pretexting", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 576,
+        q: "Which of the following should an organization use to ensure that it can review the controls and performance of a service provider or vendor?",
+        type: "single",
+        category: "5.3 Explain the processes associated with third-party risk assessment and management.",
+        answers: [
+            { text: "A. Service-level agreement", correct: false, explain: "Explanation not available." },
+            { text: "B. Memorandum of agreement", correct: false, explain: "Explanation not available." },
+            { text: "C. Right-to-audit clause", correct: true, explain: "Explanation not available." },
+            { text: "D. Supply chain analysis", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 577,
+        q: "Which of the following is used to calculate the impact to an organization per cybersecurity incident?",
+        type: "single",
+        category: "5.2 Explain elements of the risk management process.",
+        answers: [
+            { text: "A. SLE", correct: true, explain: "Explanation not available." },
+            { text: "B. ALE", correct: false, explain: "Explanation not available." },
+            { text: "C. ARO", correct: false, explain: "Explanation not available." },
+            { text: "D. SLA", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 578,
+        q: "A retail company receives a request to remove a customer's data. Which of the following is the retail company considered under GDPR legislation?",
+        type: "single",
+        category: "5.4 Summarize elements of effective security compliance.",
+        answers: [
+            { text: "A. Data processor", correct: false, explain: "Explanation not available." },
+            { text: "B. Data controller", correct: true, explain: "Explanation not available." },
+            { text: "C. Data subject", correct: false, explain: "Explanation not available." },
+            { text: "D. Data custodian", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 579,
+        q: "An administrator implements web-filtering products but still sees that users are visiting malicious links. Which of the following configuration items does the security administrator need to review?",
+        type: "single",
+        category: "4.5 Given a scenario, modify enterprise capabilities to enhance security.",
+        answers: [
+            { text: "A. Intrusion prevention system", correct: false, explain: "Explanation not available." },
+            { text: "B. Content categorization", correct: true, explain: "Explanation not available." },
+            { text: "C. Encryption", correct: false, explain: "Explanation not available." },
+            { text: "D. DNS service", correct: false, explain: "Explanation not available." }
+        ]
+    },
+    {
+        id: 580,
+        q: "Which of the following security concepts is accomplished with the installation of a RADIUS server?",
+        type: "single",
+        category: "1.2 Summarize fundamental security concepts.",
+        answers: [
+            { text: "A. CIA", correct: false, explain: "Explanation not available." },
+            { text: "B. AAA", correct: true, explain: "Explanation not available." },
+            { text: "C. ACL", correct: false, explain: "Explanation not available." },
+            { text: "D. PEM", correct: false, explain: "Explanation not available." }
+        ]
+        },
+        {
+        id: 581,
+        q: `The security team has been asked to only enable host A (10.2.2.7) and host B (10.3.9.9) to the new isolated network segment (10.9.8.14) that provides access to legacy devices. Access from all other hosts should be blocked. Which of the following entries would need to be added on the firewall?`,
+        type: "single",
+        category: "3.2 Given a scenario, apply security principles to secure enterprise infrastructure.",
+        answers: [
+            { text: `A. <pre class="h6">
+            Permit 10.2.2.0/24 to 10.9.8.14/27
+            Permit 10.3.9.0/24 to 10.9.8.14/27
+            Deny 0.0.0.0/0 to 10.9.8.14/27</pre>`, correct: false, explain: "Explanation not available."},
+            { text: `B. <pre class="h6">
+            Deny 0.0.0.0/0 to 10.9.8.14/27
+            Permit 10.2.2.0/24 to 10.9.8.14/27
+            Permit 10.3.9.0/24 to 10.9.8.14/27
+            </pre>`, correct: false, explain: "Explanation not available."},
+            { text: `C. <pre class="h6">
+            Permit 10.2.2.7/24 to 10.9.8.14/27
+            Permit 10.3.9.9/24 to 10.9.8.14/27
+            Deny 0.0.0.0/0 to 10.9.8.14/27</pre>`, correct: true, explain: "Explanation not available."},
+            { text: `B. <pre class="h6">
+            Permit 10.2.2.7/24 to 10.9.8.14/27
+            Permit 10.3.9.0/24 to 10.9.8.14/27
+            Deny 10.9.8.14/27 to 0.0.0.0/0</pre>`, correct: false, explain: "Explanation not available."}
+        ]
+    },
+    {
+        id: 582,
+        q: `A security analyst is reviewing the following logs about a suspicious activity alert for a user's VPN log-ins: <br></br>
+        <pre class="h6">
+            Date        | Time     | Action  | SourceIP        | City-State-Country
+            2023-01-23  | 08:21:41 | Success | 207.414.201.19  | Chicago-IL-USA
+            2023-01-24  | 08:23:41 | Success | 207.414.201.19  | Chicago-IL-USA
+            2023-01-25  | 08:29:39 | Success | 207.414.201.19  | Chicago-IL-USA
+            2023-01-26  | 08:27:44 | Success | 207.414.201.19  | Chicago-IL-USA
+            2023-01-27  | 08:22:24 | Success | 207.414.201.19  | Chicago-IL-USA
+            2023-01-27  | 09:45:35 | Success | 185.17.106.237  | Rome-Italy
+            2023-01-27  | 09:47:55 | Success | 188.17.105.137  | Rome-Italy
+            2023-01-27  | 09:55:36 | Success | 207.414.201.19  | Chicago-IL-USA
+            2023-01-27  | 16:28:15 | Success | 207.414.201.19  | Chicago-IL-USA
+        </pre>
+        Which of the following malicious activity indicators triggered the alert?`,
+        type: "single",
+        category: "2.4 Given a scenario, analyze indicators of malicious activity.",
+        answers:  [
+            { text: "A. Impossible travel", correct: true, explain: "Explanation not available." },
+            { text: "B. Account lockout", correct: false, explain: "Explanation not available." },
+            { text: "C. Blocked content", correct: false, explain: "Explanation not available." },
+            { text: "D. Concurrent session usage", correct: false, explain: "Explanation not available." }
+        ]
     }
-];
+    ];
         
         allQuestions.forEach((q, index) => { q.displayId = `Q${index + 1}`; });
 
         let questions = [];
         let currentQ = 0;
 
-        // --- QUIZ SETUP & DYNAMIC UI ---
         function populateCategories() {
             const listEl = document.getElementById('category-list');
             let html = '';
@@ -6953,6 +7698,8 @@
                 setupEl.classList.remove('d-flex');
                 setupEl.classList.add('d-none');
                 quizEl.classList.remove('d-none');
+                document.querySelector('.progress').style.display = 'flex';
+                document.querySelector('.quiz-title').textContent = 'Security+ Practice Quiz';
                 
                 currentQ = 0;
                 renderQuiz();
@@ -6969,25 +7716,27 @@
             setupEl.classList.remove('d-none');
             setupEl.classList.add('d-flex');
         }
+
         function toggleAllCategories(button) {
-    const checkboxes = document.querySelectorAll('.category-checkbox');
-    // Determine the new state based on the button's current text
-    const shouldBeChecked = button.innerText === 'Select All';
+            const checkboxes = document.querySelectorAll('.category-checkbox');
+            const shouldBeChecked = button.innerText === 'Select All';
+            checkboxes.forEach(cb => {
+            cb.checked = shouldBeChecked;
+        });
 
-    checkboxes.forEach(cb => {
-        cb.checked = shouldBeChecked;
-    });
+        button.innerText = shouldBeChecked ? 'Deselect All' : 'Select All';
+        }
 
-    // Toggle the button's text for the next click
-    button.innerText = shouldBeChecked ? 'Deselect All' : 'Select All';
-}
-        // --- DYNAMIC UI RENDERING & UPDATES ---
         function renderQuiz() {
             renderSidebar();
             let html = '';
             if (!questions[currentQ]) return;
 
             const q = questions[currentQ];
+            const nextButtonHtml = currentQ === questions.length - 1
+                ? `<button class="nav-btn next" onclick="finishQuiz()">Finish</button>`
+                : `<button class="nav-btn next" onclick="nextQuestion()">Next</button>`;
+
             html += `<div class="quiz-card" id="questionCard${currentQ}">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-4">${q.displayId}: ${q.q}</h5>
@@ -6996,8 +7745,9 @@
                     </div>
                 </div>
                 <div>`;
+
             q.answers.forEach((answer, aIdx) => {
-                if (q.type === "multiple") {
+                if (q.type === "multi") {
                     const isSelected = q.selected.includes(aIdx);
                     html += `<div class="answer-option${isSelected ? ' selected' : ''}" onclick="selectAnswer(${aIdx}, true)">
                         <input type="checkbox" ${isSelected ? "checked" : ""} style="margin-right:10px;"/>${answer.text}
@@ -7009,10 +7759,11 @@
                     </div>`;
                 }
             });
+
             html += `</div>
                 <div class="nav-btns mt-4">
                     <button class="nav-btn prev" onclick="prevQuestion()" ${currentQ === 0 ? "disabled" : ""}>Previous</button>
-                    <button class="nav-btn next" onclick="nextQuestion()" ${currentQ === questions.length - 1 ? "disabled" : ""}>Next</button>
+                    ${nextButtonHtml}
                 </div>
             </div>`;
             document.getElementById('quizArea').innerHTML = html;
@@ -7050,7 +7801,6 @@
             bar.innerText = percent + "%";
         }
 
-        // --- QUIZ ACTIONS ---
         function selectAnswer(aIdx, isMulti) {
             let q = questions[currentQ];
             if (isMulti) {
@@ -7106,8 +7856,127 @@
             const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
             modalInstance.show();
         }
-        
-        // --- HELPER FUNCTIONS ---
+
+        function finishQuiz() {
+            const reportHtml = generateReport();
+            document.getElementById('quizArea').innerHTML = reportHtml;
+            document.querySelector('.progress').style.display = 'none';
+            document.querySelector('.quiz-title').textContent = 'Quiz Report';
+        }
+
+        function generateReport() {
+            const totalQuestions = questions.length;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let flaggedCount = 0;
+            const objectiveStats = {};
+
+            questions.forEach((q, index) => {
+                const category = q.category;
+                
+                if (!objectiveStats[category]) {
+                    objectiveStats[category] = { total: 0, correct: 0, incorrect: 0, flagged: 0 };
+                }
+
+                objectiveStats[category].total++;
+
+                if (isCorrect(index)) {
+                    correctCount++;
+                    objectiveStats[category].correct++;
+                } 
+
+                else if (isAnswered(q)) {
+                    incorrectCount++;
+                    objectiveStats[category].incorrect++;
+                }
+                
+                if (q.flagged) {
+                    flaggedCount++;
+                    objectiveStats[category].flagged++;
+                }
+            });
+
+            const overallPercentage = totalQuestions > 0 ? ((correctCount / totalQuestions) * 100).toFixed(1) : 0;
+
+            const reportData = {
+                overallStats: {
+                    totalQuestions: totalQuestions,
+                    correctCount: correctCount,
+                    incorrectCount: incorrectCount,
+                    flaggedCount: flaggedCount,
+                    overallPercentage: parseFloat(overallPercentage)
+                },
+                objectiveStats: objectiveStats
+            };
+
+            const jsonData = JSON.stringify(reportData, null, 2);
+            console.log(jsonData);
+
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'stats.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            let reportHtml = `<div class="quiz-card">`;
+            
+            reportHtml += `
+                <h4 class="mb-4">Overall Score</h4>
+                <div class="display-4 text-center mb-3" style="color: var(--sidebar-active);">${overallPercentage}%</div>
+                <div class="d-flex justify-content-around text-center mb-5">
+                    <div>
+                        <div class="fs-4 fw-bold text-success">${correctCount}</div>
+                        <div class="text-muted; color: white;">Correct</div>
+                    </div>
+                    <div>
+                        <div class="fs-4 fw-bold text-danger">${incorrectCount}</div>
+                        <div class="text-muted; color: white;">Incorrect</div>
+                    </div>
+                    <div>
+                        <div class="fs-4 fw-bold text-warning">${flaggedCount}</div>
+                        <div class="text-muted; color: white;">Flagged</div>
+                    </div>
+                </div>
+                <hr style="border-top: 1px solid #444;">
+            `;
+
+            reportHtml += `<h4 class="mt-5 mb-4">Breakdown by Objective</h4>`;
+
+            for (const category in objectiveStats) {
+                if (Object.hasOwnProperty.call(objectiveStats, category)) {
+                    const stats = objectiveStats[category];
+                    const { total, correct, incorrect, flagged } = stats;
+                    const correctPercent = total > 0 ? (correct / total) * 100 : 0;
+                    const incorrectPercent = total > 0 ? (incorrect / total) * 100 : 0;
+                    const flaggedPercent = total > 0 ? (flagged / total) * 100 : 0;
+
+                    reportHtml += `
+                        <div class="mb-4">
+                            <p class="mb-1"><strong>${category}</strong></p>
+                            <div class="d-flex justify-content-between small text-muted; color: white; mb-1">
+                                <span>Total: ${total}</span>
+                                <span>
+                                    <span class="text-success">Correct: ${correct} (${((correct/total)*100).toFixed(0)}%)</span> | 
+                                    <span class="text-danger">Incorrect: ${incorrect} (${((incorrect/total)*100).toFixed(0)}%)</span> |
+                                    <span class="text-warning">Flagged: ${flagged}</span>
+                                </span>
+                            </div>
+                            <div class="progress-bar-objective">
+                                <div class="progress-bar-correct" style="width: ${correctPercent}%" title="Correct: ${correctPercent.toFixed(1)}%"></div>
+                                <div class="progress-bar-incorrect" style="width: ${incorrectPercent}%" title="Incorrect: ${incorrectPercent.toFixed(1)}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            reportHtml += `</div>`;
+            return reportHtml;
+        }
+
         function isAnswered(q) {
             return q.selected && q.selected.length > 0;
         }
@@ -7125,7 +7994,6 @@
             }
         }
 
-        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', populateCategories);
 
     </script>

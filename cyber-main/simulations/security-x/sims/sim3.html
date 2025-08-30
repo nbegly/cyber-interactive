@@ -6,7 +6,6 @@
     <title>Sim 3: IPsec Configuration</title>
     <link rel="stylesheet" href="../../../assets/style.css">
     <style>
-        /* Sim-specific styles */
         #sim77-content {
             background-color: var(--bg-dark-secondary);
             padding: 1rem;
@@ -17,34 +16,99 @@
             font-family: monospace;
             overflow: hidden;
         }
+
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
         .ipsec-component {
             position: absolute;
             width: 150px;
             text-align: center;
             cursor: default;
         }
+
         .ipsec-component.clickable {
             cursor: pointer;
         }
-        .device-icon { width: 64px; height: 64px; margin-bottom: 5px; }
-        .device-icon .outline { stroke: #0f0; stroke-width: 1.5; fill: none; }
-        .device-icon .detail { stroke: #0f0; stroke-width: 1; }
-        .device-icon .lights { fill: #0f0; }
-        .ipsec-component .label { font-weight: bold; display: block; }
+
+        .device-icon { 
+            width: 64px; height: 64px; margin-bottom: 5px; 
+        }
+
+        .device-icon .outline { 
+            stroke: #0f0; stroke-width: 1.5; fill: none; 
+        }
+
+        .device-icon .detail { 
+            stroke: #0f0; stroke-width: 1; 
+        }
+
+        .device-icon .lights { 
+            fill: #0f0; 
+        }
+
+        .ipsec-component .label { 
+            font-weight: bold; display: block; 
+        }
         
-        /* Positioning */
-        #vpn-concentrator { top: 150px; left: 50px; }
-        #aaa-server { top: 350px; left: 200px; }
-        #enterprise-ca { top: 350px; left: 400px; }
-        #cloud { position: absolute; top: 50%; left: 50%; width: 400px; height: 200px; fill: darkslategray; }
-        #user1 { top: 20px; right: 200px; }
-        #user2 { top: 20px; right: 50px; }
-        #user3 { top: 300px; right: 200px; }
-        #user4 { top: 450px; right: 50px; }
-        
-        /* Modal Styles */
+        #vpn-concentrator { 
+            top: 150px; left: 50px; 
+        }
+
+        #aaa-server { 
+            top: 350px; left: 200px; 
+        }
+
+        #enterprise-ca { 
+            top: 350px; left: 400px; 
+        }
+
+        #cloud { 
+            position: absolute; top: 50%; left: 50%; width: 400px; height: 200px; fill: darkslategray; 
+        }
+
+        #user1 { 
+            top: 20px; right: 200px; 
+        }
+
+        #user2 { 
+            top: 20px; right: 50px; 
+        }
+
+        #user3 { 
+            top: 300px; right: 200px; 
+        }
+
+        #user4 { 
+            top: 450px; right: 50px; 
+        }
+                
         .config-modal {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
             z-index: 100;
             left: 0; top: 0;
@@ -53,6 +117,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .config-modal-content {
             background-color: #1e1e1e;
             color: #dcdcdc;
@@ -62,8 +127,15 @@
             width: 600px;
             padding: 1.5rem;
         }
-        .config-modal-content h4 { margin-top: 0; color: #1eff8e; }
-        .config-modal-content pre { white-space: pre-wrap; margin: 0; }
+
+        .config-modal-content h4 { 
+            margin-top: 0; color: #1eff8e; 
+        }
+
+        .config-modal-content pre { 
+            white-space: pre-wrap; margin: 0; 
+        }
+
         .config-modal-content select, .config-modal-content input {
             background: var(--bg-dark-tertiary);
             color: white;
@@ -74,7 +146,11 @@
             font-size: 1em;
             width: 250px;
         }
-        .config-modal-controls { margin-top: 1.5rem; text-align: right; }
+
+        .config-modal-controls { 
+            margin-top: 1.5rem; text-align: right; 
+        }
+
     </style>
 </head>
 <body>
@@ -196,7 +272,6 @@ eap {
     </div>
 
     <script>
-        // --- Shared Modal Logic ---
         const infoModal = document.getElementById("info-modal");
         const modalBody = document.getElementById("modal-body-content");
         function showInfoModal(message, isCentered = false) {
@@ -207,7 +282,6 @@ eap {
         function closeInfoModal() { infoModal.style.display = "none"; }
         infoModal.querySelector('.modal-close-btn').onclick = closeInfoModal;
         
-        // --- Sim-specific JavaScript ---
         const sim77 = {
             data: {
                 info: `An IPSec solution is being deployed. The configuration files for both the VPN concentrator and the AAA server are shown in the diagram.\n\nComplete the configuration files to meet the following requirements:\n• The EAP method must use mutual certificate-based authentication (with issued client certificates).\n• The IKEv2 cipher suite must be configured to the most secure authenticated mode of operation.\n• The secret must contain at least one uppercase character, one lowercase character, one numeric character, and one special character, and it must meet a minimum length requirement of eight characters.`,
@@ -223,23 +297,18 @@ eap {
                 ike: "", eap: "", vpnSecret: "", aaaSecret: ""
             },
             setup: function() {
-                // Reset state
                 this.state = { ike: "", eap: "", vpnSecret: "", aaaSecret: "" };
 
-                // Populate IKE dropdown
                 const ikeSelect = document.getElementById('ike-select');
                 ikeSelect.innerHTML = `<option value="" selected disabled>Select Suite</option>` + this.data.ikeOptions.map(o => `<option value="${o}">${o}</option>`).join('');
 
-                // Populate EAP dropdown
                 const eapSelect = document.getElementById('eap-select');
                 eapSelect.innerHTML = `<option value="" selected disabled>Select Type</option>` + this.data.eapOptions.map(o => `<option value="${o}">${o}</option>`).join('');
                 
-                // Clear secret fields
                 document.getElementById('vpn-secret').value = "";
                 document.getElementById('aaa-secret').value = "";
             },
             check: function() {
-                // Update state from form elements
                 this.state.ike = document.getElementById('ike-select').value;
                 this.state.eap = document.getElementById('eap-select').value;
                 this.state.vpnSecret = document.getElementById('vpn-secret').value;
@@ -249,13 +318,11 @@ eap {
                 let isCorrect = true;
                 let message = "";
 
-                // Check secrets first
                 if (this.state.vpnSecret !== this.state.aaaSecret) {
                     isCorrect = false;
                     message = "Incorrect. The shared secrets on the VPN Concentrator and AAA Server must match.";
                 } else if (this.state.vpnSecret !== correct.secret) {
                     isCorrect = false;
-                    // Check if it's just wrong or if it fails complexity
                     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
                     if (!regex.test(this.state.vpnSecret)) {
                         message = "Incorrect. The secret does not meet the minimum complexity requirements.";
@@ -264,7 +331,6 @@ eap {
                     }
                 }
 
-                // Check dropdowns if secrets are ok so far
                 if (isCorrect && (this.state.ike !== correct.ike || this.state.eap !== correct.eap)) {
                     isCorrect = false;
                     message = "Incorrect. Please review the cipher suite and EAP method selections.";
@@ -292,7 +358,6 @@ eap {
             }
         };
 
-        // Initialize the simulation
         document.addEventListener('DOMContentLoaded', () => {
             sim77.setup();
             sim77.initEventListeners();

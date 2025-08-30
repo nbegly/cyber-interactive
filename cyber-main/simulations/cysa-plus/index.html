@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security+ Simulation Hub</title>
+    <title>CySA+ Simulation Hub</title>
     <link rel="manifest" href="../../manifest.json">
     <link rel="stylesheet" href="../../assets/style.css">
     <style>
@@ -15,16 +15,23 @@
             gap: 1rem;
         }
 
+        @media (max-width: 768px) {
+            .list-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .list-group-item { 
             background-color: var(--bg-dark-tertiary); 
             border: 1px solid var(--border-color); 
-            padding: 1rem; 
+            padding: 1.5rem 1rem; 
             border-radius: 5px; 
             text-decoration: none; 
             color: var(--text-light); 
-            display: grid; 
+            display: block; 
             transition: background-color 0.2s; 
             text-align: center;
+            font-size: 1.1em;
         }
 
         .list-group-item:hover { 
@@ -38,42 +45,36 @@
             border-radius: 8px; 
             margin-bottom: 2rem; 
         }
-
+        
     </style>
 </head>
 <body>
     <div class="sim-container">
         <div class="jumbotron">
-            <h1 class="display-4">Security+ Simulation Application Hub</h1>
+            <h1 class="display-4">CySA+ Simulation Application Hub</h1>
             <p class="lead">Select a simulation from the list below to begin.</p>
         </div>
-                <div class="sim-top-bar">
+        </div>
+            <div class="sim-top-bar">
             <a href="../index.html" class="back-btn">Back to Simulations Menu</a>
             </button>
         </div>
         <ul class="list-group">
-            <li><a href="sims/sim1.html" class="list-group-item">Sim 1: Ports</a></li>
-            <li><a href="sims/sim2.html" class="list-group-item">Sim 2: Wireless Network Setup</a></li>
-            <li><a href="sims/sim3.html" class="list-group-item">Sim 3: Firewall Configuration</a></li>
-            <li><a href="sims/sim4.html" class="list-group-item">Sim 4: Identify and Remediate Attacks</a></li>
-            <li><a href="sims/sim5.html" class="list-group-item">Sim 5: Data Classification</a></li>
-            <li><a href="sims/sim6.html" class="list-group-item">Sim 6: Firewall Redundancy</a></li>
-            <li><a href="sims/sim7.html" class="list-group-item">Sim 7: Certificate Signing Request</a></li>
-            <li><a href="sims/sim8.html" class="list-group-item">Sim 8: Vulnerability Assessment</a></li>
-            <li><a href="sims/sim9.html" class="list-group-item">Sim 9: Identify the Compromise</a></li>
-            <li><a href="sims/sim10.html" class="list-group-item">Sim 10: Attack and Defense</a></li>
-            <li><a href="sims/sim11.html" class="list-group-item">Sim 11: Cloud Infrastructure Design</a></li>
-            <li><a href="sims/sim12.html" class="list-group-item">Sim 12: Malicious Attack Investigation</a></li>
-            <li><a href="sims/sim13.html" class="list-group-item">Sim 13: VPN Configuration</a></li>
-            <li><a href="sims/sim14.html" class="list-group-item">Sim 14: 99.9999% SLA Redundancy</a></li>
+            <li><a href="sims/sim1.html" class="list-group-item">Sim 1: Data Exfiltration Analysis</a></li>
+            <li><a href="sims/sim2.html" class="list-group-item">Sim 2: Vulnerability Remediation</a></li>
+            <li><a href="sims/sim3.html" class="list-group-item">Sim 3: Security Incident Analysis</a></li>
+            <li><a href="sims/sim4.html" class="list-group-item">Sim 4: Comprimise and Correction</a></li>
+            <li><a href="sims/sim5.html" class="list-group-item">Sim 5: Phishing Campaign Analysis</a></li>
         </ul>
     </div>
+
     <script>
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('../../sw.js')
                   .then(registration => {
-                  console.log('Service Worker registered! Scope: ', registration.scope);
+                    console.log('Service Worker registered! Scope: ', registration.scope);
                 })
                 .catch(err => {
                     console.error('Service worker registration failed.', err);

@@ -13,6 +13,7 @@
             grid-template-columns: 1fr;
             gap: 1rem;
         }
+
         .list-group-item { 
             background-color: var(--bg-dark-tertiary); 
             border: 1px solid var(--border-color); 
@@ -23,11 +24,13 @@
             display: grid; 
             transition: background-color 0.2s; 
             text-align: center;
-            cursor: pointer; /* Change cursor to indicate it's clickable */
+            cursor: pointer; 
         }
+
         .list-group-item:hover { 
             background-color: var(--accent-green-hover); 
         }
+
         .jumbotron { 
             text-align: center; 
             padding: 2rem; 
@@ -35,6 +38,11 @@
             border-radius: 8px; 
             margin-bottom: 2rem; 
         }
+
+        .sim-top-bar { 
+            margin-bottom: 2rem;
+        }
+        
     </style>
 </head>
 <body>
@@ -49,11 +57,10 @@
             </button>
         </div>
         <div class="list-group">
-            <a href="security-plus/index.html" class="list-group-item">Security+ Simulations</a>
-            <a href="linux-plus/index.html" class="list-group-item">Linux+ Simulations</a>
-            <a href="security-x/index.html" class="list-group-item">SecurityX Simulations</a>
-            <a href="net-plus/index.html" class="list-group-item">Network+ Simulations</a>
-
+            <a href="security-plus/index.html" class="list-group-item">CompTIA Security+ Simulations</a>
+            <a href="linux-plus/index.html" class="list-group-item">CompTIA Linux+ Simulations</a>
+            <a href="cysa-plus/index.html" class="list-group-item">CompTIA CySA+ Simulations</a>
+            <a href="security-x/index.html" class="list-group-item">CompTIA SecurityX Simulations</a>
         </div>
     </div>
 

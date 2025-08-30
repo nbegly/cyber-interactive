@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../../auth.js"></script>
     <meta charset="UTF-8">
     <title>Splunk Core Certified User Prep Quiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,33 +8,30 @@
     <link rel="manifest" href="../../manifest.json">
     
     <style>
-        /* --- NEW CSS FOR THE BUTTON --- */
         .top-right-nav {
             position: fixed;
             top: 15px;
             right: 15px;
-            z-index: 1060; /* Ensures it's above all other elements */
+            z-index: 1060;
         }
 
-        /* Permanent Green-on-Black Theme Variables */
         :root {
             --main-bg: #121212;
             --card-bg: #1e1e1e;
             --text-color: #e0e0e0;
             --sidebar-bg: #1a1a1a;
-            --sidebar-active: #4CAF50; /* Green */
+            --sidebar-active: #4CAF50;
             --sidebar-text: #e0e0e0;
             --answer-bg: #2c2c2c;
-            --answer-active: #388E3C; /* Darker Green */
-            --btn-next: #4CAF50; /* Green */
+            --answer-active: #388E3C;
+            --btn-next: #4CAF50; 
             --btn-prev: #2c2c2c;
             --btn-next-text: #fff;
             --modal-bg: #2c2c2c;
             --modal-header-bg: #1e1e1e;
-            --progress-bar-bg: #4CAF50; /* Green */
+            --progress-bar-bg: #4CAF50;
         }
 
-        /* General Body Styling */
         body {
             background: var(--main-bg);
             color: var(--text-color);
@@ -43,7 +39,6 @@
             min-height: 100vh;
         }
 
-        /* Other existing styles... */
         .quiz-sidebar {
             background: var(--sidebar-bg);
             border-radius: 18px;
@@ -83,14 +78,14 @@
         }
 
         .quiz-sidebar .sidebar-btn.flagged {
-              border-left: 5px solid #ffab40;
-              background: #59442b;
-               color: #f5e9e2;
+            border-left: 5px solid #ffab40;
+            background: #59442b;
+            color: #f5e9e2;
         }
         
         #quizContainer {
-    height: 100vh;
-}
+            height: 100vh;
+        }
 
         .reset-quiz-container {
             position: sticky;
@@ -124,8 +119,7 @@
             letter-spacing: 1px;
         }
         
-        .quiz-card,
-#quizSetup .card {
+        .quiz-card, #quizSetup .card {
             border-radius: 18px;
             background: var(--card-bg);
             border: 1px solid #2c2c2c;
@@ -148,11 +142,11 @@
             padding: 10px;
         }
 
-#sidebarList {
-    flex-grow: 1; /* Allows this element to take up the available vertical space */
-    overflow-y: auto; /* Adds a scrollbar only when the content overflows */
-    margin-bottom: 1rem; /* Adds some space above the reset button container */
-}
+        #sidebarList {
+            flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bottom: 1rem; 
+        }
 
         .answer-option {
             border-radius: 10px;
@@ -220,23 +214,37 @@
         }
 
         .back-btn {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: var(--sidebar-active); /* Uses your green theme color */
-    color: #fff;
-    text-decoration: none; /* Removes the underline */
-    border-radius: 5px;
-    font-weight: 500;
-    border: none;
-}
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #34495e; 
+            color: #fff;
+            text-decoration: none; 
+            border-radius: 5px;
+            font-weight: 500;
+            border: none;
+        }
 
-.back-btn:hover {
-    opacity: 0.9;
-    color: #fff;
-}
+        .back-btn:hover {
+            opacity: 0.9;
+            color: #fff;
+        }
+
         .btn-close {
             filter: invert(1) grayscale(100%) brightness(200%);
         }
+
+        .progress-bar-objective {
+            display: flex;
+            height: 1.2rem;
+            overflow: hidden;
+            background-color: #3e3e3e;
+            border-radius: .375rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+        }
+        .progress-bar-correct { background-color: #4CAF50; }
+        .progress-bar-incorrect { background-color: #dc3545; } 
+        .progress-bar-flagged { background-color: #ffc107; } 
+
     </style>
 </head>
 <body>
@@ -260,7 +268,7 @@
 
                 <div class="mb-3">
                     <label for="numQuestions" class="form-label">Number of Questions: (max 207)</label>
-                    <input type="number" class="form-control" id="numQuestions" value="10" min="1">
+                    <input type="number" class="form-control" id="numQuestions" value="25" min="1">
                 </div>
 
                 <div class="form-check mb-4">
@@ -295,7 +303,7 @@
                     <div class="progress mb-4" style="height: 16px; background-color: #444; width: 100vh;">
                         <div class="progress-bar" id="progressBar" style="width: 0%;">0%</div>
                     </div>
-                    <div id="quizArea" style="width:100%;"></div>
+                    <div id="quizArea" style="width:100%; overflow-wrap: break-word;"></div>
                 </div>
             </div>
         </div>
@@ -312,7 +320,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
@@ -2748,12 +2755,12 @@
         ]
     },
 ];
-    allQuestions.forEach((q, index) => { q.displayId = `Q${index + 1}`; });
+        
+        allQuestions.forEach((q, index) => { q.displayId = `Q${index + 1}`; });
 
         let questions = [];
         let currentQ = 0;
 
-        // --- QUIZ SETUP & DYNAMIC UI ---
         function populateCategories() {
             const listEl = document.getElementById('category-list');
             let html = '';
@@ -2800,6 +2807,8 @@
                 setupEl.classList.remove('d-flex');
                 setupEl.classList.add('d-none');
                 quizEl.classList.remove('d-none');
+                document.querySelector('.progress').style.display = 'flex';
+                document.querySelector('.quiz-title').textContent = 'Splunk Core Certified User Practice Quiz';
                 
                 currentQ = 0;
                 renderQuiz();
@@ -2816,25 +2825,27 @@
             setupEl.classList.remove('d-none');
             setupEl.classList.add('d-flex');
         }
+
         function toggleAllCategories(button) {
-    const checkboxes = document.querySelectorAll('.category-checkbox');
-    // Determine the new state based on the button's current text
-    const shouldBeChecked = button.innerText === 'Select All';
+            const checkboxes = document.querySelectorAll('.category-checkbox');
+            const shouldBeChecked = button.innerText === 'Select All';
+            checkboxes.forEach(cb => {
+            cb.checked = shouldBeChecked;
+        });
 
-    checkboxes.forEach(cb => {
-        cb.checked = shouldBeChecked;
-    });
+        button.innerText = shouldBeChecked ? 'Deselect All' : 'Select All';
+        }
 
-    // Toggle the button's text for the next click
-    button.innerText = shouldBeChecked ? 'Deselect All' : 'Select All';
-}
-        // --- DYNAMIC UI RENDERING & UPDATES ---
         function renderQuiz() {
             renderSidebar();
             let html = '';
             if (!questions[currentQ]) return;
 
             const q = questions[currentQ];
+            const nextButtonHtml = currentQ === questions.length - 1
+                ? `<button class="nav-btn next" onclick="finishQuiz()">Finish</button>`
+                : `<button class="nav-btn next" onclick="nextQuestion()">Next</button>`;
+
             html += `<div class="quiz-card" id="questionCard${currentQ}">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-4">${q.displayId}: ${q.q}</h5>
@@ -2843,6 +2854,7 @@
                     </div>
                 </div>
                 <div>`;
+
             q.answers.forEach((answer, aIdx) => {
                 if (q.type === "multiple") {
                     const isSelected = q.selected.includes(aIdx);
@@ -2856,10 +2868,11 @@
                     </div>`;
                 }
             });
+
             html += `</div>
                 <div class="nav-btns mt-4">
                     <button class="nav-btn prev" onclick="prevQuestion()" ${currentQ === 0 ? "disabled" : ""}>Previous</button>
-                    <button class="nav-btn next" onclick="nextQuestion()" ${currentQ === questions.length - 1 ? "disabled" : ""}>Next</button>
+                    ${nextButtonHtml}
                 </div>
             </div>`;
             document.getElementById('quizArea').innerHTML = html;
@@ -2897,7 +2910,6 @@
             bar.innerText = percent + "%";
         }
 
-        // --- QUIZ ACTIONS ---
         function selectAnswer(aIdx, isMulti) {
             let q = questions[currentQ];
             if (isMulti) {
@@ -2953,8 +2965,127 @@
             const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
             modalInstance.show();
         }
-        
-        // --- HELPER FUNCTIONS ---
+
+        function finishQuiz() {
+            const reportHtml = generateReport();
+            document.getElementById('quizArea').innerHTML = reportHtml;
+            document.querySelector('.progress').style.display = 'none';
+            document.querySelector('.quiz-title').textContent = 'Quiz Report';
+        }
+
+        function generateReport() {
+            const totalQuestions = questions.length;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let flaggedCount = 0;
+            const objectiveStats = {};
+
+            questions.forEach((q, index) => {
+                const category = q.category;
+                
+                if (!objectiveStats[category]) {
+                    objectiveStats[category] = { total: 0, correct: 0, incorrect: 0, flagged: 0 };
+                }
+
+                objectiveStats[category].total++;
+
+                if (isCorrect(index)) {
+                    correctCount++;
+                    objectiveStats[category].correct++;
+                } 
+
+                else if (isAnswered(q)) {
+                    incorrectCount++;
+                    objectiveStats[category].incorrect++;
+                }
+                
+                if (q.flagged) {
+                    flaggedCount++;
+                    objectiveStats[category].flagged++;
+                }
+            });
+
+            const overallPercentage = totalQuestions > 0 ? ((correctCount / totalQuestions) * 100).toFixed(1) : 0;
+
+            const reportData = {
+                overallStats: {
+                    totalQuestions: totalQuestions,
+                    correctCount: correctCount,
+                    incorrectCount: incorrectCount,
+                    flaggedCount: flaggedCount,
+                    overallPercentage: parseFloat(overallPercentage)
+                },
+                objectiveStats: objectiveStats
+            };
+
+            const jsonData = JSON.stringify(reportData, null, 2);
+            console.log(jsonData);
+
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'stats.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            let reportHtml = `<div class="quiz-card">`;
+            
+            reportHtml += `
+                <h4 class="mb-4">Overall Score</h4>
+                <div class="display-4 text-center mb-3" style="color: var(--sidebar-active);">${overallPercentage}%</div>
+                <div class="d-flex justify-content-around text-center mb-5">
+                    <div>
+                        <div class="fs-4 fw-bold text-success">${correctCount}</div>
+                        <div class="text-muted; color: white;">Correct</div>
+                    </div>
+                    <div>
+                        <div class="fs-4 fw-bold text-danger">${incorrectCount}</div>
+                        <div class="text-muted; color: white;">Incorrect</div>
+                    </div>
+                    <div>
+                        <div class="fs-4 fw-bold text-warning">${flaggedCount}</div>
+                        <div class="text-muted; color: white;">Flagged</div>
+                    </div>
+                </div>
+                <hr style="border-top: 1px solid #444;">
+            `;
+
+            reportHtml += `<h4 class="mt-5 mb-4">Breakdown by Objective</h4>`;
+
+            for (const category in objectiveStats) {
+                if (Object.hasOwnProperty.call(objectiveStats, category)) {
+                    const stats = objectiveStats[category];
+                    const { total, correct, incorrect, flagged } = stats;
+                    const correctPercent = total > 0 ? (correct / total) * 100 : 0;
+                    const incorrectPercent = total > 0 ? (incorrect / total) * 100 : 0;
+                    const flaggedPercent = total > 0 ? (flagged / total) * 100 : 0;
+
+                    reportHtml += `
+                        <div class="mb-4">
+                            <p class="mb-1"><strong>${category}</strong></p>
+                            <div class="d-flex justify-content-between small text-muted; color: white; mb-1">
+                                <span>Total: ${total}</span>
+                                <span>
+                                    <span class="text-success">Correct: ${correct} (${((correct/total)*100).toFixed(0)}%)</span> | 
+                                    <span class="text-danger">Incorrect: ${incorrect} (${((incorrect/total)*100).toFixed(0)}%)</span> |
+                                    <span class="text-warning">Flagged: ${flagged}</span>
+                                </span>
+                            </div>
+                            <div class="progress-bar-objective">
+                                <div class="progress-bar-correct" style="width: ${correctPercent}%" title="Correct: ${correctPercent.toFixed(1)}%"></div>
+                                <div class="progress-bar-incorrect" style="width: ${incorrectPercent}%" title="Incorrect: ${incorrectPercent.toFixed(1)}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            reportHtml += `</div>`;
+            return reportHtml;
+        }
+
         function isAnswered(q) {
             return q.selected && q.selected.length > 0;
         }
@@ -2972,9 +3103,8 @@
             }
         }
 
-        // --- INITIALIZATION ---
-       document.addEventListener('DOMContentLoaded', populateCategories);
-       
+        document.addEventListener('DOMContentLoaded', populateCategories);
+
     </script>
 </body>
 </html>

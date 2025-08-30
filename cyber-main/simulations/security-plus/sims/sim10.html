@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 10: Attack and Defense</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .attack-sim-container { 
+            display: flex; 
+            gap: 20px; 
+            background-color: var(--bg-dark-secondary); 
+            padding: 20px; 
+            border-radius: 8px; 
+            flex-wrap: nowrap;
+            margin-top: 20px;
+        }
+
+        .attack-sim-left-panel { 
+            flex: 1; 
+            min-width: 220px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+        }
+
+        .attack-sim-right-panel { 
+            flex: 4; 
+            min-width: 600px; 
+            background-color: var(--bg-dark-main); 
+            border-radius: 5px; 
+            position: relative; 
+            min-height: 450px; 
+        }
+
+        #line-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .palette, .attack-type-selection { 
+            padding: 15px; 
+            background-color: var(--bg-dark-tertiary); 
+            border-radius: 8px; 
+        }
+
+        .palette h4, .attack-type-selection h4 { 
+            margin-top: 0; 
+            color: var(--accent-green); 
+        }
+
+        .palette-items { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            min-height: 100px; 
+        }
+
+        .draggable { 
+            background-color: var(--interactive-blue); 
+            color: white; 
+            padding: 8px 12px; 
+            border-radius: 4px; 
+            cursor: grab; 
+            user-select: none; 
+            text-align: center; 
+            width: 180px; 
+            box-sizing: border-box; 
+        }
+
+        .draggable:hover { 
+            background-color: var(--interactive-blue-hover); 
+        }
+
+        .draggable.dragging { 
+            opacity: 0.5; 
+        }
+
+        .diagram-item { 
+            position: absolute; 
+            text-align: center; 
+            color: var(--accent-green); 
+            z-index: 1;
+        }
+
+        .diagram-item .icon svg { 
+            width: 48px;
+            height: 48px;
+            fill: currentColor;
+            margin-bottom: 5px;
+        }
+
+        .diagram-item .label { 
+            font-size: 0.8rem; 
+            color: var(--text-light);
+        }
+
+        #icon-attacker { 
+            top: 40%; left: 3%; cursor: pointer; 
+        } 
+
+        #icon-internet { 
+            top: 40%; left: 15%; 
+        } 
+
+        #icon-firewall { 
+            top: 40%; left: 28%; 
+        }
+
+        #icon-switch-a { 
+            top: 20%; left: 45%; 
+        } 
+
+        #icon-switch-b { 
+            top: 60%; left: 45%; 
+        }
+
+        #icon-web-server { 
+            top: 10%; left: 65%; 
+        } 
+
+        #icon-database { 
+            top: 30%; left: 65%; 
+        } 
+
+        #icon-source-code { 
+            top: 50%; left: 65%; 
+        }
+
+        #icon-crm-server { 
+            top: 70%; left: 65%; 
+        }
+
+        .drop-zone { 
+            position: absolute; 
+            border: 2px dashed var(--border-color); 
+            border-radius: 4px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 5px; 
+            padding: 5px; 
+            background-color: rgba(42, 42, 42, 0.7); 
+            z-index: 10; 
+            width: 120px; 
+            min-height: 80px; 
+        }
+
+        .drop-zone.drag-over { 
+            border-color: var(--accent-green); 
+            background-color: rgba(42, 42, 42, 0.9); 
+        }
+
+        .drop-zone .draggable { 
+            font-size: 0.7em; 
+            padding: 3px 6px; 
+            width: 100px; 
+        }
+
+        #dz-web_server { 
+            top: 8%; left: 82%; 
+        } 
+
+        #dz-database { 
+            top: 28%; left: 82%; 
+        } 
+
+        #dz-source_code { 
+            top: 48%; left: 82%; 
+        } 
+
+        #dz-crm_server { 
+            top: 68%; left: 82%; 
+        }
+        
+        .browser-modal-header { 
+            display: flex; align-items: center; padding: 10px; background-color: var(--bg-dark-tertiary); border-bottom: 1px solid var(--border-color); 
+        }
+
+        .browser-dots { 
+            display: flex; 
+        }
+
+        .browser-dots span { 
+            height: 12px; width: 12px; margin: 0 4px; border-radius: 50%; 
+        }
+
+        .dot-red { 
+            background-color: #ff5f56; 
+        }
+
+        .dot-yellow { 
+            background-color: #ffbd2e; 
+        }
+
+        .dot-green { 
+            background-color: #27c93f; 
+        }
+
+        .browser-url-bar { 
+            flex-grow: 1; background-color: var(--bg-dark-main); color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; padding: 5px 10px; margin: 0 10px; font-family: monospace; font-size: 0.9em; 
+        }
+
+        .browser-modal-body { 
+            padding: 20px; 
+        }
+
+        .attack-modal-tabs { 
+            display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; 
+        }
+
+        .attack-modal-tabs button { 
+            padding: 10px 15px; cursor: pointer; background-color: transparent; border: none; color: var(--text-light); border-bottom: 3px solid transparent; 
+        }
+
+        .attack-modal-tabs button.active { 
+            border-bottom-color: var(--accent-green); font-weight: bold; 
+        }
+
+        .attack-modal-content { 
+            display: none; 
+        }
+
+        .attack-modal-content.active { 
+            display: block; 
+        }
+
+        .login-form-container { 
+            padding: 20px; background-color: var(--bg-dark-secondary); border-radius: 5px; 
+        }
+
+        .login-form-container h4 { 
+            text-align: center; margin-top: 0; margin-bottom: 20px; color: var(--text-light); 
+        }
+
+        .form-group { 
+            margin-bottom: 15px; display: flex; align-items: center; 
+        }
+
+        .form-group label { 
+            width: 80px; color: var(--text-light); 
+        }
+
+        .form-group input { 
+            flex-grow: 1; padding: 8px; background-color: var(--bg-dark-main); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light); font-family: monospace; 
+        }
+
+        .submit-query-btn { 
+            display: block; width: 150px; margin: 20px auto 0 auto; padding: 10px; background-color: #6c757d; color: #ccc; border: 1px solid var(--border-color); border-radius: 4px; cursor: not-allowed; 
+        }
+
+        .response-content h1 { 
+            font-size: 1.2em; color: var(--text-light); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 10: Attack and Defense</h3>
+        <div class="attack-sim-container">
+            <div class="attack-sim-left-panel">
+                <div class="palette">
+                    <h4>Drag & Drop Controls</h4>
+                    <div id="sim10-palette" class="palette-items"></div>
+                </div>
+                <div class="attack-type-selection">
+                    <h4>Select the type of attack</h4>
+                    <div id="sim10-attack-types"></div>
+                </div>
+            </div>
+            <div class="attack-sim-right-panel">
+                <canvas id="line-canvas"></canvas>
+                <div id="icon-attacker" class="diagram-item"></div>
+                <div id="icon-internet" class="diagram-item"></div>
+                <div id="icon-firewall" class="diagram-item"></div>
+                <div id="icon-switch-a" class="diagram-item"></div>
+                <div id="icon-switch-b" class="diagram-item"></div>
+                <div id="icon-web-server" class="diagram-item"></div>
+                <div id="icon-database" class="diagram-item"></div>
+                <div id="icon-source-code" class="diagram-item"></div>
+                <div id="icon-crm-server" class="diagram-item"></div>
+                <div id="dz-web_server" class="drop-zone" data-id="web_server"></div>
+                <div id="dz-database" class="drop-zone" data-id="database"></div>
+                <div id="dz-source_code" class="drop-zone" data-id="source_code"></div>
+                <div id="dz-crm_server" class="drop-zone" data-id="crm_server"></div>
+            </div>
+        </div>
+        <div class="sim-controls">
+            <div></div>
+            <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = true, options = {}) {
+            modalBody.innerHTML = '';
+            modal.querySelector('.modal-content').style.padding = options.isBrowserStyle ? '0' : '30px';
+            if (typeof content === 'string') {
+                const p = document.createElement('p');
+                p.style.whiteSpace = 'pre-wrap';
+                p.textContent = content;
+                modalBody.appendChild(p);
+            } else {
+                modalBody.appendChild(content);
+            }
+            if (!options.isBrowserStyle) {
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'modal-close-btn';
+                closeButton.onclick = closeModal;
+                modalBody.appendChild(closeButton);
+            }
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { modal.style.display = "none"; }
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim10 = {
+            data: {
+                info: `SIMULATION\nAn attack has occurred against a company.\n\nINSTRUCTIONS\nYou have been tasked to do the following:\n     Identify the type of attack that is occurring on the network by clicking on the attacker's tablet and reviewing\n       the output.\n     Identify which compensating controls a developer should implement on the assets, in order to reduce the\n       effectiveness of future attacks by dragging them to the correct server.\n\nAll objects will be used, but not all placeholders may be filled. Objects may only be used once.\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.`,
+                draggableItems: ["Input Validation", "Code Review", "WAF", "URL Filtering", "Record Level Access control"],
+                attackTypes: ["SQL Injection", "Rootkit", "Cross-Site Scripting (XSS)", "Directory Traversal"],
+                correctAnswers: {
+                    attackType: "SQL Injection",
+                    dropzones: {
+                        source_code: ["Code Review"],
+                        web_server: ["WAF", "URL Filtering"],
+                        database: ["Input Validation"],
+                        crm_server: ["Record Level Access control"]
+                    }
+                },
+                icons: {
+                    attacker: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M17,1H7A2,2 0 0,0 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1M17,19H7V5H17V19Z"/></svg></div><div class="label">Attacker</div>',
+                    internet: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg></div><div class="label">Internet</div>',
+                    firewall: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M21,9V7H2V9H21M21,13V11H2V13H21M21,17V15H2V17H21M2,3H21A2,2 0 0,1 23,5V19A2,2 0 0,1 21,21H2A2,2 0 0,1 0,19V5A2,2 0 0,1 2,3Z"/></svg></div><div class="label">Firewall</div>',
+                    switch: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M16,4H8A4,4 0 0,0 4,8V16A4,4 0 0,0 8,20H16A4,4 0 0,0 20,16V8A4,4 0 0,0 16,4M10.5,16.5L6.5,12.5L10.5,8.5L11.91,9.91L9.33,12.5L11.91,15.09L10.5,16.5M17.5,15.09L14.91,12.5L17.5,9.91L16.09,8.5L12.09,12.5L16.09,16.5L17.5,15.09Z"/></svg></div>',
+                    webServer: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M15,21H9V20H15V21M17,2H7A2,2 0 0,0 5,4V17A2,2 0 0,0 7,19H17A2,2 0 0,0 19,17V4A2,2 0 0,0 17,2M17,17H7V4H17V17Z"/></svg></div><div class="label">Web Server</div>',
+                    database: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M4,9V12C4,14.21 7.58,16 12,16C16.42,16 20,14.21 20,12V9C20,11.21 16.42,13 12,13C7.58,13 4,11.21 4,9M4,14V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V14C20,16.21 16.42,18 12,18C7.58,18 4,16.21 4,14Z"/></svg></div><div class="label">Database</div>',
+                    sourceCode: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z"/></svg></div><div class="label">Source Code</div>',
+                    crmServer: '<div class="icon"><svg viewBox="0 0 24 24"><path d="M20,18H4V8H20M20,6H4A2,2 0 0,0 2,8V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8A2,2 0 0,0 20,6M18,10H6V12H18V10M18,14H6V16H18V14Z"/></svg></div><div class="label">CRM Server</div>'
+                }
+            },
+            setup: function() {
+                const palette = document.getElementById('sim10-palette');
+                palette.innerHTML = '';
+                this.data.draggableItems.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'draggable';
+                    el.textContent = item;
+                    el.draggable = true;
+                    el.dataset.value = item;
+                    el.id = `sim10-drag-${item.replace(/\s+/g, '')}`;
+                    palette.appendChild(el);
+                });
+
+                const attackTypesContainer = document.getElementById('sim10-attack-types');
+                attackTypesContainer.innerHTML = '';
+                this.data.attackTypes.forEach(type => {
+                    attackTypesContainer.innerHTML += `<label><input type="radio" name="attack-type" value="${type}"> ${type}</label><br>`;
+                });
+                
+                document.querySelectorAll('.drop-zone').forEach(dz => dz.innerHTML = '');
+
+                document.getElementById('icon-attacker').innerHTML = this.data.icons.attacker;
+                document.getElementById('icon-internet').innerHTML = this.data.icons.internet;
+                document.getElementById('icon-firewall').innerHTML = this.data.icons.firewall;
+                document.getElementById('icon-switch-a').innerHTML = this.data.icons.switch + '<div class="label">Switch A</div>';
+                document.getElementById('icon-switch-b').innerHTML = this.data.icons.switch + '<div class="label">Switch B</div>';
+                document.getElementById('icon-web-server').innerHTML = this.data.icons.webServer;
+                document.getElementById('icon-database').innerHTML = this.data.icons.database;
+                document.getElementById('icon-source-code').innerHTML = this.data.icons.sourceCode;
+                document.getElementById('icon-crm-server').innerHTML = this.data.icons.crmServer;
+
+                let draggedItem = null;
+                document.addEventListener('dragstart', (e) => {
+                    if (e.target.classList.contains('draggable') && e.target.id.startsWith('sim10-drag')) {
+                        draggedItem = e.target;
+                        setTimeout(() => e.target.classList.add('dragging'), 0);
+                    }
+                });
+                document.addEventListener('dragend', (e) => {
+                    if (draggedItem) {
+                        draggedItem.classList.remove('dragging');
+                        draggedItem = null;
+                    }
+                });
+                
+                document.querySelectorAll('.drop-zone, .palette-items').forEach(target => {
+                    target.addEventListener('dragover', e => { e.preventDefault(); if(draggedItem) target.classList.add('drag-over'); });
+                    target.addEventListener('dragleave', e => target.classList.remove('drag-over'));
+                    target.addEventListener('drop', e => {
+                        e.preventDefault();
+                        target.classList.remove('drag-over');
+                        if (draggedItem) {
+                            target.appendChild(draggedItem);
+                        }
+                    });
+                });
+                
+                document.getElementById('icon-attacker').onclick = () => this.showAttackerTabletModal();
+                this.drawLines();
+            },
+            drawLines: function() {
+                const canvas = document.getElementById('line-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const container = document.querySelector('.attack-sim-right-panel');
+                if (!container) return;
+
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+                ctx.lineWidth = 2;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+              
+                drawLineWithArrow(85, 225, 150, 225); 
+                drawLineWithArrow(250, 225, 285, 225);
+                drawLineWithArrow(250, 225, 220, 225);
+                drawLineWithArrow(400, 172, 475, 124);
+                drawLineWithArrow(400, 172, 355, 200);
+                drawLineWithArrow(400, 277, 475, 325);
+                drawLineWithArrow(400, 277, 355, 250);
+                drawLineWithArrow(610, 95, 700, 75);
+                drawLineWithArrow(610, 95, 535, 110);
+                drawLineWithArrow(610, 154, 695, 170);
+                drawLineWithArrow(610, 154, 535, 140);
+                drawLineWithArrow(610, 290, 695, 275);
+                drawLineWithArrow(610, 290, 535, 305);
+                drawLineWithArrow(615, 357, 695, 375);
+                drawLineWithArrow(615, 357, 535, 340);
+
+                function drawLineWithArrow(x1, y1, x2, y2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                    const angle = Math.atan2(y2 - y1, x2 - x1);
+                    const size = 8;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.translate(x2, y2);
+                    ctx.rotate(angle);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-size, -size / 2);
+                    ctx.lineTo(-size, size / 2);
+                    ctx.closePath();
+                    ctx.fillStyle = ctx.strokeStyle;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            },
+            showAttackerTabletModal: function() {
+                const modalBody = document.createElement('div');
+                const responseHeader = `<h1>Welcome to your online games. Thanks for logging in.</h1>`;
+                const responseTable = `<-- Dumping user table: -->\nuser, cookie-id, login-time\npete,12351235adf89866eaf,2012-03-21 15:34:34\nmatt,efda838a8321ff23213,2012-03-21 15:37:34\nsara,123e13afd358fa7499d,2012-03-21 15:39:34`;
+                
+                modalBody.innerHTML = `
+                    <div class="browser-modal-header">
+                        <div class="browser-dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+                        <div class="browser-url-bar">http://companysetup.example.com/games/login.aspx...</div>
+                    </div>
+                    <div class="browser-modal-body">
+                        <div class="attack-modal-tabs">
+                            <button class="tab-btn active" data-tab="request">Request</button>
+                            <button class="tab-btn" data-tab="response">Response</button>
+                        </div>
+                        <div id="request" class="attack-modal-content active">
+                            <div class="login-form-container">
+                                <h4>Please log in to access your online games.</h4>
+                                <div class="form-group"><label for="fake-user">Login:</label><input type="text" id="fake-user" value="' or 1=1 --" disabled></div>
+                                <div class="form-group"><label for="fake-pass">Password:</label><input type="password" id="fake-pass" value="password" disabled></div>
+                                <button class="submit-query-btn" disabled>Submit Query</button>
+                            </div>
+                        </div>
+                        <div id="response" class="attack-modal-content">
+                            <div class="response-content">${responseHeader}<pre>${responseTable}</pre></div>
+                        </div>
+                        <button class="modal-close-btn" onclick="closeModal()">Close</button>
+                    </div>`;
+                
+                modalBody.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.onclick = (e) => {
+                        modalBody.querySelectorAll('.attack-modal-content').forEach(tc => tc.classList.remove('active'));
+                        modalBody.querySelectorAll('.attack-modal-tabs .tab-btn').forEach(tb => tb.classList.remove('active'));
+                        modalBody.querySelector(`#${e.target.dataset.tab}`).classList.add('active');
+                        e.target.classList.add('active');
+                    };
+                });
+
+                showModal(modalBody, false, { isBrowserStyle: true });
+            },
+            check: function() {
+                let correctDropzones = 0;
+                const totalDropzones = Object.keys(this.data.correctAnswers.dropzones).length;
+
+                for (const dzId in this.data.correctAnswers.dropzones) {
+                    const dropzone = document.getElementById(`dz-${dzId}`);
+                    const droppedItems = Array.from(dropzone.children).map(child => child.dataset.value).sort();
+                    const correctItems = [...this.data.correctAnswers.dropzones[dzId]].sort();
+
+                    if (JSON.stringify(droppedItems) === JSON.stringify(correctItems)) {
+                        correctDropzones++;
+                    }
+                }
+
+                const selectedAttackType = document.querySelector('input[name="attack-type"]:checked');
+                const isAttackTypeCorrect = selectedAttackType && selectedAttackType.value === this.data.correctAnswers.attackType;
+
+                if (correctDropzones === totalDropzones && isAttackTypeCorrect) {
+                    showModal("Correct! All compensating controls are placed correctly and the attack type is identified.", true);
+                } else {
+                    let feedback = "Incorrect. Please review your selections.\n\n";
+                    feedback += `- Attack Type selection is ${isAttackTypeCorrect ? 'correct' : 'incorrect'}.\n`;
+                    feedback += `- You have correctly configured ${correctDropzones} out of ${totalDropzones} asset control groups.`;
+                    showModal(feedback, false);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim10.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim10.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim10.setup());
+            document.getElementById('infoBtn').onclick = () => {
+                showModal(sim10.data.info, false);
+            };
+            window.addEventListener('resize', () => sim10.drawLines());
+        });
+    </script>
+</body>
+</html>

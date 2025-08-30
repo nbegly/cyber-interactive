@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 1: Data Exfiltration Analysis</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        body {
+            background-color: var(--bg-dark-main);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sim-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--bg-dark-secondary);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .tabs { 
+            display: flex; 
+            border-bottom: 1px solid var(--border-color); 
+            margin-bottom: 15px; 
+            flex-wrap: wrap;
+        }
+
+        .tab-btn { 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            background-color: transparent; 
+            border: none; 
+            color: var(--text-dark); 
+            border-bottom: 3px solid transparent; 
+            font-size: 1em;
+        }
+
+        .tab-btn.active { 
+            border-bottom-color: var(--accent-green); 
+            color: var(--text-light);
+            font-weight: bold; 
+        }
+
+        .tab-content { 
+            display: none; 
+        }
+
+        .tab-content.active { 
+            display: block; 
+        }
+
+        .terminal { 
+            background-color: #000; 
+            color: #f0f0f0; 
+            font-family: monospace; 
+            font-size: 0.9em;
+            padding: 15px; 
+            border-radius: 5px; 
+            white-space: pre-wrap; 
+            overflow-x: auto;
+            min-height: 300px;
+        }
+
+        .answer-section { 
+            margin-top: 20px; 
+            padding: 20px; 
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            font-size: small;
+        }
+
+        .answer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+            flex: 1; 
+            min-width: 250px;
+        }
+
+        .answer-group {
+            margin-bottom: 15px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .answer-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .answer-group select {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--bg-dark-main);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .radio-grid label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-grid input {
+            margin-right: 8px;
+        }
+
+        .sim-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-dark-secondary);
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-content.centered-text { 
+            text-align: center; 
+        }
+
+        .modal-close-btn { 
+            display: block; margin: 20px auto 0; 
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to CySA+ Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 1: Data Exfiltration Analysis</h3>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab1">1</button>
+            <button class="tab-btn" data-tab="tab2">2</button>
+            <button class="tab-btn" data-tab="tab3">3</button>
+            <button class="tab-btn" data-tab="tab4">4</button>
+        </div>
+        
+        <div id="tab1" class="tab-content active">
+            <div class="terminal" id="terminal1"></div>
+        </div>
+        <div id="tab2" class="tab-content">
+            <div class="terminal" id="terminal2"></div>
+        </div>
+        <div id="tab3" class="tab-content">
+            <div class="terminal" id="terminal3"></div>
+        </div>
+        <div id="tab4" class="tab-content">
+            <div class="terminal" id="terminal4"></div>
+        </div>
+
+        <div class="answer-section">
+        <div class="answer-column">
+            <div class="answer-group">
+                <label for="command1">Select the command that generated the output in tab 1:</label>
+                <select id="command1" name="command1"></select>
+            </div>
+            <div class="answer-group">
+                <label for="command2">Select the command that generated the output in tab 2:</label>
+                <select id="command2" name="command2"></select>
+            </div>
+        </div>
+            <div class="answer-group">
+                <label>Identify the file that performed the exfiltration:</label>
+                <div id="exfilFile" class="radio-grid"></div>
+            </div>
+        </div>
+
+        <div class="sim-controls">
+            <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+            <button class="sim-reset-btn" id="resetBtn">Reset All</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+            <button class="modal-close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = true) {
+            modalBody.innerHTML = '';
+            const p = document.createElement('p');
+            p.style.whiteSpace = 'pre-wrap';
+            p.textContent = content;
+            modalBody.appendChild(p);
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { modal.style.display = "none"; }
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim = {
+            state: {
+                command1: null,
+                command2: null,
+                exfilFile: null
+            },
+            data: {
+                info: `An organization has noticed large amounts of data are being sent out of its network. An analyst is identifying the cause of the data exfiltration.
+
+INSTRUCTIONS
+Select the command that generated the output in tabs 1 and 2.
+
+Review the output text in all tabs and identify the file that performed the exfiltration.
+
+If at any time you would like to bring back the initial state of the simulation, please click the Reset All button.`,
+                terminals: {
+                    tab1: `
+ Active Connections
+
+  Proto  Local Address          Foreign Address        State           PID
+  TCP    0.0.0.0:22             0.0.0.0:0              LISTENING       1000
+  TCP    0.0.0.0:23             0.0.0.0:0              LISTENING       1235
+  TCP    0.0.0.0:443            0.0.0.0:0              LISTENING       1466
+  TCP    0.0.0.0:80             0.0.0.0:0              LISTENING       1566
+  TCP    127.0.0.1:1960         127.0.0.1:22           ESTABLISHED     2001
+ [sftp.exe]
+  TCP    192.168.10.21:38666    41.21.18.102:22        ESTABLISHED     3918
+ [sftp.exe]
+  TCP    192.168.10.21:8447     66.207.110.49:https    ESTABLISHED     2677
+ [svchost.exe]
+  TCP    192.168.10.21:55356    31.10.100.7:https      ESTABLISHED     3467
+ [cmd.exe]
+  TCP    192.168.10.21:37654    192.168.10.37:http     ESTABLISHED     1722
+ [notepad.exe]
+  TCP    192.168.10.21:55357    32.111.16.37:22        TIME_WAIT       0
+  TCP    192.168.10.21:52744    32.111.16.37:22        TIME_WAIT       0
+  TCP    192.168.10.21:56751    32.111.16.37:22        TIME_WAIT       0`,
+                    tab2: `
+ Image Name                   PID Session Name        Session#    Mem Usage
+ ========================= ====== ================ =========== ============
+ cmd.exe                     3467 Console                    0      1,820 K
+ sftp.exe                    2001 Console                    0         17 K
+ sftp.exe                    3918 Console                    0      1,788 K
+ svchost.exe                 2677 Console                    0        188 K
+ calc.exe                    1677 Console                    0         11 K
+ notepad.exe                    0 Console                    0          0 K`,
+                    tab3: `
+ > Get-ChildItem | Get-Filehash -Algorithm MD5
+
+ Algorithm       Hash                                     File
+ ---------       ----                                     ----
+ MD5             372ab227fd5ea7f9c211a1451881d1e1         cmd.exe
+ MD5             173a22d5d5ea87bb2112c14588aad4c2         calc.exe
+ MD5             412aba2efd5ea769c2112b451881affe         explorer.exe
+ MD5             df6ab147fd5ecb79c3531a146f8da199         users.txt
+ MD5             212ac257fd5ea7f9c337ba22bab1d1f5         calendar.dat
+ MD5             10ad132ffed0217c6c3854a22bab215c6         sftp.exe
+ MD5             33c141f5ed107becd39952d2ba111401         svchost.exe`,
+                    tab4: `
+ The baseline hash signatures are:
+
+ Hash                                     File
+ ----                                     ----
+ a2cfe1c4d45d3890cc3456789058cd21         cmd.exe
+ 55a1bbad5d5eebb21fefe12388ab3221         calc.exe
+ 412aba2efd5ea769c2112b451881affe         explorer.exe
+ 90521cc7fd5ea7f9c337ba2210aed1c1         users.txt
+ 3ab21266fd00a7cbc3855a22bab213ba         calendar.dat
+ 10ad132ffed0217c6c3854a22bab215c6         sftp.exe
+ 33c141f5ed107becd39952d2ba111401         svchost.exe`
+                },
+                options: {
+                    command1: ["nslookup", "netstat -bo", "arp -a", "ipconfig /reset", "taskkill /FI", "cmd", "tasklist", "net stop"],
+                    command2: ["cmd", "net stop", "ipconfig /reset", "netstat -bo", "tasklist", "taskkill /FI", "arp -a", "nslookup"],
+                    exfilFile: ["cmd.exe", "sftp.exe", "users.txt", "svchost.exe", "calc.exe", "notepad.exe", "calendar.dat", "explorer.exe"]
+                },
+                correctAnswers: {
+                    command1: "netstat -bo",
+                    command2: "tasklist",
+                    exfilFile: "sftp.exe"
+                }
+            },
+            setup: function() {
+                this.state = { command1: null, command2: null, exfilFile: null };
+
+                for (const key in this.data.terminals) {
+                    document.getElementById(key.replace('tab', 'terminal')).textContent = this.data.terminals[key].trim();
+                }
+
+                const cmd1Select = document.getElementById('command1');
+                const cmd2Select = document.getElementById('command2');
+                cmd1Select.innerHTML = '<option value="">Select command</option>';
+                cmd2Select.innerHTML = '<option value="">Select command</option>';
+                this.data.options.command1.forEach(opt => cmd1Select.innerHTML += `<option value="${opt}">${opt}</option>`);
+                this.data.options.command2.forEach(opt => cmd2Select.innerHTML += `<option value="${opt}">${opt}</option>`);
+
+                const exfilContainer = document.getElementById('exfilFile');
+                exfilContainer.innerHTML = '';
+                this.data.options.exfilFile.forEach(opt => {
+                    exfilContainer.innerHTML += `<label><input type="radio" name="exfilFile" value="${opt}"> ${opt}</label>`;
+                });
+
+                cmd1Select.addEventListener('change', (e) => this.state.command1 = e.target.value);
+                cmd2Select.addEventListener('change', (e) => this.state.command2 = e.target.value);
+                document.querySelectorAll('input[name="exfilFile"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => this.state.exfilFile = e.target.value);
+                });
+                
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.openTab(e));
+                });
+            },
+            openTab: function(evt) {
+                const tabName = evt.currentTarget.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active'));
+                document.getElementById(tabName).classList.add('active');
+                evt.currentTarget.classList.add('active');
+            },
+            check: function() {
+                if (!this.state.command1 || !this.state.command2 || !this.state.exfilFile) {
+                    showModal("Please make a selection for all three items.", true);
+                    return;
+                }
+
+                const isCmd1Correct = this.state.command1 === this.data.correctAnswers.command1;
+                const isCmd2Correct = this.state.command2 === this.data.correctAnswers.command2;
+                const isFileCorrect = this.state.exfilFile === this.data.correctAnswers.exfilFile;
+
+                if (isCmd1Correct && isCmd2Correct && isFileCorrect) {
+                    showModal("Correct! You have successfully identified the commands and the source of the data exfiltration.", true);
+                } else {
+                    let feedback = "One or more of your answers are incorrect. Please review the evidence and try again.\n\n";
+                    feedback += `Tab 1 Command: ${isCmd1Correct ? 'Correct' : 'Incorrect'}\n`;
+                    feedback += `Tab 2 Command: ${isCmd2Correct ? 'Correct' : 'Incorrect'}\n`;
+                    feedback += `Exfiltration File: ${isFileCorrect ? 'Correct' : 'Incorrect'}`;
+                    showModal(feedback, false);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim.setup());
+            document.getElementById('infoBtn').onclick = () => showModal(sim.data.info, false);
+        });
+    </script>
+</body>
+</html>

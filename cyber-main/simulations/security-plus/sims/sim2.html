@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 2: Wireless Network Setup</title>
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0; 
+        }
+
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        #sim2-diagram { 
+            position: relative; 
+            max-width: 600px; 
+            margin: 40px auto 0 auto; 
+            text-align: center; 
+        }
+
+        .sim2-clickable { 
+            display: inline-block; 
+            margin: 20px; 
+            cursor: pointer; 
+            color: var(--text-light); 
+        }
+
+        .sim2-clickable:hover { 
+            filter: brightness(1.2); 
+            color: var(--accent-green-hover); 
+        }
+
+        .sim2-clickable svg { 
+            width: 80px; 
+            height: 80px; 
+            fill: currentColor; 
+        }
+
+        .sim2-clickable p { 
+            margin-top: 5px; 
+            font-weight: bold; 
+        }
+
+        .sim2-modal-grid { 
+            display: grid; 
+            grid-template-columns: 150px 1fr; 
+            gap: 10px; 
+            align-items: center;
+        }
+
+        .sim2-modal-grid label { 
+            font-weight: bold; 
+            text-align: right;
+        }
+
+        .sim2-modal-grid input, .sim2-modal-grid select { 
+            width: 100%; 
+            background: var(--bg-dark-tertiary); 
+            color: white; 
+            border: 1px solid var(--border-color); 
+            padding: 5px; 
+            border-radius: 4px; 
+        }
+
+        .sim2-modal-footer { 
+            text-align: right; 
+            margin-top: 20px; 
+        }
+
+        .sim2-modal-footer button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .sim2-modal-footer .save-btn { 
+            background-color: var(--accent-green); 
+        }
+
+        .sim2-modal-footer .save-btn:hover { 
+            background-color: var(--accent-green-hover); 
+        }
+
+        .sim2-modal-footer .close-btn { 
+            background-color: var(--danger-red); 
+        }
+
+        .sim2-modal-footer .close-btn:hover { 
+            background-color: var(--danger-red-hover); 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 2: Wireless Network Setup</h3>
+        <div id="sim2-diagram">
+            <div class="sim2-clickable" data-target="wifi-controller">
+                <svg viewBox="0 0 24 24"><path d="M20,18H4V8H20M20,6H4A2,2 0 0,0 2,8V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8A2,2 0 0,0 20,6M18,10H6V12H18V10M18,14H6V16H18V14Z" /></svg>
+                <p>WiFi Controller</p>
+            </div>
+            <div class="sim2-clickable" data-target="radius-server">
+                <svg viewBox="0 0 24 24"><path d="M20,18H4V6H20M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4Z" /></svg>
+                <p>RADIUS Server</p>
+            </div>
+            <div class="sim2-clickable" data-target="wireless-client">
+                <svg viewBox="0 0 24 24"><path d="M20,18H4V6H20M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4Z" /></svg>
+                <p>Wireless Client</p>
+            </div>
+        </div>
+        <div class="sim-controls">
+            <div></div>
+            <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = false, options = {}) {
+            modalBody.innerHTML = '';
+            if (typeof content === 'string') {
+                const p = document.createElement('p');
+                p.style.whiteSpace = 'pre-wrap';
+                p.textContent = content;
+                modalBody.appendChild(p);
+            } else {
+                modalBody.appendChild(content);
+            }
+            if (!options.noCloseButton) {
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'modal-close-btn';
+                closeButton.onclick = closeModal;
+                modalBody.appendChild(closeButton);
+            }
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { 
+            modal.style.display = "none"; 
+        }
+
+        modal.onclick = e => { 
+            if (e.target.id === 'modal') closeModal(); 
+        };
+
+        const sim2 = {
+            state: {},
+            data: {
+                info: `SIMULATION\nA systems administrator needs to install a new wireless network for authenticated guest access. The wireless network should support 802.1X using the most secure encryption and protocol available.\n\nINSTRUCTIONS\nPerform the following steps:\n     Configure the RADIUS server.\n     Configure the WiFi controller.\n     Preconfigure the client for an incoming guest. The Guest AD credentials are:\n          User: guest01\n          Password: guestpass\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.`,
+            },
+            setup: function() {
+                this.state = {
+                    radius: { clientIp: '', authType: '' },
+                    wifi: { sharedKey: '', aaaIp: '', psk: '', authType: '' },
+                    client: { ssid: '', user: '', pass: '', psk: '', authType: '' }
+                };
+                document.querySelectorAll('.sim2-clickable').forEach(btn => {
+                    btn.onclick = (e) => this.createConfigModal(e.currentTarget.dataset.target);
+                });
+            },
+            createConfigModal: function(target) {
+                const modalBody = document.createElement('div');
+                let modalHtml = '';
+                
+                let stateKey;
+                if (target === 'wireless-client') {
+                    stateKey = 'client';
+                } else {
+                    stateKey = target.split('-')[0]; // 'wifi' or 'radius'
+                }
+                let stateToUpdate = this.state[stateKey];
+
+                if (target === 'radius-server') {
+                    const radiusAuthOptions = ['Local', 'Active Directory'];
+                    modalHtml = `
+                        <h4>RADIUS Server Configuration</h4>
+                        <div class="sim2-modal-grid">
+                            <label>Shared key:</label><input type="text" id="radius-key" value="SECRET" disabled>
+                            <label>Client IP:</label><input type="text" id="radius-client-ip" value="${stateToUpdate.clientIp}">
+                            <label>Authentication type:</label><select id="radius-auth-type"><option value=""></option>${radiusAuthOptions.map(o => `<option value="${o}" ${stateToUpdate.authType === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                            <label>Server IP:</label><input type="text" value="192.168.1.20" disabled>
+                        </div>`;
+                } else if (target === 'wifi-controller') {
+                    const wifiAuthOptions = ['WPA2 Personal', 'WPA2 - PSK', 'WPA2 Enterprise', 'WEP'];
+                    modalHtml = `
+                        <h4>WiFi Controller Configuration</h4>
+                        <div class="sim2-modal-grid">
+                            <label>SSID:</label><input type="text" id="wifi-ssid" value="CORPGUEST" disabled>
+                            <label>Shared key:</label><input type="text" id="wifi-shared-key" value="${stateToUpdate.sharedKey}">
+                            <label>AAA server IP:</label><input type="text" id="wifi-aaa-ip" value="${stateToUpdate.aaaIp}">
+                            <label>PSK:</label><input type="text" id="wifi-psk" value="${stateToUpdate.psk}">
+                            <label>Authentication type:</label><select id="wifi-auth-type"><option value=""></option>${wifiAuthOptions.map(o => `<option value="${o}" ${stateToUpdate.authType === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                            <label>Controller IP:</label><input type="text" value="192.168.1.10" disabled>
+                        </div>`;
+                } else { 
+                    const clientAuthOptions = ['WPA2 Personal', 'WPA2 - PSK', 'WPA2 Enterprise', 'WEP'];
+                    modalHtml = `
+                        <h4>Wireless Client Configuration</h4>
+                        <div class="sim2-modal-grid">
+                            <label>SSID:</label><input type="text" id="client-ssid" value="${stateToUpdate.ssid}">
+                            <label>Username:</label><input type="text" id="client-user" value="${stateToUpdate.user}">
+                            <label>User password:</label><input type="password" id="client-pass" value="${stateToUpdate.pass}">
+                            <label>PSK:</label><input type="text" id="client-psk" value="${stateToUpdate.psk}">
+                            <label>Authentication type:</label><select id="client-auth-type"><option value=""></option>${clientAuthOptions.map(o => `<option value="${o}" ${stateToUpdate.authType === o ? 'selected' : ''}>${o}</option>`).join('')}</select>
+                        </div>`;
+                }
+                
+                modalBody.innerHTML = modalHtml + `
+                    <div class="sim2-modal-footer">
+                        <button class="close-btn">Close</button>
+                        <button class="save-btn">Save</button>
+                    </div>`;
+                
+                modalBody.querySelector('.close-btn').onclick = () => closeModal();
+                modalBody.querySelector('.save-btn').onclick = () => {
+                    if (target === 'radius-server') {
+                        this.state.radius.clientIp = modalBody.querySelector('#radius-client-ip').value;
+                        this.state.radius.authType = modalBody.querySelector('#radius-auth-type').value;
+                    } else if (target === 'wifi-controller') {
+                        this.state.wifi.sharedKey = modalBody.querySelector('#wifi-shared-key').value;
+                        this.state.wifi.aaaIp = modalBody.querySelector('#wifi-aaa-ip').value;
+                        this.state.wifi.psk = modalBody.querySelector('#wifi-psk').value;
+                        this.state.wifi.authType = modalBody.querySelector('#wifi-auth-type').value;
+                    } else {
+                        this.state.client.ssid = modalBody.querySelector('#client-ssid').value;
+                        this.state.client.user = modalBody.querySelector('#client-user').value;
+                        this.state.client.pass = modalBody.querySelector('#client-pass').value;
+                        this.state.client.psk = modalBody.querySelector('#client-psk').value;
+                        this.state.client.authType = modalBody.querySelector('#client-auth-type').value;
+                    }
+                    closeModal();
+                };
+                
+                showModal(modalBody, false, { noCloseButton: true });
+            },
+            check: function() {
+                const correct = {
+                    radius: { clientIp: '192.168.1.10', authType: 'Active Directory' },
+                    wifi: { sharedKey: 'SECRET', aaaIp: '192.168.1.20', authType: 'WPA2 Enterprise', psk: '' },
+                    client: { ssid: 'CORPGUEST', user: 'guest01', pass: 'guestpass', authType: 'WPA2 Enterprise', psk: '' }
+                };
+                const s = this.state;
+                const isCorrect = 
+                    s.radius.clientIp.trim() === correct.radius.clientIp &&
+                    s.radius.authType === correct.radius.authType &&
+                    s.wifi.sharedKey.trim().toUpperCase() === correct.wifi.sharedKey &&
+                    s.wifi.aaaIp.trim() === correct.wifi.aaaIp &&
+                    s.wifi.authType === correct.wifi.authType &&
+                    (s.wifi.psk === undefined || s.wifi.psk.trim() === correct.wifi.psk) &&
+                    s.client.ssid.trim().toUpperCase() === correct.client.ssid &&
+                    s.client.user.trim() === correct.client.user &&
+                    s.client.pass.trim() === correct.client.pass &&
+                    s.client.authType === correct.client.authType &&
+                    (s.client.psk === undefined || s.client.psk.trim() === correct.client.psk);
+
+                showModal(isCorrect ? "Correct!" : "Incorrect. Please review all configurations.");
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim2.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim2.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim2.setup());
+            document.getElementById('infoBtn').onclick = () => {
+                showModal(sim2.data.info, false);
+            };
+        });
+    </script>
+</body>
+</html>
