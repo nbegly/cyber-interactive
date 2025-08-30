@@ -5022,14 +5022,22 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
     },
     {
         id: 300,
-        q: "A systems administrator is reviewing the following output on the text editor that is being used to update the company's internal database records:<br><br><br><br>{<br><br> \"employee_id\": 10234,<br><br> \"name\": \"Jane Doe\",<br><br> \"department\": \"IT\",<br><br> \"active\": true,<br><br> \"roles\": [\"admin\", \"editor\"]<br><br>} <br><br><br><br>Which of the following extensions should the systems administrator use when saving the file?",
+        q: `A systems administrator is reviewing the following output on the text editor that is being used to update the company's internal database records:<pre class="h6"><p>
+        {
+        \"employee_id\": 10234,
+        \"name\": \"Jane Doe\",
+        \"department\": \"IT\",
+        \"active\": true,
+        \"roles\": [\"admin\", \"editor\"]
+        }</pre><p>
+        Which of the following extensions should the systems administrator use when saving the file?`,
         type: "single",
  category: "4.1 Summarize the use cases and techniques of automation and orchestration in a Linux environment",
          answers: [
-            { text: `A. .json`, correct: true, explain: "Correct. The provided text is in JSON (JavaScript Object Notation) format." },
-            { text: `B. .yaml`, correct: false, explain: "Incorrect." },
-            { text: `C. .tf`, correct: false, explain: "Incorrect." },
-            { text: `D. .sh`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">.json</span>`, correct: true, explain: "Correct. The provided text is in JSON (JavaScript Object Notation) format." },
+            { text: `B. <span style="font-family: monospace;">.yaml</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">.tf</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">.sh</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -5038,10 +5046,10 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         type: "single",
  category: "1.1 Explain basic Linux concepts",
          answers: [
-            { text: `A. /sbin`, correct: true, explain: "Correct. The /sbin directory contains essential system binaries, typically for system administration, that should only be run by the root user." },
-            { text: `B. /bin`, correct: false, explain: "Incorrect. /bin contains essential user binaries." },
-            { text: `C. /root`, correct: false, explain: "Incorrect. /root is the root user's home directory." },
-            { text: `D. /lib`, correct: false, explain: "Incorrect. /lib contains essential shared libraries." }
+            { text: `A. <span style="font-family: monospace;">/sbin</span>`, correct: true, explain: "Correct. The /sbin directory contains essential system binaries, typically for system administration, that should only be run by the root user." },
+            { text: `B. <span style="font-family: monospace;">/bin</span>`, correct: false, explain: "Incorrect. /bin contains essential user binaries." },
+            { text: `C. <span style="font-family: monospace;">/root</span>`, correct: false, explain: "Incorrect. /root is the root user's home directory." },
+            { text: `D. <span style="font-family: monospace;">/lib</span>`, correct: false, explain: "Incorrect. /lib contains essential shared libraries." }
         ]
     },
     {
@@ -5050,10 +5058,10 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         type: "single",
  category: "1.4 Given a scenario, manage network services and configurations on a Linux server",
          answers: [
-            { text: `A. systemctl restart networkd`, correct: true, explain: "Correct. Restarting the networking service (like systemd-networkd or NetworkManager) is the standard way to apply new network configurations." },
-            { text: `B. systemctl enable networkd`, correct: false, explain: "Incorrect. This enables the service to start on boot, but doesn't apply current changes." },
-            { text: `C. systemctl status networkd`, correct: false, explain: "Incorrect. This checks the status, it doesn't apply changes." },
-            { text: `D. systemctl isolate networkd`, correct: false, explain: "Incorrect. This is not a valid target or command." }
+            { text: `A. <span style="font-family: monospace;">systemctl restart networkd</span>`, correct: true, explain: "Correct. Restarting the networking service (like systemd-networkd or NetworkManager) is the standard way to apply new network configurations." },
+            { text: `B. <span style="font-family: monospace;">systemctl enable networkd</span>`, correct: false, explain: "Incorrect. This enables the service to start on boot, but doesn't apply current changes." },
+            { text: `C. <span style="font-family: monospace;">systemctl status networkd</span>`, correct: false, explain: "Incorrect. This checks the status, it doesn't apply changes." },
+            { text: `D. <span style="font-family: monospace;">systemctl isolate networkd</span>`, correct: false, explain: "Incorrect. This is not a valid target or command." }
         ]
     },
     {
@@ -5062,22 +5070,22 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         type: "single",
  category: "2.5 Given a scenario, manage Linux using systemd",
          answers: [
-            { text: `A. sudo systemctl isolate graphical.target`, correct: true, explain: "Correct. This command temporarily switches the system to the graphical target, allowing the use of GUI applications like a web browser." },
-            { text: `B. sudo systemctl set-default runlevel5.target`, correct: false, explain: "Incorrect. This would permanently change the default boot target." },
-            { text: `C. sudo systemctl restart gdm`, correct: false, explain: "Incorrect. Restarting the display manager alone may not be sufficient if the system is not in the graphical target." },
-            { text: `D. sudo systemctl --no-wall rescue`, correct: false, explain: "Incorrect. This would move the system to rescue mode, which is a minimal, non-graphical environment." }
+            { text: `A. <span style="font-family: monospace;">sudo systemctl isolate graphical.target</span>`, correct: true, explain: "Correct. This command temporarily switches the system to the graphical target, allowing the use of GUI applications like a web browser." },
+            { text: `B. <span style="font-family: monospace;">sudo systemctl set-default runlevel5.target</span>`, correct: false, explain: "Incorrect. This would permanently change the default boot target." },
+            { text: `C. <span style="font-family: monospace;">sudo systemctl restart gdm</span>`, correct: false, explain: "Incorrect. Restarting the display manager alone may not be sufficient if the system is not in the graphical target." },
+            { text: `D. <span style="font-family: monospace;">sudo systemctl --no-wall rescue</span>`, correct: false, explain: "Incorrect. This would move the system to rescue mode, which is a minimal, non-graphical environment." }
         ]
     },
     {
         id: 304,
-        q: "A Linux engineer wants to give read-write-execute permissions for the cloud_users directory to user Oliver. Which of the following commands should the engineer use?",
+        q: `A Linux engineer wants to give <span style="font-family: monospace;">read-write-execute</span> permissions for the <span style="font-family: monospace;">cloud_users</span> directory to user <span style="font-family: monospace;">Oliver</span>. Which of the following commands should the engineer use?`,
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. setfacl -L oliver:rwx /cloud_users`, correct: false, explain: "Incorrect syntax." },
-            { text: `B. setfacl -x rwx:oliver /cloud_users`, correct: false, explain: "Incorrect. -x is for removing ACLs." },
-            { text: `C. setfacl -P rwx:oliver /cloud_users`, correct: false, explain: "Incorrect syntax." },
-            { text: `D. setfacl -m u:oliver:rwx /cloud_users`, correct: true, explain: "Correct. The -m option modifies the ACL, and 'u:oliver:rwx' specifies permissions for the user Oliver." }
+            { text: `A. <span style="font-family: monospace;">setfacl -L oliver:rwx /cloud_users</span>`, correct: false, explain: "Incorrect syntax." },
+            { text: `B. <span style="font-family: monospace;">setfacl -x rwx:oliver /cloud_users</span>`, correct: false, explain: "Incorrect. -x is for removing ACLs." },
+            { text: `C. <span style="font-family: monospace;">setfacl -P rwx:oliver /cloud_users</span>`, correct: false, explain: "Incorrect syntax." },
+            { text: `D. <span style="font-family: monospace;">setfacl -m u:oliver:rwx /cloud_users</span>`, correct: true, explain: "Correct. The -m option modifies the ACL, and 'u:oliver:rwx' specifies permissions for the user Oliver." }
         ]
     },
     {
@@ -5086,34 +5094,34 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. firewall-cmd --add-forward port=port=8000:proto=tcp:toport=8000:toaddr=remote`, correct: false, explain: "Incorrect. This configures forwarding on the firewall, not an SSH tunnel." },
-            { text: `B. iptables -A FORWARD -m state -p tcp -d remote --dport 8000 -j accept`, correct: false, explain: "Incorrect. This is a firewall rule, not a port forward tunnel." },
-            { text: `C. ssh -R 8000:localhost:8000 remote`, correct: true, explain: "Correct. The -R option in SSH sets up a remote port forward, forwarding traffic from the remote server's port 8000 to the local server's port 8000." },
-            { text: `D. socat TCP4-LISTEN:8000,fork TCP4:remote:8000`, correct: false, explain: "Incorrect. While socat can forward ports, the ssh command is more standard for this specific remote forwarding task." }
+            { text: `A. <span style="font-family: monospace;">firewall-cmd --add-forward port=port=8000:proto=tcp:toport=8000:toaddr=remote</span>`, correct: false, explain: "Incorrect. This configures forwarding on the firewall, not an SSH tunnel." },
+            { text: `B. <span style="font-family: monospace;">iptables -A FORWARD -m state -p tcp -d remote --dport 8000 -j accept</span>`, correct: false, explain: "Incorrect. This is a firewall rule, not a port forward tunnel." },
+            { text: `C. <span style="font-family: monospace;">ssh -R 8000:localhost:8000 remote</span>`, correct: true, explain: "Correct. The -R option in SSH sets up a remote port forward, forwarding traffic from the remote server's port 8000 to the local server's port 8000." },
+            { text: `D. <span style="font-family: monospace;">socat TCP4-LISTEN:8000,fork TCP4:remote:8000</span>`, correct: false, explain: "Incorrect. While socat can forward ports, the ssh command is more standard for this specific remote forwarding task." }
         ]
     },
     {
         id: 306,
-        q: "An operations engineer is planning to start a container running a PostgreSQL database. The engineer wants the container to start automatically at system startup, mount /home/db directory as /var/db/postgresql inside the container, and expose the 5432 port to the OS. Which of the following commands should the engineer run to achieve this task?",
+        q: `An operations engineer is planning to start a container running a PostgreSQL database. The engineer wants the container to start automatically at system startup, mount <span style="font-family: monospace;">/home/db</span> directory as <span style="font-family: monospace;">/var/db/postgresql</span> inside the container, and expose the 5432 port to the OS. Which of the following commands should the engineer run to achieve this task?`,
         type: "single",
  category: "2.6 Given a scenario, manage applications in a container on a Linux server",
          answers: [
-            { text: `A. docker run -d --restart-always -p 5432:5432 -v /home/db:/var/lib/postgresql postgresql:12`, correct: true, explain: "Correct. `--restart-always` ensures it starts on boot, `-p` exposes the port, and `-v` mounts the volume." },
-            { text: `B. docker run -d --restart -p 5432:5432 --volume /var/lib/postgresql:/home/db postgresql: 12`, correct: false, explain: "Incorrect. The volume mount is reversed." },
-            { text: `C. docker run -d -attach --platform 5432:5432 --volume /home/db:/var/lib/postgresql postgresql:12`, correct: false, explain: "Incorrect options used." },
-            { text: `D. docker run -d --init --restart --publish 5432:5432 --workdir /home/db:/var/lib/postgresql postgresql:12`, correct: false, explain: "Incorrect options used." }
+            { text: `A. <span style="font-family: monospace;">docker run -d --restart-always -p 5432:5432 -v /home/db:/var/lib/postgresql postgresql:12</span>`, correct: true, explain: "Correct. `--restart-always` ensures it starts on boot, `-p` exposes the port, and `-v` mounts the volume." },
+            { text: `B. <span style="font-family: monospace;">docker run -d --restart -p 5432:5432 --volume /var/lib/postgresql:/home/db postgresql: 12</span>`, correct: false, explain: "Incorrect. The volume mount is reversed." },
+            { text: `C. <span style="font-family: monospace;">docker run -d -attach --platform 5432:5432 --volume /home/db:/var/lib/postgresql postgresql:12</span>`, correct: false, explain: "Incorrect options used." },
+            { text: `D. <span style="font-family: monospace;">docker run -d --init --restart --publish 5432:5432 --workdir /home/db:/var/lib/postgresql postgresql:12</span>`, correct: false, explain: "Incorrect options used." }
         ]
     },
         {
         id: 307,
-        q: "A systems administrator needs to list the contents of archive.tar.xz. Which of the following commands will list the files?",
+        q: `A systems administrator needs to list the contents of <span style="font-family: monospace;">archive.tar.xz</span>. Which of the following commands will list the files?`,
         type: "single",
  category: "1.6 Given a scenario, perform backup and restore operations for a Linux server",
          answers: [
-            { text: `A. tar -ddf archive.tar.xz`, correct: false, explain: "Incorrect." },
-            { text: `B. tar -tJf archive.tar.xz`, correct: true, explain: "Correct." },
-            { text: `C. tar -xzf archive.tar.xz`, correct: false, explain: "Incorrect." },
-            { text: `D. tar -jvf archive.tar.xz`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">tar -ddf archive.tar.xz</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">tar -tJf archive.tar.xz</span>`, correct: true, explain: "Correct." },
+            { text: `C. <span style="font-family: monospace;">tar -xzf archive.tar.xz</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">tar -jvf archive.tar.xz</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -5123,12 +5131,12 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         select: "2",
  category: "2.3 Given a scenario, manage processes and jobs in a Linux environment",
          answers: [
-            { text: `A. 0 */2 * 5 0-3 /root/update-from-remote-to-local.sh`, correct: false, explain: "Incorrect. Day of week is 0-3 (Sun-Wed)." },
-            { text: `B. 0 0,2,4,6,8,10,12,14 * 5 0-3 /root/update-from-remote-to-local.sh`, correct: false, explain: "Incorrect. This does not run every 2 hours for the full day." },
-            { text: `C. 0 0,2,4,6,8,10,12,14 * 5 0-2 /root/update-from-remote-to-local.sh`, correct: false, explain: "Incorrect. This does not run every 2 hours for the full day." },
-            { text: `D. 0 0-23/2 * 5 0-3 /root/update-from-remote-to-local.sh`, correct: false, explain: "Incorrect. Day of week is 0-3 (Sun-Wed)." },
-            { text: `E. 0 0-23/2 * 5 0-2 /root/update-from-remote-to-local.sh`, correct: true, explain: "Correct. `0-23/2` runs every 2 hours, `*` for day of month, `5` for May, and `0-2` for Sun-Tue." },
-            { text: `F. 0 */2 * 5 0-2 /root/update-from-remote-to-local.sh`, correct: true, explain: "Correct. `*/2` is a standard way to specify every 2 hours." }
+            { text: `A. <span style="font-family: monospace;">0 */2 * 5 0-3 /root/update-from-remote-to-local.sh</span>`, correct: false, explain: "Incorrect. Day of week is 0-3 (Sun-Wed)." },
+            { text: `B. <span style="font-family: monospace;">0 0,2,4,6,8,10,12,14 * 5 0-3 /root/update-from-remote-to-local.sh</span>`, correct: false, explain: "Incorrect. This does not run every 2 hours for the full day." },
+            { text: `C. <span style="font-family: monospace;">0 0,2,4,6,8,10,12,14 * 5 0-2 /root/update-from-remote-to-local.sh</span>`, correct: false, explain: "Incorrect. This does not run every 2 hours for the full day." },
+            { text: `D. <span style="font-family: monospace;">0 0-23/2 * 5 0-3 /root/update-from-remote-to-local.sh</span>`, correct: false, explain: "Incorrect. Day of week is 0-3 (Sun-Wed)." },
+            { text: `E. <span style="font-family: monospace;">0 0-23/2 * 5 0-2 /root/update-from-remote-to-local.sh</span>`, correct: true, explain: "Correct. `0-23/2` runs every 2 hours, `*` for day of month, `5` for May, and `0-2` for Sun-Tue." },
+            { text: `F. <span style="font-family: monospace;">0 */2 * 5 0-2 /root/update-from-remote-to-local.sh</span>`, correct: true, explain: "Correct. `*/2` is a standard way to specify every 2 hours." }
         ]
     },
     {
@@ -5137,28 +5145,30 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         type: "single",
  category: "4.4 Given a scenario, implement version control using Git",
          answers: [
-            { text: `A. git branch -m staging`, correct: false, explain: "Incorrect. This renames a branch." },
-            { text: `B. git commit -m staging`, correct: false, explain: "Incorrect. This commits changes." },
-            { text: `C. git status -b staging`, correct: false, explain: "Incorrect syntax." },
-            { text: `D. git checkout -b staging`, correct: true, explain: "Correct. This command creates a new branch named 'staging' and switches to it." }
+            { text: `A. <span style="font-family: monospace;">git branch -m staging</span>`, correct: false, explain: "Incorrect. This renames a branch." },
+            { text: `B. <span style="font-family: monospace;">git commit -m staging</span>`, correct: false, explain: "Incorrect. This commits changes." },
+            { text: `C. <span style="font-family: monospace;">git status -b staging</span>`, correct: false, explain: "Incorrect syntax." },
+            { text: `D. <span style="font-family: monospace;">git checkout -b staging</span>`, correct: true, explain: "Correct. This command creates a new branch named 'staging' and switches to it." }
         ]
     },
     {
         id: 310,
-        q: "Joe, a user, is unable to log in to the system. The Linux administrator checks the /etc/passwd file and reviews the following output:<br><br>Joe:x:1002:1002::/home/Joe:/sbin/nologin<br><br>Which of the following should the administrator do to fix this issue?",
+        q: `Joe, a user, is unable to log in to the system. The Linux administrator checks the <span style="font-family: monospace;">/etc/passwd</span> file and reviews the following output:<pre class="h6"><p>
+Joe:x:1002:1002::/home/Joe:/sbin/nologin</pre><p>
+        Which of the following should the administrator do to fix this issue?`,
         type: "single",
  category: "2.2 Given a scenario, perform local account management in a Linux environment",
          answers: [
-            { text: `A. Remove the x entry in the /etc/passwd file for Joe.`, correct: false, explain: "Incorrect. The 'x' indicates the password hash is in /etc/shadow." },
-            { text: `B. Change the /sbin/nologin entry to /bin/sh for Joe.`, correct: true, explain: "Correct. /sbin/nologin prevents interactive logins. Changing it to a valid shell like /bin/sh or /bin/bash will allow the user to log in." },
-            { text: `C. Issue the usermod -L Joe command.`, correct: false, explain: "Incorrect. This would lock the user's password." },
-            { text: `D. Ensure that a corresponding entry is in the /etc/shadow file for Joe.`, correct: false, explain: "Incorrect. The issue is the login shell, not the password entry." }
+            { text: `A. Remove the <span style="font-family: monospace;">x</span> entry in the <span style="font-family: monospace;">/etc/passwd</span> file for <span style="font-family: monospace;">Joe</span>.`, correct: false, explain: "Incorrect. The 'x' indicates the password hash is in /etc/shadow." },
+            { text: `B. Change the <span style="font-family: monospace;">/sbin/nologin</span> entry to <span style="font-family: monospace;">/bin/sh</span> for Joe.`, correct: true, explain: "Correct. /sbin/nologin prevents interactive logins. Changing it to a valid shell like /bin/sh or /bin/bash will allow the user to log in." },
+            { text: `C. Issue the <span style="font-family: monospace;">usermod -L</span> Joe command.`, correct: false, explain: "Incorrect. This would lock the user's password." },
+            { text: `D. Ensure that a corresponding entry is in the <span style="font-family: monospace;">/etc/shadow</span> file for <span style="font-family: monospace;">Joe</span>.`, correct: false, explain: "Incorrect. The issue is the login shell, not the password entry." }
         ]
     },
     {
         id: 311,
         q: `Linux system users report that over the past few months a server has stopped responding at least two times each day. Every time this happens, the users have to restart the server to recover it. A systems administrator diagnosing the issue collects the following outputs:<p>               
-        Output 1:<p><pre class="h6">[Tue Aug 31 16:36:42 2021] OOM: Kill process 43805 (java) score 249 or sacrifice child
+Output 1:<p><pre class="h6">[Tue Aug 31 16:36:42 2021] OOM: Kill process 43805 (java) score 249 or sacrifice child
 [Tue Aug 31 16:36:42 2021] Killed process 43805 (java) total-vm: 4446352kB, anon-rss: 4053140kB, file-rss: 68kB
 [Tue Aug 31 16:36:42 2021] java invoked oom-killer: gfp_mask=0x280da, order=0, oom_score_adj=0
 [Tue Aug 31 16:36:42 2021] java cpuset=/ mems_allowed=0
@@ -5218,26 +5228,32 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
     },
     {
         id: 312,
-        q: "A diagnostic tool reports a “host seems down” event for a server with an IP address of 192.168.47.44. Which of the following commands should the administrator use to confirm the host down event?",
+        q: `A diagnostic tool reports a <span style="font-family: monospace;">“host seems down”</span> event for a server with an IP address of 192.168.47.44. Which of the following commands should the administrator use to confirm the host down event?`,
         type: "single",
  category: "1.4 Given a scenario, manage network services and configurations on a Linux server",
          answers: [
-            { text: `A. nmap 192.168.47.0/32`, correct: false, explain: "Incorrect syntax for a single host scan." },
-            { text: `B. netcat 192.168.47.44`, correct: false, explain: "Incorrect. Netcat needs a port to connect to." },
-            { text: `C. nmap 192.168.47.44 -Pn`, correct: false, explain: "Incorrect. -Pn skips the host discovery (ping) step." },
-            { text: `D. ping -c 1 192.168.47.44`, correct: true, explain: "Correct. Ping is the standard tool to check for basic network connectivity and confirm if a host is responsive." }
+            { text: `A. <span style="font-family: monospace;">nmap 192.168.47.0/32</span>`, correct: false, explain: "Incorrect syntax for a single host scan." },
+            { text: `B. <span style="font-family: monospace;">netcat 192.168.47.44</span>`, correct: false, explain: "Incorrect. Netcat needs a port to connect to." },
+            { text: `C. <span style="font-family: monospace;">nmap 192.168.47.44 -Pn</span>`, correct: false, explain: "Incorrect. -Pn skips the host discovery (ping) step." },
+            { text: `D. <span style="font-family: monospace;">ping -c 1 192.168.47.44</span>`, correct: true, explain: "Correct. Ping is the standard tool to check for basic network connectivity and confirm if a host is responsive." }
         ]
     },
     {
         id: 313,
-        q: "An administrator changed the default port of an SSH server to 2222 on myhost, and clients are not able to connect. The administrator runs some commands and receives the following output:<br><br><br><br>$ ssh -p 2222 myhost ssh:connect to host myhost on port 2222: No route to host<br><br><br><br>$ ping myhost<br><br>PING myhost (192.168.0.10) 56(84) bytes of data<br><br>64 bytes from myhost (192.168.0.10): icmp_seq=1 time=0.876 ms<br><br>64 bytes from myhost (192.168.0.10): icmp_seq=2 time=0.732 ms<br><br><br><br>Which of the following commands should be run on myhost?",
+        q: `An administrator changed the default port of an SSH server to 2222 on myhost, and clients are not able to connect. The administrator runs some commands and receives the following output:<span style="font-family: monospace;"><p>       
+$ ssh -p 2222 myhost ssh:connect to host myhost on port 2222: No route to host
+        
+$ ping myhost<br><br>PING myhost (192.168.0.10) 56(84) bytes of data
+64 bytes from myhost (192.168.0.10): icmp_seq=1 time=0.876 ms
+64 bytes from myhost (192.168.0.10): icmp_seq=2 time=0.732 ms</pre><p>
+        Which of the following commands should be run on myhost?`,
         type: "single",
  category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a Linux system",
          answers: [
-            { text: `A. firewall-cmd --zone=public --add-service=ssh`, correct: false, explain: "Incorrect. This would open the default SSH port (22), not the new custom port." },
-            { text: `B. firewall-cmd --zone=public --add-port=2222/tcp`, correct: true, explain: "Correct. The 'No route to host' message, when ping works, often indicates a firewall is blocking the port. This command opens the new port (2222) on the firewall." },
-            { text: `C. iptables --zone=public --add-service=ssh`, correct: false, explain: "Incorrect command syntax." },
-            { text: `D. iptables --zone=public --add-port=2222`, correct: false, explain: "Incorrect command syntax." }
+            { text: `A. <span style="font-family: monospace;">firewall-cmd --zone=public --add-service=ssh</span>`, correct: false, explain: "Incorrect. This would open the default SSH port (22), not the new custom port." },
+            { text: `B. <span style="font-family: monospace;">firewall-cmd --zone=public --add-port=2222/tcp</span>`, correct: true, explain: "Correct. The 'No route to host' message, when ping works, often indicates a firewall is blocking the port. This command opens the new port (2222) on the firewall." },
+            { text: `C. <span style="font-family: monospace;">iptables --zone=public --add-service=ssh</span>`, correct: false, explain: "Incorrect command syntax." },
+            { text: `D. <span style="font-family: monospace;">iptables --zone=public --add-port=2222</span>`, correct: false, explain: "Incorrect command syntax." }
         ]
     },
     {
@@ -5247,12 +5263,12 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         select: "2",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. ~/.ssh/authorized_keys`, correct: true, explain: "Correct. This file contains public keys that are authorized to log in to this account." },
-            { text: `B. ~/.ssh/known_hosts`, correct: true, explain: "Correct. This file contains the host keys of servers this account has connected to previously." },
-            { text: `C. /etc/ssh/ssh_config`, correct: false, explain: "Incorrect. This is the system-wide client configuration file." },
-            { text: `D. ~/.ssh/config`, correct: false, explain: "Incorrect. This is the user's SSH client configuration file." },
-            { text: `E. /etc/ssh/sshd_config`, correct: false, explain: "Incorrect. This is the SSH server daemon configuration file." },
-            { text: `F. /etc/ssh/ssh_host_rsa_key.pub`, correct: false, explain: "Incorrect. This is the server's own public host key." }
+            { text: `A. <span style="font-family: monospace;">~/.ssh/authorized_keys</span>`, correct: true, explain: "Correct. This file contains public keys that are authorized to log in to this account." },
+            { text: `B. <span style="font-family: monospace;">~/.ssh/known_hosts</span>`, correct: true, explain: "Correct. This file contains the host keys of servers this account has connected to previously." },
+            { text: `C. <span style="font-family: monospace;">/etc/ssh/ssh_config</span>`, correct: false, explain: "Incorrect. This is the system-wide client configuration file." },
+            { text: `D. <span style="font-family: monospace;">~/.ssh/config</span>`, correct: false, explain: "Incorrect. This is the user's SSH client configuration file." },
+            { text: `E. <span style="font-family: monospace;">/etc/ssh/sshd_config</span>`, correct: false, explain: "Incorrect. This is the SSH server daemon configuration file." },
+            { text: `F. <span style="font-family: monospace;">/etc/ssh/ssh_host_rsa_key.pub</span>`, correct: false, explain: "Incorrect. This is the server's own public host key." }
         ]
     },
     {
@@ -5261,10 +5277,10 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
         type: "single",
  category: "2.4 Given a scenario, configure and manage software in a Linux environment",
          answers: [
-            { text: `A. snap list`, correct: true, explain: "Correct. `snap list` shows all installed snap packages." },
-            { text: `B. snap find`, correct: false, explain: "Incorrect. This searches for snaps to install." },
-            { text: `C. snap install`, correct: false, explain: "Incorrect. This installs a snap." },
-            { text: `D. snap try`, correct: false, explain: "Incorrect. This tests an unpackaged snap." }
+            { text: `A. <span style="font-family: monospace;">snap list</span>`, correct: true, explain: "Correct. `snap list` shows all installed snap packages." },
+            { text: `B. <span style="font-family: monospace;">snap find</span>`, correct: false, explain: "Incorrect. This searches for snaps to install." },
+            { text: `C. <span style="font-family: monospace;">snap install</span>`, correct: false, explain: "Incorrect. This installs a snap." },
+            { text: `D. <span style="font-family: monospace;">snap try</span>`, correct: false, explain: "Incorrect. This tests an unpackaged snap." }
         ]
     },
     {
@@ -5281,8 +5297,11 @@ systemctl start httpd</pre>`, correct: false, explain: "Incorrect." }
     },
     {
         id: 317,
-        q: `Users report that they cannot access some files located in the /opt /finapp directory after a power outage caused an unexpected server restart. A Linux administrator examines the following filesystem details and system logs:<p><pre class="h6"># mount | grep finapp
-/dev/mapper/rhel-opt_finapp on /opt/finapp type xfs (rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota)
+        q: `Users report that they cannot access some files located in the /opt /finapp directory after a
+power outage caused an unexpected server restart. A Linux administrator examines the
+following filesystem details and system logs:<p><pre class="h6"># mount | grep finapp
+/dev/mapper/rhel-opt_finapp on /opt/finapp type xfs (rw,relatime,seclabel,attr2,inode64,logbufs=8,
+logbsize=32k,noquota)
 
 # lsblk
 NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
@@ -5298,46 +5317,48 @@ XFS (opt_finapp): Corruption detected in inode 3645, extent tree</pre><p>
         type: "single",
  category: "5.2 Given a scenario, analyze and troubleshoot hardware, storage, and Linux OS issues",
          answers: [
-            { text: `A. fdisk /dev/mapper/rhel-opt_finapp`, correct: false, explain: "Incorrect. fdisk manages partitions, it doesn't repair filesystems." },
-            { text: `B. xfs_repair /dev/mapper/rhel-opt_finapp`, correct: true, explain: "Correct. The logs would indicate an XFS filesystem issue, and xfs_repair is the correct tool to fix it." },
-            { text: `C. lvcreate -L900G -n opt_finapp rhel`, correct: false, explain: "Incorrect. This creates a new logical volume." },
-            { text: `D. fsck.ext4 /dev/mapper/rhel-opt_finapp`, correct: false, explain: "Incorrect. This is for ext4 filesystems, not XFS." }
+            { text: `A. <span style="font-family: monospace;">fdisk /dev/mapper/rhel-opt_finapp</span>`, correct: false, explain: "Incorrect. fdisk manages partitions, it doesn't repair filesystems." },
+            { text: `B. <span style="font-family: monospace;">xfs_repair /dev/mapper/rhel-opt_finapp</span>`, correct: true, explain: "Correct. The logs would indicate an XFS filesystem issue, and xfs_repair is the correct tool to fix it." },
+            { text: `C. <span style="font-family: monospace;">lvcreate -L900G -n opt_finapp rhel</span>`, correct: false, explain: "Incorrect. This creates a new logical volume." },
+            { text: `D. <span style="font-family: monospace;">fsck.ext4 /dev/mapper/rhel-opt_finapp</span>`, correct: false, explain: "Incorrect. This is for ext4 filesystems, not XFS." }
         ]
     },
     {
         id: 318,
-        q: "An administrator accidentally installed the httpd RPM package along with several dependencies. Which of the following options is the best way for the administrator to revert the package installation?",
+        q: `An administrator accidentally installed the <span style="font-family: monospace;">httpd</span> RPM package along with several dependencies. Which of the following options is the best way for the administrator to revert the package installation?`,
         type: "single",
  category: "2.4 Given a scenario, configure and manage software in a Linux environment",
          answers: [
-            { text: `A. dnf clean all`, correct: false, explain: "Incorrect. This clears the package cache." },
-            { text: `B. rpm -e httpd`, correct: false, explain: "Incorrect. This would fail if dependencies are not also removed." },
-            { text: `C. apt-get clean`, correct: false, explain: "Incorrect. This is for Debian-based systems." },
-            { text: `D. yum history undo last`, correct: true, explain: "Correct. `yum` and `dnf` keep a history of transactions, which can be undone, correctly handling dependencies." }
+            { text: `A. <span style="font-family: monospace;">dnf clean all</span>`, correct: false, explain: "Incorrect. This clears the package cache." },
+            { text: `B. <span style="font-family: monospace;">rpm -e httpd</span>`, correct: false, explain: "Incorrect. This would fail if dependencies are not also removed." },
+            { text: `C. <span style="font-family: monospace;">apt-get clean</span>`, correct: false, explain: "Incorrect. This is for Debian-based systems." },
+            { text: `D. <span style="font-family: monospace;">yum history undo last</span>`, correct: true, explain: "Correct. `yum` and `dnf` keep a history of transactions, which can be undone, correctly handling dependencies." }
         ]
     },
     {
         id: 319,
-        q: "A systems administrator needs to know the mail exchange record for the foo.com domain. Which of the following commands will accomplish this task?",
+        q: `A systems administrator needs to know the mail exchange record for the <span style="font-family: monospace;">foo.com</span> domain. Which of the following commands will accomplish this task?`,
         type: "single",
  category: "1.4 Given a scenario, manage network services and configurations on a Linux server",
          answers: [
-            { text: `A. telnet mx foo.com`, correct: false, explain: "Incorrect syntax." },
-            { text: `B. dig mx foo.com`, correct: true, explain: "Correct. The `dig` command can query for specific record types, including MX (Mail Exchange)." },
-            { text: `C. nslookup mx foo.com`, correct: false, explain: "Incorrect. `nslookup` would use `-type=mx`." },
-            { text: `D. host mx foo.com`, correct: false, explain: "Incorrect. `host` would use `-t mx`." }
+            { text: `A. <span style="font-family: monospace;">telnet mx foo.com</span>`, correct: false, explain: "Incorrect syntax." },
+            { text: `B. <span style="font-family: monospace;">dig mx foo.com</span>`, correct: true, explain: "Correct. The `dig` command can query for specific record types, including MX (Mail Exchange)." },
+            { text: `C. <span style="font-family: monospace;">nslookup mx foo.com</span>`, correct: false, explain: "Incorrect. `nslookup` would use `-type=mx`." },
+            { text: `D. <span style="font-family: monospace;">host mx foo.com</span>`, correct: false, explain: "Incorrect. `host` would use `-t mx`." }
         ]
     },
     {
         id: 320,
-        q: "A Linux administrator encounters the following error in the Apache log files:<br><br><br><br>SQLSTATE[HY000] [2002] Permission denied<br><br><br><br>Which of the following commands should the administrator run to safely fix this issue?",
+        q: `A Linux administrator encounters the following error in the Apache log files:<pre class="h6"><p>
+SQLSTATE[HY000] [2002] Permission denied</pre><p>        
+        Which of the following commands should the administrator run to safely fix this issue?`,
         type: "single",
  category: "5.4 Given a scenario, analyze and troubleshoot security issues on a Linux system",
          answers: [
-            { text: `A. chcon -t httpd_sys_content_t /home/apache`, correct: false, explain: "Incorrect. This changes the file context, but doesn't grant the necessary network permission." },
-            { text: `B. setsebool -P httpd_can_network_connecr_db on`, correct: true, explain: "Correct. This SELinux boolean specifically allows the web server (httpd) to make network connections to a database, which is often the cause of this permission denied error." },
-            { text: `C. setenforce 0`, correct: false, explain: "Incorrect. This would disable SELinux entirely, which is not a safe fix." },
-            { text: `D. touch /.autorelabel`, correct: false, explain: "Incorrect. This forces a relabel of the entire filesystem on reboot, which is not the targeted fix needed." }
+            { text: `A. <span style="font-family: monospace;">chcon -t httpd_sys_content_t /home/apache</span>`, correct: false, explain: "Incorrect. This changes the file context, but doesn't grant the necessary network permission." },
+            { text: `B. <span style="font-family: monospace;">setsebool -P httpd_can_network_connecr_db on</span>`, correct: true, explain: "Correct. This SELinux boolean specifically allows the web server (httpd) to make network connections to a database, which is often the cause of this permission denied error." },
+            { text: `C. <span style="font-family: monospace;">setenforce 0</span>`, correct: false, explain: "Incorrect. This would disable SELinux entirely, which is not a safe fix." },
+            { text: `D. <span style="font-family: monospace;">touch /.autorelabel</span>`, correct: false, explain: "Incorrect. This forces a relabel of the entire filesystem on reboot, which is not the targeted fix needed." }
         ]
     },
     {
@@ -5356,24 +5377,30 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "1.3 Given a scenario, manage storage in a Linux system",
          answers: [
-            { text: `A. mkfs.xfs /var`, correct: false, explain: "Incorrect. This would destroy all data in /var." },
-            { text: `B. rm -rf /var/*`, correct: false, explain: "Incorrect. This would destroy all data in /var." },
-            { text: `C. lvextend -L +5G -r /dev/mapper/rootvg-varlv`, correct: true, explain: "Correct. This command extends the logical volume for /var by 5GB and the '-r' flag resizes the filesystem at the same time." },
-            { text: `D. lvextend -L +2G -r /dev/mapper/rootvg-rootlv`, correct: false, explain: "Incorrect command." }
+            { text: `A. <span style="font-family: monospace;">mkfs.xfs /var</span>`, correct: false, explain: "Incorrect. This would destroy all data in /var." },
+            { text: `B. <span style="font-family: monospace;">rm -rf /var/*</span>`, correct: false, explain: "Incorrect. This would destroy all data in /var." },
+            { text: `C. <span style="font-family: monospace;">lvextend -L +5G -r /dev/mapper/rootvg-varlv</span>`, correct: true, explain: "Correct. This command extends the logical volume for /var by 5GB and the '-r' flag resizes the filesystem at the same time." },
+            { text: `D. <span style="font-family: monospace;">lvextend -L +2G -r /dev/mapper/rootvg-rootlv</span>`, correct: false, explain: "Incorrect command." }
         ]
     },
     {
         id: 322,
-        q: "A Linux administrator is configuring a new internal web server fleet. The web servers are up and running but can only be reached by users directly via IP address. The administrator is attempting to fix this inconvenience by requesting appropriate records from the DNS team. The details are:<br><br><br><br>Hostname: devel.comptia.org -<br><br>IP address: 5.5.5.1, 5.5.5.2, 5.5.5.3, 5.5.5.4<br><br><br><br>Name server: 5.5.5.254 -<br><br>Additional names: dev.comptia.org, development.comptia.org<br><br><br><br>Which of the following types of DNS records should the Linux administrator request from the DNS team? (Choose three).",
+        q: `A Linux administrator is configuring a new internal web server fleet. The web servers are up and running but can only be reached by users directly via IP address. The administrator is attempting to fix this inconvenience by requesting appropriate records from the DNS team. The details are:<pre class="h6"><p>
+Hostname: devel.comptia.org -
+IP address: 5.5.5.1, 5.5.5.2, 5.5.5.3, 5.5.5.4
+
+Name server: 5.5.5.254 -
+Additional names: dev.comptia.org, development.comptia.org</pre><p>
+        Which of the following types of DNS records should the Linux administrator request from the DNS team? (Choose three).`,
         type: "multiple",
         select: "3",
  category: "2.4 Given a scenario, configure and manage software in a Linux environment",
          answers: [
-            { text: `A. MX`, correct: false, explain: "Incorrect. MX records are for mail servers." },
-            { text: `B. NS`, correct: true, explain: "Correct. An NS (Name Server) record is needed to delegate the domain to the specified name server." },
-            { text: `C. PTR`, correct: false, explain: "Incorrect. PTR records are for reverse DNS lookups." },
-            { text: `D. A`, correct: true, explain: "Correct. A (Address) records are needed to map the hostnames to the IP addresses." },
-            { text: `E. CNAME`, correct: true, explain: "Correct. CNAME (Canonical Name) records are needed to point the additional names (aliases) to the primary hostname." }
+            { text: `A. <span style="font-family: monospace;">MX</span>`, correct: false, explain: "Incorrect. MX records are for mail servers." },
+            { text: `B. <span style="font-family: monospace;">NS</span>`, correct: true, explain: "Correct. An NS (Name Server) record is needed to delegate the domain to the specified name server." },
+            { text: `C. <span style="font-family: monospace;">PTR</span>`, correct: false, explain: "Incorrect. PTR records are for reverse DNS lookups." },
+            { text: `D. <span style="font-family: monospace;">A</span>`, correct: true, explain: "Correct. A (Address) records are needed to map the hostnames to the IP addresses." },
+            { text: `E. <span style="font-family: monospace;">CNAME</span>`, correct: true, explain: "Correct. CNAME (Canonical Name) records are needed to point the additional names (aliases) to the primary hostname." }
         ]
     },
     {
@@ -5390,14 +5417,19 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
     },
     {
         id: 324,
-        q: "A systems administrator created a user cron to run a scheduled database backup cronjob on the server at 1 a.m. everyday. The following is the cronjob syntax:<br><br><br><br>01 * * * /bin/sh backup.sh<br><br><br><br>The backups, however, are not being created. When checking the crontab file, the administrator sees the following error:<br><br><br><br>$ cron@localhost:$ crontab -e<br><br>/var/spool/cron/crontab/cron: Permission denied<br><br><br><br>Which of the following will permit the cronjob to execute?",
+        q: `A systems administrator created a user cron to run a scheduled database backup cronjob on the server at 1 a.m. everyday. The following is the cronjob syntax:<pre class="h6"><p>
+01 * * * /bin/sh backup.sh</pre><p>
+The backups, however, are not being created. When checking the crontab file, the administrator sees the following error:<pre class="h6"><p>
+$ cron@localhost:$ crontab -e
+/var/spool/cron/crontab/cron: Permission denied</pre><p>
+        Which of the following will permit the cronjob to execute?`,
         type: "single",
  category: "2.3 Given a scenario, manage processes and jobs in a Linux environment",
          answers: [
-            { text: `A. Creating the file cron.allow and adding user cron to it`, correct: true, explain: "Correct. The `cron.allow` file explicitly lists users who are permitted to use cron. If it exists, only users listed in it can create cron jobs." },
-            { text: `B. Giving cron ownership of the file /usr/bin/crontab`, correct: false, explain: "Incorrect. Changing ownership of the binary is not the correct approach." },
-            { text: `C. Running sudo cron restart to activate the cronjob`, correct: false, explain: "Incorrect. This does not address the permission denied error." },
-            { text: `D. Running sudo crontab -u cron -e to edit the file with sudo`, correct: false, explain: "Incorrect. The issue is with the cron daemon's permissions check, not the editing of the file itself." }
+            { text: `A. Creating the file <span style="font-family: monospace;">cron.allow</span> and adding user <span style="font-family: monospace;">cron</span> to it`, correct: true, explain: "Correct. The `cron.allow` file explicitly lists users who are permitted to use cron. If it exists, only users listed in it can create cron jobs." },
+            { text: `B. Giving <span style="font-family: monospace;">cron</span> ownership of the file <span style="font-family: monospace;">/usr/bin/crontab</span>`, correct: false, explain: "Incorrect. Changing ownership of the binary is not the correct approach." },
+            { text: `C. Running <span style="font-family: monospace;">sudo cron restart</span> to activate the <span style="font-family: monospace;">cronjob</span>`, correct: false, explain: "Incorrect. This does not address the permission denied error." },
+            { text: `D. Running <span style="font-family: monospace;">sudo crontab -u cron -e</span> to edit the file with <span style="font-family: monospace;">sudo</span>`, correct: false, explain: "Incorrect. The issue is with the cron daemon's permissions check, not the editing of the file itself." }
         ]
     },
         {
@@ -5406,10 +5438,18 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "2.4 Given a scenario, configure and manage software in a Linux environment",
          answers: [
-            { text: `A. ./config<br><br>./compile<br><br>./copy`, correct: false, explain: "Incorrect." },
-            { text: `B. unzip<br><br>gcc<br><br>install`, correct: false, explain: "Incorrect." },
-            { text: `C. ./unpack<br><br>make exec<br><br>make copy`, correct: false, explain: "Incorrect." },
-            { text: `D. ./configure<br><br>make<br><br>make install`, correct: true, explain: "Correct." }
+            { text: `A. <pre class="h6">./config
+./compile
+./copy</pre>`, correct: false, explain: "Incorrect." },
+            { text: `B. <pre class="h6">unzip
+gcc
+install</pre>`, correct: false, explain: "Incorrect." },
+            { text: `C. <pre class="h6">./unpack
+make exec<
+make copy</pre>`, correct: false, explain: "Incorrect." },
+            { text: `D. <pre class="h6">./configure
+make
+make install</pre>`, correct: true, explain: "Correct." }
         ]
     },
     {
@@ -5418,22 +5458,22 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. ssh-keygen -RPb 4096`, correct: false, explain: "Incorrect syntax." },
-            { text: `B. ssh-keygen -t rsa -b 4096`, correct: true, explain: "Correct. `-t rsa` specifies the RSA type, and `-b 4096` specifies a bit length of 4096. The command will prompt for a passphrase." },
-            { text: `C. ssh-keygen -k rsa -l 4096 -p`, correct: false, explain: "Incorrect syntax." },
-            { text: `D. ssh-keygen -t dsa -B 4096`, correct: false, explain: "Incorrect. DSA keys have a fixed size and are no longer recommended." }
+            { text: `A. <span style="font-family: monospace;">ssh-keygen -RPb 4096</span>`, correct: false, explain: "Incorrect syntax." },
+            { text: `B. <span style="font-family: monospace;">ssh-keygen -t rsa -b 4096</span>`, correct: true, explain: "Correct. `-t rsa` specifies the RSA type, and `-b 4096` specifies a bit length of 4096. The command will prompt for a passphrase." },
+            { text: `C. <span style="font-family: monospace;">ssh-keygen -k rsa -l 4096 -p</span>`, correct: false, explain: "Incorrect syntax." },
+            { text: `D. <span style="font-family: monospace;">ssh-keygen -t dsa -B 4096</span>`, correct: false, explain: "Incorrect. DSA keys have a fixed size and are no longer recommended." }
         ]
     },
     {
         id: 327,
-        q: "A Linux administrator updated the configuration file for the httpd web service. The administrator needs to apply the updated changes to the service without interrupting any running sessions. Which of the following commands should the administrator run to accomplish this task?",
+        q: `A Linux administrator updated the configuration file for the <span style="font-family: monospace;">httpd</span> web service. The administrator needs to apply the updated changes to the service without interrupting any running sessions. Which of the following commands should the administrator run to accomplish this task?`,
         type: "single",
  category: "2.5 Given a scenario, manage Linux using systemd",
          answers: [
-            { text: `A. systemctl reload httpd`, correct: true, explain: "Correct. The `reload` command tells the service to re-read its configuration files without a full restart, preserving active connections." },
-            { text: `B. systemctl restart httpd`, correct: false, explain: "Incorrect. `restart` would terminate all current sessions." },
-            { text: `C. systemctl status httpd`, correct: false, explain: "Incorrect. This only checks the status." },
-            { text: `D.systemctl mask httpd`, correct: false, explain: "Incorrect. This would prevent the service from running at all." }
+            { text: `A. <span style="font-family: monospace;">systemctl reload httpd</span>`, correct: true, explain: "Correct. The `reload` command tells the service to re-read its configuration files without a full restart, preserving active connections." },
+            { text: `B. <span style="font-family: monospace;">systemctl restart httpd</span>`, correct: false, explain: "Incorrect. `restart` would terminate all current sessions." },
+            { text: `C. <span style="font-family: monospace;">systemctl status httpd</span>`, correct: false, explain: "Incorrect. This only checks the status." },
+            { text: `D. <span style="font-family: monospace;">systemctl mask httpd</span>`, correct: false, explain: "Incorrect. This would prevent the service from running at all." }
         ]
     },
     {
@@ -5443,12 +5483,12 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         select: "2",
  category: "2.4 Given a scenario, configure and manage software in a Linux environment",
          answers: [
-            { text: `A. /etc/yum.conf`, correct: true, explain: "Correct. This is the main configuration file for yum/dnf." },
-            { text: `B. /etc/apt/sources.list.d`, correct: false, explain: "Incorrect. This is for Debian-based systems." },
-            { text: `C. /etc/pam.so.d`, correct: false, explain: "Incorrect. This is for PAM modules." },
-            { text: `D. /etc/apt.conf`, correct: false, explain: "Incorrect. This is for Debian-based systems." },
-            { text: `E. /etc/yum.repos.d`, correct: true, explain: "Correct. This directory contains the .repo files that define individual repositories." },
-            { text: `F. /etc/ssh/ssh_config`, correct: false, explain: "Incorrect. This is for SSH client configuration." }
+            { text: `A. <span style="font-family: monospace;">/etc/yum.conf</span>`, correct: true, explain: "Correct. This is the main configuration file for yum/dnf." },
+            { text: `B. <span style="font-family: monospace;">/etc/apt/sources.list.d</span>`, correct: false, explain: "Incorrect. This is for Debian-based systems." },
+            { text: `C. <span style="font-family: monospace;">/etc/pam.so.d</span>`, correct: false, explain: "Incorrect. This is for PAM modules." },
+            { text: `D. <span style="font-family: monospace;">/etc/apt.conf</span>`, correct: false, explain: "Incorrect. This is for Debian-based systems." },
+            { text: `E. <span style="font-family: monospace;">/etc/yum.repos.d</span>`, correct: true, explain: "Correct. This directory contains the .repo files that define individual repositories." },
+            { text: `F. <span style="font-family: monospace;">/etc/ssh/ssh_config</span>`, correct: false, explain: "Incorrect. This is for SSH client configuration." }
         ]
     },
     {
@@ -5457,10 +5497,10 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "1.5 Given a scenario, manage a Linux system using common shell operations",
          answers: [
-            { text: `A. tail -f log.txt`, correct: true, explain: "Correct. The `-f` or `--follow` option outputs appended data as the file grows." },
-            { text: `B. tail -v log.txt`, correct: false, explain: "Incorrect. The `-v` option is for verbose headers." },
-            { text: `C. tail -c log.txt`, correct: false, explain: "Incorrect. The `-c` option outputs the last N bytes." },
-            { text: `D. tail log.txt`, correct: false, explain: "Incorrect. This shows the end of the file but does not follow it." }
+            { text: `A. <span style="font-family: monospace;">tail -f log.txt</span>`, correct: true, explain: "Correct. The `-f` or `--follow` option outputs appended data as the file grows." },
+            { text: `B. <span style="font-family: monospace;">tail -v log.txt</span>`, correct: false, explain: "Incorrect. The `-v` option is for verbose headers." },
+            { text: `C. <span style="font-family: monospace;">tail -c log.txt</span>`, correct: false, explain: "Incorrect. The `-c` option outputs the last N bytes." },
+            { text: `D. <span style="font-family: monospace;">tail log.txt</span>`, correct: false, explain: "Incorrect. This shows the end of the file but does not follow it." }
         ]
     },
         {
@@ -5469,10 +5509,10 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "1.1 Explain basic Linux concepts",
          answers: [
-            { text: `A. /proc`, correct: false, explain: "Incorrect." },
-            { text: `B. /home`, correct: false, explain: "Incorrect." },
-            { text: `C. /root`, correct: false, explain: "Incorrect." },
-            { text: `D. /etc`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">/proc</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">/home</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">/root</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">/etc</span>`, correct: true, explain: "Correct." }
         ]
     },
     {
@@ -5481,10 +5521,10 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "2.5 Given a scenario, manage Linux using systemd",
          answers: [
-            { text: `A. sysctl`, correct: true, explain: "Correct." },
-            { text: `B. ss`, correct: false, explain: "Incorrect." },
-            { text: `C. mkinitrd`, correct: false, explain: "Incorrect." },
-            { text: `D. lsof`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">sysctl</span>`, correct: true, explain: "Correct." },
+            { text: `B. <span style="font-family: monospace;">ss</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">mkinitrd</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">lsof</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -5493,45 +5533,48 @@ tmpfs                         875M     0  875M   0% /sys/fs/cgroup
         type: "single",
  category: "3.2 Given a scenario, configure and implement firewalls on a Linux system",
          answers: [
-            { text: `A. iptables -D`, correct: false, explain: "Incorrect." },
-            { text: `B. iptables -L`, correct: false, explain: "Incorrect." },
-            { text: `C. iptables -F`, correct: true, explain: "Correct." },
-            { text: `D. iptables -A`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">iptables -D</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">iptables -L</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">iptables -F</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">iptables -A</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
         id: 333,
-        q: "A Linux administrator has defined a systemd script docker-repository.mount to mount a volume for use by the Docker service. The administrator wants to ensure that Docker service does not start until the volume is mounted. Which of the following configurations needs to be added to the Docker service definition to best accomplish this task?",
+        q: `A Linux administrator has defined a <span style="font-family: monospace;">systemd</span> script <span style="font-family: monospace;">docker-repository.mount</span> to mount a volume for use by the Docker service. The administrator wants to ensure that Docker service does not start until the volume is mounted. Which of the following configurations needs to be added to the Docker service definition to best accomplish this task?`,
         type: "single",
  category: "2.5 Given a scenario, manage Linux using systemd",
          answers: [
-            { text: `A. After=docker-respository.mount`, correct: false, explain: "Incorrect." },
-            { text: `B. ExecStart=/usr/bin/mount -a`, correct: false, explain: "Incorrect." },
-            { text: `C. Requires=docker-repository.mount`, correct: true, explain: "Correct." },
-            { text: `D. RequiresMountsFor=docker-repository.mount`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">After=docker-respository.mount</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">ExecStart=/usr/bin/mount -a</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">Requires=docker-repository.mount</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">RequiresMountsFor=docker-repository.mount</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
         id: 334,
-        q: "A systems administrator needs to stop a running systemd service tor and prevent it from running when the system starts up. Which of the following is the best command for the administrator to use to accomplish this task?",
+        q: `A systems administrator needs to stop a running systemd service <span style="font-family: monospace;">tor</span> and prevent it from running when the system starts up. Which of the following is the best command for the administrator to use to accomplish this task?`,
         type: "single",
  category: "2.5 Given a scenario, manage Linux using systemd",
          answers: [
-            { text: `A. pidof -o %PPID -x tor && apt -y purge tor`, correct: false, explain: "Incorrect." },
-            { text: `B. pkill tor`, correct: false, explain: "Incorrect." },
-            { text: `C. service stop | disable tor`, correct: false, explain: "Incorrect." },
-            { text: `D. systemctl stop tor && systemctl disable tor`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">pidof -o %PPID -x tor && apt -y purge tor</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">pkill tor</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">service stop | disable tor</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">systemctl stop tor && systemctl disable tor</span>`, correct: true, explain: "Correct." }
         ]
     },
     {
         id: 335,
-        q: `An administrator is troubleshooting a database service outage that was reported by a monitoring system. Given the following output:<p><pre class="h6">$ systemctl status mariadb
+        q: `An administrator is troubleshooting a database service outage that was reported by a
+monitoring system. Given the following output:<p><pre class="h6">
+$ systemctl status mariadb
 Oct 20 16:40:45 comptia systemd[1]: mariadb.service: Main process exited, code=killed, status=9/KILL
 Oct 20 16:40:45 comptia systemd[1]: mariadb.service: Failed with result 'signal'.
 Oct 20 16:40:50 comptia systemd[1]: Stopped MariaDB 10.3 database server.
 
 $ dmesg
-[ 1075.814593] Node 0 DMA32 free:8220kb min:8224kb low:8588kb high:9488kb active_anon:1456kb inactive_anon:319024kb active_file:8kb
+[ 1075.814593] Node 0 DMA32 free:8220kb min:8224kb low:8588kb high:9488kb active_anon:1456kb inactive_anon:
+319024kb active_file:8kb
 inactive_file:252528kb unevictable:0kb writepending:4kb pte
 ...
 [ 1061.491433] Out of memory: Kill process 1981 (mysqld) score 215 or sacrifice child
@@ -5614,7 +5657,10 @@ exit '</pre><p>`,
     },
     {
         id: 339,
-        q: `A Linux engineer receives the following notification from a system:<br><br><br><br>cp: cannot create regular file '/app/appdata.tar': No space left on device<br><br><br><br>The engineer obtains the following output:<p><pre class="h6">[root@host ~]# df -i /app
+        q: `A Linux engineer receives the following notification from a system:<pre class="h6"><p>
+cp: cannot create regular file '/app/appdata.tar': No space left on device</pre><p>
+The engineer obtains the following output:<p><pre class="h6">
+[root@host ~]# df -i /app
 Filesystem     Inodes IUsed IFree IUse% Mounted on
 /dev/vdb         2048  2048     0  100% /app
 
@@ -5637,30 +5683,30 @@ Filesystem      Size  Used Avail Use% Mounted on
         type: "single",
  category: "4.4 Given a scenario, implement version control using Git",
          answers: [
-            { text: `A. git pull`, correct: false, explain: "Incorrect." },
-            { text: `B. git push`, correct: false, explain: "Incorrect." },
-            { text: `C. git branch`, correct: false, explain: "Incorrect." },
-            { text: `D. git tag`, correct: true, explain: "Correct. `git tag` is used to create a named snapshot (a tag) of a specific commit." }
+            { text: `A. <span style="font-family: monospace;">git pull</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">git push</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">git branch</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">git tag</span>`, correct: true, explain: "Correct. `git tag` is used to create a named snapshot (a tag) of a specific commit." }
         ]
     },
     {
         id: 341,
-        q: "A Linux administrator is creating a user that can run the FTP service but cannot log in to the system. The administrator sets /bin/false as a log-in shell for the user. When the user tries to run the FTP service, it is rejected with an Invalid shell: /bin/false message. Which of the following is the best way to resolve the issue?",
+        q: `A Linux administrator is creating a user that can run the FTP service but cannot log in to the system. The administrator sets <span style="font-family: monospace;">/bin/false</span> as a log-in shell for the user. When the user tries to run the FTP service, it is rejected with an <span style="font-family: monospace;">Invalid shell: /bin/false</span> message. Which of the following is the best way to resolve the issue?`,
         type: "single",
  category: "3.4 Explain account hardening techniques and best practices",
          answers: [
-            { text: `A. Change ownership of /bin/false to the FTP user.`, correct: false, explain: "Incorrect." },
-            { text: `B. Add /bin/false entry to the /etc/shells file.`, correct: true, explain: "Correct. For a shell to be considered valid for services like FTP, it must be listed in /etc/shells." },
-            { text: `C. Make /bin/false an executable file.`, correct: false, explain: "Incorrect. It is already executable." },
-            { text: `D. Change the user’s default shell to /bin/bash.`, correct: false, explain: "Incorrect. This would allow the user to log in, which is against the requirement." }
+            { text: `A. Change ownership of <span style="font-family: monospace;">/bin/false</span> to the FTP user.`, correct: false, explain: "Incorrect." },
+            { text: `B. Add <span style="font-family: monospace;">/bin/false</span> entry to the <span style="font-family: monospace;">/etc/shells</span> file.`, correct: true, explain: "Correct. For a shell to be considered valid for services like FTP, it must be listed in /etc/shells." },
+            { text: `C. Make <span style="font-family: monospace;">/bin/false</span> an executable file.`, correct: false, explain: "Incorrect. It is already executable." },
+            { text: `D. Change the user’s default shell to <span style="font-family: monospace;">/bin/bash</span>.`, correct: false, explain: "Incorrect. This would allow the user to log in, which is against the requirement." }
         ]
     },
     {
         id: 342,
-        q: `A Linux administrator is configuring a log collector agent to monitor logs in /var/log/collector. The agent is reporting that it cannot write in the directory. The agent runs as the logger user account. The administrator runs a few commands and reviews the following output:<p> 
-        Output 1:<p><pre class="h6">drwxr-xr-x. 1 root root   0 Oct 01 20:13 collector
+        q: `A Linux administrator is configuring a log collector agent to monitor logs in <span style="font-family: monospace;">/var/log/collector</span>. The agent is reporting that it cannot write in the directory. The agent runs as the logger user account. The administrator runs a few commands and reviews the following output:<p> 
+Output 1:<p><pre class="h6">drwxr-xr-x. 1 root root   0 Oct 01 20:13 collector
 drwxr-xr-x. 1 root root 680 Oct 01 20:13 .</pre><p>
-        Output 2:<p><pre class="h6">* file: /var/log/collector
+Output 2:<p><pre class="h6">* file: /var/log/collector
 * owner: root 
 * group: root 
 user::rwx 
@@ -5676,38 +5722,47 @@ Output 3:<p><pre class="h6">uid=1010(logger) gid=1010(monitor) groups=1010(monit
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. setfacl -Rm u:logger:rw /var/log/collector`, correct: true, explain: "Correct. This uses an Access Control List (ACL) to grant the specific user 'logger' read/write permissions on the directory without changing the base ownership." },
-            { text: `B. usermod -aG root logger`, correct: false, explain: "Incorrect. Adding the logger to the root group is a security risk." },
-            { text: `C. chmod 644 /var/log/collector`, correct: false, explain: "Incorrect. This sets permissions but doesn't grant write access to the logger user." },
-            { text: `D. chown -R logger:monitor /var/log`, correct: false, explain: "Incorrect. This changes ownership of the entire /var/log directory, which is dangerous." }
+            { text: `A. <span style="font-family: monospace;">setfacl -Rm u:logger:rw /var/log/collector</span>`, correct: true, explain: "Correct. This uses an Access Control List (ACL) to grant the specific user 'logger' read/write permissions on the directory without changing the base ownership." },
+            { text: `B. <span style="font-family: monospace;">usermod -aG root logger</span>`, correct: false, explain: "Incorrect. Adding the logger to the root group is a security risk." },
+            { text: `C. <span style="font-family: monospace;">chmod 644 /var/log/collector</span>`, correct: false, explain: "Incorrect. This sets permissions but doesn't grant write access to the logger user." },
+            { text: `D. <span style="font-family: monospace;">chown -R logger:monitor /var/log</span>`, correct: false, explain: "Incorrect. This changes ownership of the entire /var/log directory, which is dangerous." }
         ]
     },
     {
         id: 343,
-        q: "A systems adminitrator receives reports of issues in one of the Linux systems. The following output has been provided:<br><br><br><br># dig node.mycomptia.org<br><br><br><br>; <<>> DiG 9.11.36.x.x. <<>> node.mycomptia.org<br><br>;; global options: +cmd<br><br>;; connection timed out; no servers could be reached<br><br><br><br># cat /etc/resolv.conf<br><br>search mycomptia.org<br><br><br><br>Which of the following actions will best resolve this issue? (Choose two.)",
+        q: `A systems adminitrator receives reports of issues in one of the Linux systems. The following output has been provided:<pre class="h6"><p>
+# dig node.mycomptia.org
+
+; <<>> DiG 9.11.36.x.x. <<>> node.mycomptia.org
+;; global options: +cmd
+;; connection timed out; no servers could be reached
+
+# cat /etc/resolv.conf
+search mycomptia.org</pre><p>
+        Which of the following actions will best resolve this issue? (Choose two.)`,
         type: "multiple",
         select: "2",
 category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a Linux system",
         answers: [
-            { text: `A. echo \"8.8.8.8 node.mycomptia.org\" >> /etc/hosts`, correct: false, explain: "Incorrect. This is a temporary, local fix that doesn't solve the underlying DNS issue." },
-            { text: `B. echo \"nameserver 8.8.8.8\" >> /run/systemd/resolve/resolv.conf`, correct: false, explain: "Incorrect. This file is often managed by systemd-resolved and may be overwritten." },
-            { text: `C. systemctl restart networkd`, correct: false, explain: "Incorrect. Restarting the service won't help if the configuration is missing a nameserver." },
-            { text: `D. echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf`, correct: true, explain: "Correct. The output shows no nameserver is configured. Adding one to /etc/resolv.conf will fix the resolution issue for the current session." },
-            { text: `E. echo \"DNS1=8.8.8.8\" >> /etc/sysconfig/network-scripts/ifcfg-eth0`, correct: true, explain: "Correct. For persistent configuration on RPM-based systems, the nameserver should be added to the interface configuration file." },
-            { text: `F. systemetl restart NetworkManager`, correct: false, explain: "Incorrect. Restarting the service won't help if the configuration is missing a nameserver." },
-            { text: `G. systemctl restart named`, correct: false, explain: "Incorrect. `named` is a DNS server daemon; this machine is a client." }
+            { text: `A. <span style="font-family: monospace;">echo \"8.8.8.8 node.mycomptia.org\" >> /etc/hosts</span>`, correct: false, explain: "Incorrect. This is a temporary, local fix that doesn't solve the underlying DNS issue." },
+            { text: `B. <span style="font-family: monospace;">echo \"nameserver 8.8.8.8\" >> /run/systemd/resolve/resolv.conf</span>`, correct: false, explain: "Incorrect. This file is often managed by systemd-resolved and may be overwritten." },
+            { text: `C. <span style="font-family: monospace;">systemctl restart networkd</span>`, correct: false, explain: "Incorrect. Restarting the service won't help if the configuration is missing a nameserver." },
+            { text: `D. <span style="font-family: monospace;">echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf</span>`, correct: true, explain: "Correct. The output shows no nameserver is configured. Adding one to /etc/resolv.conf will fix the resolution issue for the current session." },
+            { text: `E. <span style="font-family: monospace;">echo \"DNS1=8.8.8.8\" >> /etc/sysconfig/network-scripts/ifcfg-eth0</span>`, correct: true, explain: "Correct. For persistent configuration on RPM-based systems, the nameserver should be added to the interface configuration file." },
+            { text: `F. <span style="font-family: monospace;">systemetl restart NetworkManager</span>`, correct: false, explain: "Incorrect. Restarting the service won't help if the configuration is missing a nameserver." },
+            { text: `G. <span style="font-family: monospace;">systemctl restart named</span>`, correct: false, explain: "Incorrect. `named` is a DNS server daemon; this machine is a client." }
         ]
     },
     {
         id: 344,
-        q: "The journald entries have filled a Linux machine’s /var volume. Which of the following is the best command for a systems administrator to use to free up the disk space occupied by these entries?",
+        q: `The <span style="font-family: monospace;">journald</span> entries have filled a Linux machine’s <span style="font-family: monospace;">/var</span> volume. Which of the following is the best command for a systems administrator to use to free up the disk space occupied by these entries?`,
         type: "single",
  category: "3.1 Summarize authorization, authentication, and accounting methods",
          answers: [
-            { text: `A. journalctl --rotate<br><br>journalctl --vacuum-time=1s`, correct: true, explain: "Correct. `--rotate` forces rotation of journal files, and `--vacuum-time` removes archived journal files older than the specified time." },
-            { text: `B. systemctl stop<br><br>systemd-journald systemctl<br><br>start systemd-journald`, correct: false, explain: "Incorrect. Restarting the service does not clear old log entries." },
-            { text: `C. rm -rf<br><br>/var/log/journal systemctl<br><br>restart systemd-journald`, correct: false, explain: "Incorrect. Manually deleting the journal directory is not the recommended or safest method." },
-            { text: `D. pkill -HUP systemd<br><br>journald systemctl restart<br><br>systemd-journald`, correct: false, explain: "Incorrect. Sending a SIGHUP signal will not clear old log entries." }
+            { text: `A. <span style="font-family: monospace;">journalctl --rotate<br><br>journalctl --vacuum-time=1s</span>`, correct: true, explain: "Correct. `--rotate` forces rotation of journal files, and `--vacuum-time` removes archived journal files older than the specified time." },
+            { text: `B. <span style="font-family: monospace;">systemctl stop<br><br>systemd-journald systemctl<br><br>start systemd-journald</span>`, correct: false, explain: "Incorrect. Restarting the service does not clear old log entries." },
+            { text: `C. <span style="font-family: monospace;">rm -rf<br><br>/var/log/journal systemctl<br><br>restart systemd-journald</span>`, correct: false, explain: "Incorrect. Manually deleting the journal directory is not the recommended or safest method." },
+            { text: `D. <span style="font-family: monospace;">pkill -HUP systemd<br><br>journald systemctl restart<br><br>systemd-journald</span>`, correct: false, explain: "Incorrect. Sending a SIGHUP signal will not clear old log entries." }
         ]
     },
         {
@@ -5716,10 +5771,10 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "3.2 Given a scenario, configure and implement firewalls on a Linux system",
          answers: [
-            { text: `A. firewall-cmd --set-default-zone`, correct: false, explain: "Incorrect." },
-            { text: `B. firewall-cmd --runtime-to-permanent`, correct: false, explain: "Incorrect." },
-            { text: `C. firewall-cmd --reload`, correct: true, explain: "Correct." },
-            { text: `D. firewall-cmd --complete-reload`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">firewall-cmd --set-default-zone</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">firewall-cmd --runtime-to-permanent</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">firewall-cmd --reload</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">firewall-cmd --complete-reload</span>`, correct: false, explain: "Incorrect." }
         ]
     },
         {
@@ -5728,22 +5783,26 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "2.1 Given a scenario, manage files and directories on a Linux system",
          answers: [
-            { text: `A. mv -i filename /tmp/backup`, correct: false, explain: "Incorrect." },
-            { text: `B. mv -b filename /tmp/backup`, correct: false, explain: "Incorrect." },
-            { text: `C. mv -n filename /tmp/backup`, correct: true, explain: "Correct." },
-            { text: `D. mv -f filename /tmp/backup`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">mv -i filename /tmp/backup</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">mv -b filename /tmp/backup</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">mv -n filename /tmp/backup</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">mv -f filename /tmp/backup</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
         id: 347,
-        q: "An administrator needs to restrict a file's permission set in the following ways:<br><br><br><br>The file needs to be read and write, but it should not be executable to the file owner.<br><br>The file needs to be read-only and executable to the group owner.<br><br>The file needs to be read-only to all other users.<br><br>Which of the following represents the next command the administrator should execute?",
+        q: `An administrator needs to restrict a file's permission set in the following ways:<p>      
+The file needs to be read and write, but it should not be executable to the file owner.
+The file needs to be read-only and executable to the group owner.
+The file needs to be read-only to all other users.<p>
+        Which of the following represents the next command the administrator should execute?`,
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. chmod 210 file.txt`, correct: false, explain: "Incorrect." },
-            { text: `B. chmod 654 file.txt`, correct: true, explain: "Correct." },
-            { text: `C. chmod 753 file.txt`, correct: false, explain: "Incorrect." },
-            { text: `D. chmod 777 file.txt`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">chmod 210 file.txt</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">chmod 654 file.txt</span>`, correct: true, explain: "Correct." },
+            { text: `C. <span style="font-family: monospace;">chmod 753 file.txt</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">chmod 777 file.txt</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -5752,22 +5811,22 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "5.5 Given a scenario, analyze and troubleshoot performance issues",
          answers: [
-            { text: `A. user`, correct: false, explain: "Incorrect." },
-            { text: `B. nice`, correct: false, explain: "Incorrect." },
-            { text: `C. steal`, correct: true, explain: "Correct." },
-            { text: `D. system`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">user</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">nice</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">steal</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">system</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
         id: 349,
-        q: "An administrator wants to create a shortcut to /shared/dev/projects. Which of the following commands can the administrator use to create a link to the projects directory from the administrator's home directory?",
+        q: `An administrator wants to create a shortcut to <span style="font-family: monospace;">/shared/dev/projects</span>. Which of the following commands can the administrator use to create a link to the projects directory from the administrator's home directory?`,
         type: "single",
  category: "2.1 Given a scenario, manage files and directories on a Linux system",
          answers: [
-            { text: `A. ln ~/projects /shared/dev/projects`, correct: false, explain: "Incorrect." },
-            { text: `B. ln -s /home/admin/projects /shared/dev/projects`, correct: false, explain: "Incorrect." },
-            { text: `C. ln /home/admin/projects ~/projects`, correct: false, explain: "Incorrect." },
-            { text: `D. ln -s /shared/dev/projects /home/admin/projects`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">ln ~/projects /shared/dev/projects</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">ln -s /home/admin/projects /shared/dev/projects</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">ln /home/admin/projects ~/projects</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">ln -s /shared/dev/projects /home/admin/projects</span>`, correct: true, explain: "Correct." }
         ]
     },
     {
@@ -5776,94 +5835,33 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "2.6 Given a scenario, manage applications in a container on a Linux server",
          answers: [
-            { text: `A. docker network erase`, correct: false, explain: "Incorrect." },
-            { text: `B. docker network clear`, correct: false, explain: "Incorrect." },
-            { text: `C. docker network prune`, correct: true, explain: "Correct." },
-            { text: `D. docker network rm`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">docker network erase</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">docker network clear</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">docker network prune</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">docker network rm</span>`, correct: false, explain: "Incorrect." }
         ]
     },    {
         id: 351,
-        q: "After making a configuration change to an Apache web server, an administrator needs to reload the service. However, sudo access was only granted to the killall command. Which of the following commands should the administrator use to load the new configuration?",
+        q: `After making a configuration change to an Apache web server, an administrator needs to reload the service. However, sudo access was only granted to the <span style="font-family: monospace;">killall</span> command. Which of the following commands should the administrator use to load the new configuration?`,
         type: "single",
  category: "2.3 Given a scenario, manage processes and jobs in a Linux environment",
          answers: [
-            { text: `A. sudo killall -HUP httpd`, correct: true, explain: "Correct." },
-            { text: `B. sudo killall --reload httpd`, correct: false, explain: "Incorrect." },
-            { text: `C. sudo killall -9 httpd`, correct: false, explain: "Incorrect." },
-            { text: `D. sudo killall -TERM httpd`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">sudo killall -HUP httpd</span>`, correct: true, explain: "Correct." },
+            { text: `B. <span style="font-family: monospace;">sudo killall --reload httpd</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">sudo killall -9 httpd</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">sudo killall -TERM httpd</span>`, correct: false, explain: "Incorrect." }
         ]
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-
-
-
-
     {
         id: 353,
         q: "A user on a Linux workstation needs to remotely start an application on a Linux server and then forward the graphical display of that application back to the Linux workstation. Which of the following would enable the user to perform this action?",
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. ssh -Y user@server application`, correct: false, explain: "Incorrect." },
-            { text: `B. ssh user@server application`, correct: false, explain: "Incorrect." },
-            { text: `C. ssh -X user@server application`, correct: true, explain: "Correct." },
-            { text: `D. ssh -D user@server application`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">ssh -Y user@server application</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">ssh user@server application</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">ssh -X user@server application</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">ssh -D user@server application</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -5872,16 +5870,28 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "2.4 Given a scenario, configure and manage software in a Linux environment",
          answers: [
-            { text: `A. apt-get refresh`, correct: false, explain: "Incorrect." },
-            { text: `B. apt purge`, correct: false, explain: "Incorrect." },
-            { text: `C. apt-get cache update`, correct: false, explain: "Incorrect." },
-            { text: `D. apt update`, correct: true, explain: "Correct." }
+            { text: `A. <span style="font-family: monospace;">apt-get refresh</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">apt purge</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">apt-get cache update</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">apt update</span>`, correct: true, explain: "Correct." }
 
         ]
     },
         {
         id: 355,
-        q: "A Linux administrator is attempting to create a KVM on a remote Linux server. After failing to create the VM, the administrator runs some commands and reviews the following output:<br><br><br><br>Output 1:<br><br>/lscpu<br><br>Architecture: x86_64<br><br>CPU op-mode(s): 32-bit, 64-bit<br><br><br><br>Virtualization features:<br><br>Hypervisor vendor: Microsoft<br><br>Virtualization type: full<br><br><br><br>Output 2:<br><br># cat /etc/modprobe.d/kvm.conf<br><br>options kvm_intel nested=1<br><br><br><br>Which of the following is the most likely cause of the issue?",
+        q: `A Linux administrator is attempting to create a KVM on a remote Linux server. After failing to create the VM, the administrator runs some commands and reviews the following output:<p>
+Output 1:<pre class="h6"><p>
+/lscpu
+Architecture: x86_64
+CPU op-mode(s): 32-bit, 64-bit
+
+Virtualization features:
+Hypervisor vendor: Microsoft
+Virtualization type: full</pre><p>
+Output 2:<pre class="h6"><p>
+# cat /etc/modprobe.d/kvm.conf
+options kvm_intel nested=1</pre><p>
+        Which of the following is the most likely cause of the issue?`,
         type: "single",
  category: "1.7 Summarize virtualization on Linux systems",
          answers: [
@@ -5893,14 +5903,19 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
     },
     {
         id: 356,
-        q: "A systems administrator has changed the permissions on the /etc/passwd file. When a user attempts to log in, the following is displayed on the command prompt:<br><br>I have no name!<br><br><br><br>$ ls -l /etc/passwd /etc/shadow<br><br>-rw------- 1 root 7868 Oct 18 10:45 /etc/passwd<br><br>-rw------- 1 shadow 10548 Oct 18 10:45 /etc/shadow<br><br><br><br>Which of the following commands will fix the file permissions?",
+        q: `A systems administrator has changed the permissions on the /etc/passwd file. When a user attempts to log in, the following is displayed on the command prompt:<pre class="h6"><p>
+I have no name!
+$ ls -l /etc/passwd /etc/shadow
+-rw------- 1 root 7868 Oct 18 10:45 /etc/passwd
+-rw------- 1 shadow 10548 Oct 18 10:45 /etc/shadow</pre><p>
+        Which of the following commands will fix the file permissions?`,
         type: "single",
  category: "5.4 Given a scenario, analyze and troubleshoot security issues on a Linux system",
          answers: [
-            { text: `A. sudo chmod 755 /etc/passwd`, correct: false, explain: "Incorrect." },
-            { text: `B. sudo chmod 644 /etc/passwd`, correct: true, explain: "Correct." },
-            { text: `C. sudo chmod 644 /etc/shadow`, correct: false, explain: "Incorrect." },
-            { text: `D. sudo chmod 755 /etc/shadow`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">sudo chmod 755 /etc/passwd</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">sudo chmod 644 /etc/passwd</span>`, correct: true, explain: "Correct." },
+            { text: `C. <span style="font-family: monospace;">sudo chmod 644 /etc/shadow</span>`, correct: false, explain: "Incorrect." },
+            { text: `D. <span style="font-family: monospace;">sudo chmod 755 /etc/shadow</span>`, correct: false, explain: "Incorrect." }
         ]
     },
     {
@@ -5909,11 +5924,11 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system",
          answers: [
-            { text: `A. [root@nodea ~]# ssh -i ~/.ssh/id_rsa root@nodeb`, correct: false, explain: "Incorrect." },
-            { text: `B. [root@nodea ~]# scp -i ~/.ssh/id_rsa root@nodeb`, correct: false, explain: "Incorrect." },
-            { text: `C. [root@nodea ~]# ssh-copy-id -i ~/.ssh/id_rsa root@nodeb`, correct: true, explain: "Correct." },
-            { text: `D. [root@nodea ~]# ssh-agent -i ~/.ssh/id_rsa root@nodeb`, correct: false, explain: "Incorrect." },
-            { text: `E. [root@nodea ~]# ssh-add -i ~/.ssh/id_rsa root@nodeb`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">[root@nodea ~]# ssh -i ~/.ssh/id_rsa root@nodeb</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">[root@nodea ~]# scp -i ~/.ssh/id_rsa root@nodeb</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">[root@nodea ~]# ssh-copy-id -i ~/.ssh/id_rsa root@nodeb</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">[root@nodea ~]# ssh-agent -i ~/.ssh/id_rsa root@nodeb</span>`, correct: false, explain: "Incorrect." },
+            { text: `E. <span style="font-family: monospace;">[root@nodea ~]# ssh-add -i ~/.ssh/id_rsa root@nodeb</span>`, correct: false, explain: "Incorrect." }
 
         ]
     },
@@ -5923,10 +5938,10 @@ category: "5.3 Given a scenario, analyze and troubleshoot networking issues on a
         type: "single",
  category: "1.6 Given a scenario, perform backup and restore operations for a Linux server",
          answers: [
-            { text: `A. scp -r /home/dev dev@staging.DevPlace.com:/home/`, correct: false, explain: "Incorrect." },
-            { text: `B. scp -rp /home/dev dev@staging.DevPlace.com:/home`, correct: false, explain: "Incorrect." },
-            { text: `C. rsync -avz /home/dev dev@staging.DevPlace.com:/home`, correct: true, explain: "Correct." },
-            { text: `D. rsync -am ssh /home/dev dev@staging.DevPlace.com:/home`, correct: false, explain: "Incorrect." }
+            { text: `A. <span style="font-family: monospace;">scp -r /home/dev dev@staging.DevPlace.com:/home/</span>`, correct: false, explain: "Incorrect." },
+            { text: `B. <span style="font-family: monospace;">scp -rp /home/dev dev@staging.DevPlace.com:/home</span>`, correct: false, explain: "Incorrect." },
+            { text: `C. <span style="font-family: monospace;">rsync -avz /home/dev dev@staging.DevPlace.com:/home</span>`, correct: true, explain: "Correct." },
+            { text: `D. <span style="font-family: monospace;">rsync -am ssh /home/dev dev@staging.DevPlace.com:/home</span>`, correct: false, explain: "Incorrect." }
         ]
     },
 
