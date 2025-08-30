@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Interactive Cybersecurity Simulations
+Exec=sh -c "$HOME/start-cyber-interactive"
+Terminal=false
+Type=Application
+Icon=chromium
+Categories=Utility;
