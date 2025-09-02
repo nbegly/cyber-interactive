@@ -1,4 +1,4 @@
-const CACHE_NAME = 'NPSBSimsv2';
+const CACHE_NAME = 'NPSB-DO';
 
 const assetsToCache = [
   './',
