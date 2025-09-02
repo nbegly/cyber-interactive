@@ -1,5 +1,6 @@
 [Desktop Entry]
-Name=Interactive Cybersecurity Simulations
+Name=Doctrina Optimos
+Comment=Encapsulated PWA
 Exec=sh -c "$HOME/start-cyber-interactive"
 Terminal=false
 Type=Application

@@ -174,7 +174,7 @@
                 this.appendToTerminal(`\n<span style="color: #88ff88;">root@localhost ~#</span> ${command}`);
                 
                 if (command === "help") {
-                    const helpText = `Available Commands:\nyum install httpd\nsystemctl enable --now httpd\nsystemctl status httpd\nsystemctl restart httpd\nnetstat -tunlp | grep 80\npkill nginx`;
+                    const helpText = `Available Commands:\nsystemctl enable --now httpd\nsystemctl reload sshd\nsystemctl status httpd\napache2ctl configtest\nss -tunlp | grep 22\nsystemctl restart httpd\nyum install httpd\nnetstat -tunlp | grep 80\njournalctl -u mysql\nfirewall-cmd --add-service=https\nsystemctl --now enable nginx\npkill nginx\nsystemctl mask httpd\nservice mysql restart\n`;
                     this.appendToTerminal(helpText);
                     return;
                 }

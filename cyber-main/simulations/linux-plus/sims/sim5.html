@@ -195,7 +195,18 @@
 
                 if (this.state.activePart < 3) {
                     const fragmentsHtml = this.state.shuffledFragments.map(f => `<div class="sim5-fragment-btn" data-fragment="${f}">${f}</div>`).join('');
-                    const commandList = ["ls -l ~", "ls -l ~/.ssh", "ls -Z ~/.ssh", "cat ~/.ssh/authorized_keys", "cat ~/.ssh/known_hosts"];
+                    const commandList = [
+                        "cat ~/.ssh/authorized_keys", 
+                        "cat ~/.ssh/known_hosts",
+                        "ls -l .ssh",
+                        "ls -l ~",
+                        "ls -l ~/.ssh",
+                        "ls -l /etc/ssh",
+                        "ls -Z .ssh",
+                        "ls -Z ~/.ssh",
+                        "ssh-add ~/.ssh/id_rsa",
+                        "ssh-keyscan -H server1 >> ~/.ssh/known_hosts"
+                    ];
                     const clickableCommandsHtml = commandList.map(cmd => `<a class="sim5-cmd-link" data-cmd="${cmd}">${cmd}</a>`).join('');
 
                     contentHtml = `
@@ -236,18 +247,47 @@
                 this.dom.wrapper.innerHTML = `<div class="sim5-tabs">${tabsHtml}</div>` + contentHtml;
                 this.attachEvents();
             },
-            getDynamicOutput: function(cmd) {
-                const part = this.state.activePart;
-                if (cmd === 'ls -l ~') {
-                    return part >= 1 ? "drwxr-xr-x. 2 comptia comptia 4096 Jun 17 14:00 Documents" : "drwxr-xr-x. 2 comptia comptia 4096 Jun 17 14:00 Documents\n-rw-r--r--. 1 comptia comptia 1234 Jun 17 15:00 server1";
-                }
-                if (cmd === 'ls -l ~/.ssh' || cmd === 'ls -Z ~/.ssh') {
-                    if (part >= 2) return "total 8\n-rw-------. 1 comptia comptia 1234 Jun 17 15:00 server1\n-rw-r--r--. 1 comptia comptia 399 Jun 17 15:30 known_hosts";
-                    if (part >= 1) return "total 8\n-rw-r--r--. 1 comptia comptia 1234 Jun 17 15:00 server1\n-rw-r--r--. 1 comptia comptia 399 Jun 17 15:30 known_hosts";
-                    return "total 4\n-rw-r--r--. 1 comptia comptia 399 Jun 17 15:30 known_hosts";
-                }
-                return { "cat ~/.ssh/authorized_keys": `ssh-rsa AAAAB3... user@example.com`, "cat ~/.ssh/known_hosts": `|1|Fp21h3gP|3gO...|*REDACTED*`}[cmd] || "Command not found.";
-            },
+getDynamicOutput: function(cmd) {
+                const part = this.state.activePart;
+
+                // Helper function for "ls -l" output on the .ssh directory
+                const lsSshOutput = () => {
+                    if (part === 0) return "total 4\n-rw-r--r--. 1 comptia comptia 399 Aug 30 09:00 known_hosts";
+                    if (part === 1) return "total 8\n-rw-r--r--. 1 root root 1789 Sep 02 12:45 server1\n-rw-r--r--. 1 comptia comptia 399 Aug 30 09:00 known_hosts";
+                    if (part === 2) return "total 8\n-rw-------. 1 root root 1789 Sep 02 12:45 server1\n-rw-r--r--. 1 comptia comptia 399 Aug 30 09:00 known_hosts";
+                    return "total 8\n-rw-------. 1 admin admin 1789 Sep 02 12:45 server1\n-rw-r--r--. 1 comptia comptia 399 Aug 30 09:00 known_hosts";
+                };
+
+                // Helper function for "ls -Z" output on the .ssh directory
+                const lsZSshOutput = () => {
+                    const base = "unconfined_u:object_r:ssh_home_t:s0";
+                    if (part === 0) return `${base} known_hosts`;
+                    return `${base} server1\n${base} known_hosts`;
+                };
+
+                const outputs = {
+                    "ls -l ~": () => {
+                        const base = "total 8\ndrwxr-xr-x. 2 comptia comptia 4096 Sep 02 12:30 Documents\ndrwxr-xr-x. 2 comptia comptia 4096 Sep 02 12:31 Downloads";
+                        if (part === 0) return `${base}\n-rw-r--r--. 1 root root 1789 Aug 28 11:00 server1`;
+                        return base;
+                    },
+                    "ls -l ~/.ssh": lsSshOutput,
+                    "ls -l .ssh": lsSshOutput,
+                    "ls -Z ~/.ssh": lsZSshOutput,
+                    "ls -Z .ssh": lsZSshOutput,
+                    "cat ~/.ssh/authorized_keys": () => `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCo... comptia@local`,
+                    "cat ~/.ssh/known_hosts": () => `server1,192.168.1.101 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE...`,
+                    "ls -l /etc/ssh": () => `total 560
+-rw-r--r--. 1 root root 551963 Aug 15 2023 moduli
+-rw-r--r--. 1 root root   2280 Aug 15 2023 ssh_config
+-rw-------. 1 root root   4164 Aug 15 2023 sshd_config
+-rw-------. 1 root root    505 Aug 15 2023 ssh_host_ed25519_key
+-rw-r--r--. 1 root root    338 Aug 15 2023 ssh_host_rsa_key.pub`,
+                    "ssh-add ~/.ssh/id_rsa": () => `Could not open a connection to your authentication agent.`,
+                    "ssh-keyscan -H server1 >> ~/.ssh/known_hosts": () => `` 
+                };
+                return (outputs[cmd] || (() => "Command not found."))();
+            },
             attachEvents: function() {
                 this.dom.wrapper.querySelector('.sim5-tabs').addEventListener('click', e => {
                     if (e.target.matches('.tab-button')) {

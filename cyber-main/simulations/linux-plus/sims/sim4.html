@@ -134,6 +134,38 @@
             border-top: none;
         }
 
+        .sim-button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .sim-view-list-btn {
+            background-color: var(--interactive-blue);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .sim-view-list-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .log-output {
+            background-color: #1e1e1e;
+            color: #eee;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left;
+            white-space: pre;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -163,7 +195,43 @@
             <button class="modal-close-btn">Close</button>
         </div>
     </div>
-
+<!-- === MODAL FOR YOUR LOG FILE === -->
+    <div id="commandListModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0; margin-bottom: 1rem;">Log File</h2>
+            <pre class="log-output">
+comptia  pts/0        :0                Sat Mar 11 09:45 - 10:55  (01:10)
+eric     pts/1        :0                Sat Mar 11 10:00 - 12:32  (02:32)
+chris    pts/2        :0                Sat Mar 11 11:25 - 11:55  (00:30)
+reboot   system boot  3.10.0-693.21.1.  Sat Mar 11 08:55 - 16:00  (07:05)
+comptia  pts/1        :0                Sun Mar 12 14:20 - 09:48  (1+19:28)
+chris    pts/2        :0                Sun Mar 12 14:52 - 09:48  (1+18:56)
+reboot   system boot  3.10.0-693.21.1.  Sun Mar 12 11:01 - 13:26  (2+02:24)
+lee      pts/2        :0                Sun Mar 12 14:52 - 09:48  (1+18:56)
+comptia  pts/0        :0                Sun Mar 12 14:14 - 14:22  (00:07)
+eric     pts/2        :0                Sun Mar 12 14:52 - 09:48  (1+18:56)
+comptia  pts/0        :0                Sun Mar 12 11:37 - 11:58  (00:20)
+reboot   system boot  3.10.0-693.21.1.  Sun Mar 12 11:02 - 13:26  (2+02:23)
+david    pts/2        :0                Sun Mar 12 14:52 - 09:48  (1+18:56)
+comptia  pts/0        :0                Sun Mar 12 09:53 - 10:59  (01:05)
+comptia               :0                Sun Mar 12 11:01 - 11:01  (00:00)
+reboot   system boot  3.10.0-693.21.1.  Sun Mar 12 10:59 - 13:26  (2+02:26)
+eric     pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+david    pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+ann      pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+chris    pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+carl     pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+joe      pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+lee      pts/3        :0                Mon Mar 13 10:52 - 08:48  (1+12:50)
+comptia  pts/0        :0                Tue Mar 14 09:35 - 10:45  (01:10)
+ann      pts/1        :0                Tue Mar 14 10:10 - 11:25  (01:15)
+carl     pts/2        :0                Tue Mar 14 11:00 - 12:55  (01:55)
+chris    pts/4        :0                Tue Mar 14 14:15 - 15:10  (00:55)
+reboot   system boot  3.10.0-693.21.1.  Tue Mar 14 08:55 - 16:00  (07:05)</pre>
+            <button class="modal-close-btn" style="margin-top: 1.5rem;">Close</button>
+        </div>
+    </div>
+    </div>
     <script>
         const modal = document.getElementById("modal");
         const modalBody = document.getElementById("modal-body-content");
@@ -175,6 +243,12 @@
         function closeModal() { modal.style.display = "none"; }
         modal.querySelector('.modal-close-btn').onclick = closeModal;
         modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const commandListModal = document.getElementById("commandListModal");
+        function showCommandListModal() { commandListModal.style.display = "flex"; }
+        function closeCommandListModal() { commandListModal.style.display = "none"; }
+        commandListModal.querySelector('.modal-close-btn').onclick = closeCommandListModal;
+        commandListModal.onclick = e => { if (e.target.id === 'commandListModal') closeCommandListModal(); };
 
         const sim4 = {
             dom: {
@@ -213,7 +287,10 @@
                             <div class="sim4-dropzone"><span>${this.state.tabAnswers[this.state.activeTab] || "Drop command here"}</span></div>
                         </div>
                         <pre class="sim4-output">${this.data.outputs[this.state.activeTab]}</pre>
-                        <button class="sim-check-btn" id="checkPageBtn">Check This Page</button>
+                        <div class="sim-button-container">
+                             <button class="sim-check-btn" id="checkPageBtn">Check This Page</button>
+                            <button class="sim-view-list-btn" id="viewListBtn">Log File</button>
+                        </div>
                     </div>
                 `;
                 this.attachEvents();
@@ -226,6 +303,8 @@
                     }
                 });
 
+                this.dom.layout.querySelector("#viewListBtn").addEventListener("click", showCommandListModal);
+                
                 this.dom.layout.querySelector("#checkPageBtn").addEventListener("click", () => {
                     const userAnswer = (this.state.tabAnswers[this.state.activeTab] || "").replace(/\s+/g, " ").trim();
                     const correctAnswer = this.data.correctCommands[this.state.activeTab].replace(/\s+/g, " ").trim();
