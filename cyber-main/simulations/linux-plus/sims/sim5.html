@@ -139,7 +139,7 @@
 
         <div id="sim-content-wrapper">
              </div>
-        
+
         <div class="sim-controls">
             <div></div> <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
         </div>
@@ -170,7 +170,35 @@
             },
             data: {
                 info: `Situation: \nA senior administrator has placed a private key for user admin in your home directory. The server you need to remotely access is server1 and SSH is listening on port 2222.\n\nPart 1:\nReview the command output and build the correct command to place the private key into your SSH folder.\n\nPart 2: \nReview the command output and build the correct command to set the file permissions.\n\nPart 3: \nReview the command output and build the correct command to set the correct ownership.\n\nPart 4:\nSelect the proper file to edit for remote server access. Then, build the correct configuration output based on the server name, ports, and files. \n\nIn each part, click on objects to build a complete command. Command objects may be used more than once, but not all will be used. Use ˽ as the spacebar. Click the arrow to remove any unwanted objects from your command.`,
-                allFragments: ["1777", "-R", "0444", "admin", "server2", "0600", "root", "localhost", "comptia", "chcon", "server1", "/", "0500", "~/", "chown", ":", "chmod", "mv", ";", "-", "/etc/ssh", "~/.ssh/", "chage", "0777", "[spacebar]"],
+                
+                allFragments: [
+                    { label: "1777", value: "1777" }, 
+                    { label: "-R", value: "-R" }, 
+                    { label: "0444", value: "0444" }, 
+                    { label: "admin", value: "admin" }, 
+                    { label: "server2", value: "server2" }, 
+                    { label: "0600", value: "0600" }, 
+                    { label: "root", value: "root" }, 
+                    { label: "localhost", value: "localhost" }, 
+                    { label: "comptia", value: "comptia" }, 
+                    { label: "chcon", value: "chcon" }, 
+                    { label: "server1", value: "server1" }, 
+                    { label: "/", value: "/" }, 
+                    { label: "0500", value: "0500" }, 
+                    { label: "~/", value: "~/" }, 
+                    { label: "chown", value: "chown" }, 
+                    { label: ":", value: ":" }, 
+                    { label: "chmod", value: "chmod" }, 
+                    { label: "mv", value: "mv" }, 
+                    { label: ";", value: ";" }, 
+                    { label: "-", value: "-" }, 
+                    { label: "/etc/ssh", value: "/etc/ssh" }, 
+                    { label: "~/.ssh/", value: "~/.ssh/" }, 
+                    { label: "chage", value: "chage" }, 
+                    { label: "0777", value: "0777" }, 
+                    { label: "[spacebar]", value: " " }
+                ],
+
                 partsData: [
                     { correctAnswer: "mv server1 ~/.ssh/" },
                     { correctAnswer: "chmod 0600 ~/.ssh/server1" },
@@ -194,19 +222,20 @@
                 let contentHtml = '';
 
                 if (this.state.activePart < 3) {
-                    const fragmentsHtml = this.state.shuffledFragments.map(f => `<div class="sim5-fragment-btn" data-fragment="${f}">${f}</div>`).join('');
+                    const fragmentsHtml = this.state.shuffledFragments.map(f => `<div class="sim5-fragment-btn" data-fragment="${f.value}">${f.label}</div>`).join('');  
+
                     const commandList = [
-                        "cat ~/.ssh/authorized_keys", 
-                        "cat ~/.ssh/known_hosts",
-                        "ls -l .ssh",
-                        "ls -l ~",
-                        "ls -l ~/.ssh",
-                        "ls -l /etc/ssh",
-                        "ls -Z .ssh",
-                        "ls -Z ~/.ssh",
-                        "ssh-add ~/.ssh/id_rsa",
-                        "ssh-keyscan -H server1 >> ~/.ssh/known_hosts"
-                    ];
+                        "cat ~/.ssh/authorized_keys", 
+                        "cat ~/.ssh/known_hosts",
+                        "ls -l .ssh",
+                        "ls -l ~",
+                        "ls -l ~/.ssh",
+                        "ls -l /etc/ssh",
+                        "ls -Z .ssh",
+                        "ls -Z ~/.ssh",
+                        "ssh-add ~/.ssh/id_rsa",
+                        "ssh-keyscan -H server1 >> ~/.ssh/known_hosts"
+                        ];
                     const clickableCommandsHtml = commandList.map(cmd => `<a class="sim5-cmd-link" data-cmd="${cmd}">${cmd}</a>`).join('');
 
                     contentHtml = `
@@ -248,7 +277,7 @@
                 this.attachEvents();
             },
 getDynamicOutput: function(cmd) {
-                const part = this.state.activePart;
+                const part = this.state.activePart;
 
                 // Helper function for "ls -l" output on the .ssh directory
                 const lsSshOutput = () => {
@@ -265,29 +294,29 @@ getDynamicOutput: function(cmd) {
                     return `${base} server1\n${base} known_hosts`;
                 };
 
-                const outputs = {
-                    "ls -l ~": () => {
-                        const base = "total 8\ndrwxr-xr-x. 2 comptia comptia 4096 Sep 02 12:30 Documents\ndrwxr-xr-x. 2 comptia comptia 4096 Sep 02 12:31 Downloads";
-                        if (part === 0) return `${base}\n-rw-r--r--. 1 root root 1789 Aug 28 11:00 server1`;
-                        return base;
-                    },
-                    "ls -l ~/.ssh": lsSshOutput,
-                    "ls -l .ssh": lsSshOutput,
-                    "ls -Z ~/.ssh": lsZSshOutput,
-                    "ls -Z .ssh": lsZSshOutput,
-                    "cat ~/.ssh/authorized_keys": () => `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCo... comptia@local`,
-                    "cat ~/.ssh/known_hosts": () => `server1,192.168.1.101 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE...`,
-                    "ls -l /etc/ssh": () => `total 560
+                const outputs = {
+                    "ls -l ~": () => {
+                        const base = "total 8\ndrwxr-xr-x. 2 comptia comptia 4096 Sep 02 12:30 Documents\ndrwxr-xr-x. 2 comptia comptia 4096 Sep 02 12:31 Downloads";
+                        if (part === 0) return `${base}\n-rw-r--r--. 1 root root 1789 Aug 28 11:00 server1`;
+                        return base;
+                    },
+                    "ls -l ~/.ssh": lsSshOutput,
+                    "ls -l .ssh": lsSshOutput,
+                    "ls -Z ~/.ssh": lsZSshOutput,
+                    "ls -Z .ssh": lsZSshOutput,
+                    "cat ~/.ssh/authorized_keys": () => `ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCo... comptia@local`,
+                    "cat ~/.ssh/known_hosts": () => `server1,192.168.1.101 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE...`,
+                    "ls -l /etc/ssh": () => `total 560
 -rw-r--r--. 1 root root 551963 Aug 15 2023 moduli
 -rw-r--r--. 1 root root   2280 Aug 15 2023 ssh_config
 -rw-------. 1 root root   4164 Aug 15 2023 sshd_config
 -rw-------. 1 root root    505 Aug 15 2023 ssh_host_ed25519_key
 -rw-r--r--. 1 root root    338 Aug 15 2023 ssh_host_rsa_key.pub`,
-                    "ssh-add ~/.ssh/id_rsa": () => `Could not open a connection to your authentication agent.`,
-                    "ssh-keyscan -H server1 >> ~/.ssh/known_hosts": () => `` 
-                };
-                return (outputs[cmd] || (() => "Command not found."))();
-            },
+                    "ssh-add ~/.ssh/id_rsa": () => `Could not open a connection to your authentication agent.`,
+                    "ssh-keyscan -H server1 >> ~/.ssh/known_hosts": () => `` 
+                };
+                return (outputs[cmd] || (() => "Command not found."))();
+            },
             attachEvents: function() {
                 this.dom.wrapper.querySelector('.sim5-tabs').addEventListener('click', e => {
                     if (e.target.matches('.tab-button')) {
