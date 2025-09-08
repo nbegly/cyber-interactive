@@ -4429,7 +4429,7 @@ sed -i "s/10.10.10.2/$NEWIP/" /etc/netplan/private.yaml</pre><p>`,
 sed -i '/10.10.10.2/$NEWIP/' /etc/netplan/private.yaml</pre><p>`, 
             correct: false, explain: "Incorrect." },
             { text: `D.<pre class="h6">NEWIP=$1
-sed -i "s/10.10.10.2/$NEWIP/" /etc/netplan/private.yaml</pre><p>`, 
+sed -i "/10.10.10.2/$NEWIP/" /etc/netplan/private.yaml</pre><p>`, 
             correct: false, explain: "Incorrect." }
         ]
     },
