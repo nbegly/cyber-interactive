@@ -522,8 +522,8 @@
         type: "single",
         category: "5.0 Using Basic Transforming Commands",
         answers: [
-            { text: "A. limit, countfield", correct: true, explain: "Correct. `limit` specifies the number of results, and `countfield` renames the count field. The source PDF had a typo, this is the correct combination. For more details, see the documentation on the <a href='https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/Top' target='_blank'>top command</a>." },
-            { text: "B. limit, showpercent", correct: false, explain: "Incorrect. While both are valid arguments, the question asks for common constraints, and the source PDF answer was likely a typo for `countfield`." },
+            { text: "A. limit, countfield", correct: false, explain: "Incorrect." },
+            { text: "B. limit, showpercent", correct: true, explain: "Correct. Standard constraints for specifying how many and whether to show percentage." },
             { text: "C. limits, countfield", correct: false, explain: "Incorrect. The argument is `limit`, not `limits`." },
             { text: "D. showperc, countfield", correct: false, explain: "Incorrect. `showperc` is a valid argument, but `limit` is a more fundamental constraint." }
         ]
@@ -534,9 +534,9 @@
         type: "single",
         category: "6.0 Creating Reports and Dashboards",
         answers: [
-            { text: "A. Line charts are optimal for single and multiple series.", correct: false, explain: "Incorrect. While they can display single series, they are most effective for multiple series over time." },
+            { text: "A. Line charts are optimal for single and multiple series.", correct: true, explain: "Correct. Line charts are well-suited for displaying trends whether you're comparing one series or several." },
             { text: "B. Line charts are optimal for single series when using Fast mode.", correct: false, explain: "Incorrect. Search mode does not determine the optimal chart type." },
-            { text: "C. Line charts are optimal for multiple series with 3 or more columns.", correct: true, explain: "Correct. A line chart requires at least two columns for a single series (X-axis, Y-axis) and is ideal for comparing trends across multiple series, which would involve three or more columns. For more details, see the documentation on <a href='https://docs.splunk.com/Documentation/Splunk/latest/Viz/ChartConfigurationReference' target='_blank'>Visualization Types</a>." },
+            { text: "C. Line charts are optimal for multiple series with 3 or more columns.", correct: false, explain: "Incorrect. No such constraint is specified." },
             { text: "D. Line charts are optimal for multiseries searches with at least 2 or more columns.", correct: false, explain: "Incorrect. A multi-series chart typically requires more than 2 columns." }
         ]
     },
@@ -666,10 +666,10 @@
         type: "single",
         category: "3.0 Using Fields in Searches",
         answers: [
-            { text: "A. host", correct: true, explain: "Correct. By default, `host`, `source`, and `sourcetype` are considered Interesting Fields because they appear in nearly all events. For more details, see the documentation on <a href='https://docs.splunk.com/Documentation/Splunk/latest/Search/Usefieldstosearch' target='_blank'>Using Fields</a>." },
-            { text: "B. index", correct: false, explain: "Incorrect. `index` is a metadata field but is not typically listed under Interesting Fields by default." },
-            { text: "C. source", correct: true, explain: "Correct. By default, `host`, `source`, and `sourcetype` are considered Interesting Fields." },
-            { text: "D. sourcetype", correct: true, explain: "Correct. By default, `host`, `source`, and `sourcetype` are considered Interesting Fields." }
+            { text: "A. host", correct: false, explain: "Incorrect. It’s always under Selected Fields." },
+            { text: "B. index", correct: true, explain: "Correct. 'index' is not one of the three default fields, so it can appear under Interesting Fields." },
+            { text: "C. source", correct: false, explain: "Incorrect. It’s always under Selected Fields." },
+            { text: "D. sourcetype", correct: false, explain: "Incorrect. It’s always under Selected Fields." }
         ]
     },
     {
@@ -829,6 +829,18 @@
         ]
     },
     {
+        id: 42,
+        q: "What syntax is used to link key/value pairs in search strings?",
+        type: "single",
+        category: "3.0 Using Fields in Searches",
+        answers: [
+            { text: "A. action+purchase", correct: false, explain: "Incorrect. action+purchase → + is not used for key/value pairing in Splunk."},
+            { text: "B. action=purchase", correct: true, explain: "Correct. Use the field=value expression to match events where the field contains the specified value."},
+            { text: "C. action | purchase", correct: false, explain: "Incorrect. action | purchase → | starts a new search command (pipe), not a key/value."},
+            { text: "D. action equal purchase", correct: false, explain: "Incorrect. Splunk doesn’t use English words like equal; only = operator is valid"},
+        ]
+    },
+    {
         id: 43,
         q: "What user interface component allows for time selection?",
         type: "single",
@@ -858,10 +870,10 @@
         type: "single",
         category: "4.0 Search Language Fundamentals",
         answers: [
-            { text: "A. dedup", correct: true, explain: "Correct. The `dedup` command can significantly reduce the number of events processed by later parts of the search pipeline, especially if there are many duplicate events. For more details, see the documentation on <a href='https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/Dedup' target='_blank'>dedup command</a>." },
+            { text: "A. dedup", correct: false, explain: "Incorrect. Useful for results, but not optimal for reducing execution time early." },
             { text: "B. rename", correct: false, explain: "Incorrect. `rename` only changes field names and has a minor impact on performance." },
             { text: "C. sort -", correct: false, explain: "Incorrect. `sort` is a costly command and should be used as late as possible." },
-            { text: "D. fields +", correct: false, explain: "Incorrect. The `fields` command is best used to remove fields (`-`) to improve performance, not add them (`+`)." }
+            { text: "D. fields +", correct: true, explain: "Correct. Use the fields command early in your search to remove unnecessary fields and reduce the amount of data that needs to be processed. This can significantly improve search performance." }
         ]
     },
     {

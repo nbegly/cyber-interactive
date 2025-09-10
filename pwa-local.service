@@ -1,0 +1,12 @@
+[Unit]
+Description=Doctrina Optimos PWA Local Reverse Proxy Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/doctrina-optimos/doctrina-optimos/cyber-main
+ExecStart=/usr/bin/python3 -m http.server 8080 --bind 127.0.0.1
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

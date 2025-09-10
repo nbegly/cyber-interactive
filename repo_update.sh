@@ -1,8 +1,8 @@
 #!/bin/bash
 
-REPO_URL="https://github.com/nbegly/cyber-interactive.git"
+REPO_URL="https://github.com/nbegly/doctrina-optimos.git"
 # # Change if moving the location of the directory
-TARGET_DIR="/home/doctrina-optimos/cyber-interactive"
+TARGET_DIR="/home/doctrina-optimos/doctrina-optimos"
 
 echo "Updating from $REPO_URL ..."
 
