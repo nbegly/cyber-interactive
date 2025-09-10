@@ -381,7 +381,7 @@
     {
         id: 4,
         q: "Which of the following items should be included in a vulnerability scan report? (Choose two.)",
-        type: "multi",
+        type: "multiple",
         category: "4.1 Explain the importance of vulnerability management reporting and communication.",
         answers: [
             { text: "A. Lessons learned", correct: false, explain: "Incorrect. 'Lessons learned' is typically a component of an incident response report, not a vulnerability scan report." },
@@ -503,7 +503,7 @@
     {
         id: 14,
         q: "An incident response analyst notices multiple emails targeting only the administrators of the company. The email contains a concealed URL that leads to an unknown website. Which of the following best describes what is happening? (Choose two.)",
-        type: "multi",
+        type: "multiple",
         category: "1.2 Given a scenario, analyze indicators of potentially malicious activity.",
         answers: [
             { text: "A. Beaconing", correct: false, explain: "Incorrect. Beaconing is periodic outbound communication from a compromised host to a C2 server." },
@@ -1623,7 +1623,7 @@
     {
         id: 107,
         q: "An incident response team is investigating an active web server compromise. The decision has been made to keep the server running and accessible. Which of the following compensating controls will help contain the adversary while meeting requirements? (Select two).",
-        type: "multi",
+        type: "multiple",
         category: "3.2 Given a scenario, perform incident response activities.",
         answers: [
             { text: "A. Drop the tables on the database server to prevent data exfiltration.", correct: false, explain: "Incorrect. This is a destructive action that would cause a major outage, violating the requirement to keep the service accessible." },
@@ -2177,7 +2177,7 @@
     {
         id: 153,
         q: "A company's email security gateway is not properly configured to validate the sender of an email message. Which of the following DNS records should a security analyst recommend implementing to address this? (Select two).",
-        type: "multi",
+        type: "multiple",
         category: "1.3 Given a scenario, use appropriate tools or techniques to determine malicious activity.",
         answers: [
             { text: "A. SPF", correct: true, explain: "Correct. Sender Policy Framework (SPF) is a DNS record that lists the mail servers authorized to send email for a specific domain. It helps prevent sender address forgery." },
@@ -4919,7 +4919,7 @@
                 <div>`;
 
             q.answers.forEach((answer, aIdx) => {
-                if (q.type === "multi") {
+                if (q.type === "multiple") {
                     const isSelected = q.selected.includes(aIdx);
                     html += `<div class="answer-option${isSelected ? ' selected' : ''}" onclick="selectAnswer(${aIdx}, true)">
                         <input type="checkbox" ${isSelected ? "checked" : ""} style="margin-right:10px;"/>${answer.text}
@@ -4973,9 +4973,9 @@
             bar.innerText = percent + "%";
         }
 
-        function selectAnswer(aIdx, isMulti) {
+        function selectAnswer(aIdx, isMultiple) {
             let q = questions[currentQ];
-            if (isMulti) {
+            if (isMultiple) {
                 const selIndex = q.selected.indexOf(aIdx);
                 if (selIndex >= 0) {
                     q.selected.splice(selIndex, 1);
@@ -4986,7 +4986,7 @@
                 q.selected = [aIdx];
             }
             renderQuiz();
-            showExplanation(currentQ, aIdx, isMulti);
+            showExplanation(currentQ, aIdx, isMultiple);
         }
 
         function flagQuestion() {
@@ -5013,10 +5013,10 @@
             }
         }
         
-        function showExplanation(qIdx, aIdx, isMulti) {
+        function showExplanation(qIdx, aIdx, isMultiple) {
             const q = questions[qIdx];
             let explainHtml = "";
-            if (isMulti) {
+            if (isMultiple) {
                 q.selected.forEach(selectedIndex => {
                     explainHtml += `<div style="margin-bottom:10px;"><strong>${q.answers[selectedIndex].text}</strong><br>${q.answers[selectedIndex].explain}</div>`;
                 });
@@ -5158,7 +5158,7 @@
         function isCorrect(idx) {
             const q = questions[idx];
             if (!isAnswered(q)) return false;
-            if (q.type === "multi") {
+            if (q.type === "multiple") {
                 const correctIndices = q.answers.map((a, i) => a.correct ? i : -1).filter(i => i >= 0);
                 const selectedIndices = [...q.selected].sort((a,b)=>a-b);
                 if (correctIndices.length !== selectedIndices.length) return false;

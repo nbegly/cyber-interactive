@@ -6101,9 +6101,9 @@ $ ls -l /etc/passwd /etc/shadow
             bar.innerText = percent + "%";
         }
 
-        function selectAnswer(aIdx, isMulti) {
+        function selectAnswer(aIdx, isMultiple) {
             let q = questions[currentQ];
-            if (isMulti) {
+            if (isMultiple) {
                 const selIndex = q.selected.indexOf(aIdx);
                 if (selIndex >= 0) {
                     q.selected.splice(selIndex, 1);
@@ -6114,7 +6114,7 @@ $ ls -l /etc/passwd /etc/shadow
                 q.selected = [aIdx];
             }
             renderQuiz();
-            showExplanation(currentQ, aIdx, isMulti);
+            showExplanation(currentQ, aIdx, isMultiple);
         }
 
         function flagQuestion() {
@@ -6141,10 +6141,10 @@ $ ls -l /etc/passwd /etc/shadow
             }
         }
         
-        function showExplanation(qIdx, aIdx, isMulti) {
+        function showExplanation(qIdx, aIdx, isMultiple) {
             const q = questions[qIdx];
             let explainHtml = "";
-            if (isMulti) {
+            if (isMultiple) {
                 q.selected.forEach(selectedIndex => {
                     explainHtml += `<div style="margin-bottom:10px;"><strong>${q.answers[selectedIndex].text}</strong><br>${q.answers[selectedIndex].explain}</div>`;
                 });
@@ -6284,7 +6284,7 @@ $ ls -l /etc/passwd /etc/shadow
         function isCorrect(idx) {
             const q = questions[idx];
             if (!isAnswered(q)) return false;
-            if (q.type === "multi") {
+            if (q.type === "multiple") {
                 const correctIndices = q.answers.map((a, i) => a.correct ? i : -1).filter(i => i >= 0);
                 const selectedIndices = [...q.selected].sort((a,b)=>a-b);
                 if (correctIndices.length !== selectedIndices.length) return false;
