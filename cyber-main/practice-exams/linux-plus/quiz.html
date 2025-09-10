@@ -6047,7 +6047,7 @@ $ ls -l /etc/passwd /etc/shadow
                 <div>`;
 
             q.answers.forEach((answer, aIdx) => {
-                if (q.type === "multi") {
+                if (q.type === "multiple") {
                     const isSelected = q.selected.includes(aIdx);
                     html += `<div class="answer-option${isSelected ? ' selected' : ''}" onclick="selectAnswer(${aIdx}, true)">
                         <input type="checkbox" ${isSelected ? "checked" : ""} style="margin-right:10px;"/>${answer.text}
