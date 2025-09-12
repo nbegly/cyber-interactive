@@ -5,7 +5,7 @@
     <title>Splunk Core Certified User Prep Quiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="manifest" href="../../manifest.json">
+    <link rel="manifest" href="/cyber-main/manifest.json">
     
     <style>
         .top-right-nav {
@@ -249,7 +249,7 @@
 </head>
 <body>
     <div class="top-right-nav">
-        <a href="../index.html" class="back-btn">Back to Exam Hub</a>
+        <a href="/cyber-main/practice-exams/index.html" class="back-btn">Back to Exam Hub</a>
     </div>
 
     <div class="container-fluid">
@@ -1122,10 +1122,10 @@
         type: "single",
         category: "2.0 Basic Searching",
         answers: [
-            { text: "A. error fail", correct: true, explain: "Correct. The AND operator is implied between search terms. This search is interpreted as 'error AND fail'. For more details, see the documentation on <a href='https://docs.splunk.com/Documentation/Splunk/latest/Search/Booleanexpressions' target='_blank'>Boolean Expressions</a>." },
-            { text: "B. error OR fail", correct: false, explain: "Incorrect. This would match events containing either term, not necessarily both." },
-            { text: "C. error AND fail", correct: true, explain: "Correct. This is the explicit version of the search, which is functionally identical to 'error fail'." },
-            { text: "D. NOT error NOT fail", correct: false, explain: "Incorrect. This would exclude events containing these terms." }
+            { text: "A. index=security Error Fail", correct: true, explain: "Correct. The AND operator is implied between search terms. This search is interpreted as 'error AND fail'. For more details, see the documentation on <a href='https://docs.splunk.com/Documentation/Splunk/latest/Search/Booleanexpressions' target='_blank'>Boolean Expressions</a>." },
+            { text: "B. index=security error OR fail", correct: false, explain: "Incorrect. This would match events containing either term, not necessarily both." },
+            { text: "C. index=security (error failure)", correct: false, explain: "Incorrect." },
+            { text: "D. index=security NOT error NOT fail", correct: false, explain: "Incorrect. This would exclude events containing these terms." }
         ]
     },
     {
@@ -1352,8 +1352,8 @@
         answers: [
             { text: "A. status_code!=404", correct: false, explain: "Incorrect. This would return events where the status code is not 404." },
             { text: "B. status_code>=400", correct: false, explain: "Incorrect. This would return 404, but also 400, 401, 500, etc." },
-            { text: "C. status_code=404", correct: true, explain: "Correct. This is the most direct and efficient way to find events with an exact field value. For more details, see the documentation on <a href='https://docs.splunk.com/Documentation/Splunk/latest/Search/Specifyfieldandvalueinsearches' target='_blank'>Field-Value Searches</a>." },
-            { text: "D. status_code>403 AND status_code<405", correct: false, explain: "Incorrect. While this would work for integer values, it is unnecessarily complex and less efficient than a direct equality check." }
+            { text: "C. status_code=404", correct: true, explain: "Incorrect. This would return 404, but also everything prior." },
+            { text: "D. status_code>403 AND status_code<405", correct: false, explain: "Correct." }
         ]
     },
     {
@@ -1426,6 +1426,98 @@
             { text: "F. Search Head", correct: true, explain: "Correct. Search heads provide the user interface for searching." }
         ]
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     {
         id: 92,
         q: "What is Splunk?",

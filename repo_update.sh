@@ -2,7 +2,7 @@
 
 REPO_URL="https://github.com/nbegly/doctrina-optimos.git"
 # # Change if moving the location of the directory
-TARGET_DIR="/home/doctrina-optimos/doctrina-optimos"
+TARGET_DIR="/var/www/pwa/"
 
 echo "Updating from $REPO_URL ..."
 
