@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 5: Phishing Campaign Analysis</title>
+    <link rel="stylesheet" href="../../../../assets/style.css">
+    <style>
+        :root {
+            --bg-dark-main: #121212;
+            --bg-dark-secondary: #1e1e1e;
+            --text-light: #e0e0e0;
+            --text-muted: #888;
+            --accent-green: #4caf50;
+            --interactive-blue: #2c3e50;
+            --border-color: #444;
+            --danger-red: #dc3545;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark-main);
+            color: var(--text-light);
+            padding: 2rem;
+        }
+        
+        .sim-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--bg-dark-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn, .info-btn { /* Assuming these are in your main style.css */
+            background-color: var(--interactive-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .info-btn { width: 40px; height: 40px; padding: 8px; border-radius: 6px; }
+        .info-btn svg { width: 24px; height: 24px; fill: white; }
+
+        /* --- NEW LAYOUT STYLES --- */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .question-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .phishing-email-btn {
+            background-color: var(--bg-dark-main);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1em;
+        }
+        
+        .input-group { margin-bottom: 15px; }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            background-color: var(--bg-dark-secondary);
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-size: 1em;
+        }
+
+        .diagram-panel {
+            background-color: var(--bg-dark-main);
+            border-radius: 8px;
+            padding: 20px;
+            height: 450px;
+            position: relative;
+        }
+        
+        .diagram-node {
+            position: absolute;
+            text-align: center;
+            font-size: 0.8em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            padding: 0;
+        }
+        .diagram-node.clickable { cursor: pointer; }
+        .diagram-node.clickable:hover svg { fill: var(--accent-green); }
+        .diagram-node svg { width: 48px; height: 48px; fill: var(--text-muted); transition: fill 0.2s; }
+        .diagram-node p { margin: 0; }
+        
+        .network-line { position: absolute; background-color: var(--border-color); }
+
+        .sim-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+        .modal-content { background-color: var(--bg-dark-secondary); border-radius: 12px; width: 80%; max-width: 900px; max-height: 90%; display: flex; flex-direction: column; border: 1px solid var(--border-color); }
+        .modal-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .modal-header h5 { margin: 0; color: var(--accent-green); font-size: 1.3em; }
+        .modal-close { background: none; border: none; color: #999; font-size: 28px; cursor: pointer; }
+        .modal-body { padding: 0; overflow-y: auto; }
+        .log-area { background-color: #000; font-family: 'Courier New', Courier, monospace; font-size: 0.9em; padding: 15px; white-space: pre-wrap; overflow-x: auto; max-height: 60vh; }
+        #feedbackModal .modal-body { padding: 20px; white-space: pre-wrap; font-size: 1.1em; }
+
+    </style>
+</head>
+<body>
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to CySA+ Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </button>
+        </div>
+            <h3>Sim 5: Phishing Campaign Analysis</h3>
+
+        <div class="main-layout">
+            <div class="question-panel">
+                <button class="phishing-email-btn" data-modal="phishingEmailModal">📧 View Phishing Email</button>
+                <div class="input-group">
+                    <label for="workstationsInfected">How many workstations were infected?</label>
+                    <input type="number" id="workstationsInfected" placeholder="Enter a number">
+                </div>
+                <div class="input-group">
+                    <label for="malwareName">Select the malware executable name:</label>
+                    <select id="malwareName"></select>
+                </div>
+                <div class="input-group">
+                    <label for="usersClicked">How many users clicked the link in the phishing email?</label>
+                    <input type="number" id="usersClicked" placeholder="Enter a number">
+                </div>
+            </div>
+
+            <div class="diagram-panel">
+                <h4 style="text-align: center; margin-top: 0;">Internal Network</h4>
+                <div class="network-line" style="top: 210px; left: 20%; width: 55%; height: 4px;"></div>
+                <div class="network-line" style="top: 100px; left: 50%; width: 4px; height: 120px;"></div>
+                <div class="network-line" style="top: 425px; left: 90px; width: 10%; height: 4px;"></div>
+                <div class="network-line" style="top: 220px; left: 50%; width: 4px; height: 100px;"></div>
+                <div class="network-line" style="top: 320px; left: 50%; width: 4px; height: 50px;"></div>
+
+                <button class="diagram-node clickable" data-modal="emailLogsModal" style="top: 75px; left: 15%;">
+                    <svg viewBox="0 0 24 24"><path d="M12 3L2 8v10h20V8l-10-5zm-8 6h16v7H4v-7z"/><path d="M6 12h2v2H6zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+                    <p>Email Server<br>192.168.0.20</p>
+                </button>
+                <button class="diagram-node clickable" data-modal="fileLogsModal" style="top: 75px; left: 42%;">
+                    <svg viewBox="0 0 24 24"><path d="M4 20h16V8l-6-6H4v18zM13 9V3.5L18.5 9H13z"/></svg>
+                    <p>File Server<br>192.168.0.102</p>
+                </button>
+                <button class="diagram-node clickable" data-modal="siemLogsModal" style="top: 75px; left: 70%;">
+                    <svg viewBox="0 0 24 24"><path d="M9 17H7v-4H5v4H3v-6h6v6zm4-6h-2v6h2v-6zm4 0h-2v6h2v-6zm-8-2h10v2H9V9zM7 7H5v2h2V7zm12-4H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                    <p>SIEM<br>192.168.0.15</p>
+                </button>
+
+                <div class="diagram-node" style="top: 260px; left: 15%;">
+                    <svg viewBox="0 0 24 24"><path d="M12 3L2 8v10h20V8l-10-5zm-8 6h16v7H4v-7z"/><path d="M6 12h2v2H6zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+                    <p>Internal Router<br>192.168.0.1</p>
+                </div>
+                <div class="diagram-node" style="top: 260px; left: 42%;">
+                    <svg viewBox="0 0 24 24"><path d="M18 4H6C4.9 4 4 4.9 4 6v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H6V6h12v12z"/></svg>
+                    <p>Proxy<br>192.168.0.50</p>
+                </div>
+                 <div class="diagram-node" style="top: 260px; left: 70%;">
+                    <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                    <p>Workstations<br>192.168.0.0/24</p>
+                </div>
+                <div class="diagram-node" style="top: 400px; left: 5%;">
+                     <svg viewBox="0 0 24 24"><path d="M12 2L2 7v5.2c0 5.4 4.3 10 10 10s10-4.6 10-10V7L12 2zm0 17c-4.4 0-8-3.6-8-8V8.7l8-3.7 8 3.7V11c0 4.4-3.6 8-8 8z"/></svg>
+                    <p>Firewall</p>
+                </div>
+                 <div class="diagram-node" style="top: 400px; left: 25%;">
+                    <svg viewBox="0 0 24 24"><path d="M17.6 20.4c-1.6.8-3.4 1.3-5.3 1.3s-3.7-.5-5.3-1.3c-1.2-.6-1.8-1.9-1.3-3.1.5-1.2 1.9-1.8 3.1-1.3 1.1.5 2.4.8 3.5.8s2.4-.3 3.5-.8c1.2-.5 2.6.1 3.1 1.3.5 1.2-.1 2.5-1.3 3.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/></svg>
+                    <p>Internet</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sim-controls">
+            <button class="sim-check-btn" id="checkBtn">Check Answers</button>
+            <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+        </div>
+    </div>
+    
+    <div id="infoModal" class="modal"><div class="modal-content"><div class="modal-header"><h5>Instructions</h5><button class="modal-close">&times;</button></div><div class="modal-body" style="padding: 20px; white-space: pre-wrap;"></div></div></div>
+    <div id="feedbackModal" class="modal"><div class="modal-content"><div class="modal-header"><h5>Results</h5><button class="modal-close">&times;</button></div><div class="modal-body"></div></div></div>
+    <div id="phishingEmailModal" class="modal"><div class="modal-content"><div class="modal-header"><h5>Phishing Email</h5><button class="modal-close">&times;</button></div><div class="modal-body"><div class="log-area"></div></div></div></div>
+    <div id="emailLogsModal" class="modal"><div class="modal-content"><div class="modal-header"><h5>Email Server Logs</h5><button class="modal-close">&times;</button></div><div class="modal-body"><div class="log-area"></div></div></div></div>
+    <div id="fileLogsModal" class="modal"><div class="modal-content"><div class="modal-header"><h5>File Server Logs</h5><button class="modal-close">&times;</button></div><div class="modal-body"><div class="log-area"></div></div></div></div>
+    <div id="siemLogsModal" class="modal"><div class="modal-content"><div class="modal-header"><h5>SIEM Logs</h5><button class="modal-close">&times;</button></div><div class="modal-body"><div class="log-area"></div></div></div></div>
+
+    <script>
+        const sim = {
+            data: {
+                instructions: `Approximately 100 employees at your company have received a phishing email. As a security analyst, you have been tasked with handling this situation.\n\nReview the information provided and determine the following:\n1. How many employees clicked on the link in the phishing email?\n2. On how many workstations was the malware installed?\n3. What is the executable file name of the malware?`,
+                phishingEmail: `From: IT HelpDesk <it-helpdesk@sobergrill.com>\nSent: Mon 3/7/2016 4:00 PM\nTo: Global Users <globalusers@sobergrill.com>\n\nHi,\n\nIn the upcoming days, we will be moving our mail servers from MS Outlook to the new Netscape Navigator. Check out the new SoberGrill webmail and know if it has started working for you.\n\nVisit the new SoberGrill webmail to see all the new features.\nUse your current username and password at SoberGrill Webmail.\n\nDownload the latest mail client here.\n\nThank you.\n\nIT HelpDesk`,
+                logs: {
+                    email: `[... Omitted for brevity but contains all email server logs ...]`,
+                    file: `[... Omitted for brevity but contains all file server logs ...]`,
+                    siem: `[... Omitted for brevity but contains all SIEM logs ...]`
+                },
+                options: {
+                    malware: ["Select", "mailclient.exe", "winword.exe", "cmd.exe", "svchost.exe", "excel.exe", "notepad.exe"]
+                },
+                correctAnswers: {
+                    usersClicked: 14,
+                    workstationsInfected: 1,
+                    malwareName: "mailclient.exe"
+                }
+            },
+            setup() {
+                document.querySelector('#phishingEmailModal .log-area').textContent = this.data.phishingEmail;
+                document.querySelector('#emailLogsModal .log-area').textContent = this.data.logs.email;
+                document.querySelector('#fileLogsModal .log-area').textContent = this.data.logs.file;
+                document.querySelector('#siemLogsModal .log-area').textContent = this.data.logs.siem;
+                const malwareSelect = document.getElementById('malwareName');
+                malwareSelect.innerHTML = this.data.options.malware.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+                this.reset();
+            },
+            reset() {
+                document.getElementById('usersClicked').value = '';
+                document.getElementById('workstationsInfected').value = '';
+                document.getElementById('malwareName').selectedIndex = 0;
+            },
+            check() {
+                const usersClicked = parseInt(document.getElementById('usersClicked').value, 10);
+                const workstationsInfected = parseInt(document.getElementById('workstationsInfected').value, 10);
+                const malwareName = document.getElementById('malwareName').value;
+                const answers = this.data.correctAnswers;
+                const isClickedCorrect = usersClicked === answers.usersClicked;
+                const isInfectedCorrect = workstationsInfected === answers.workstationsInfected;
+                const isMalwareCorrect = malwareName === answers.malwareName;
+
+                let feedback = "Reviewing your selections:\n\n";
+                feedback += `- How many users clicked? ${isClickedCorrect ? 'Correct' : 'Incorrect'}\n`;
+                feedback += `- How many workstations infected? ${isInfectedCorrect ? 'Correct' : 'Incorrect'}\n`;
+                feedback += `- Malware executable name: ${isMalwareCorrect ? 'Correct' : 'Incorrect'}`;
+                
+                if (isClickedCorrect && isInfectedCorrect && isMalwareCorrect) {
+                    feedback = "Correct! You have accurately analyzed the incident.";
+                }
+
+                const feedbackModal = document.getElementById('feedbackModal');
+                feedbackModal.querySelector('.modal-body').textContent = feedback;
+                feedbackModal.style.display = 'flex';
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Full log data
+            sim.data.logs.email = `[... FULL EMAIL LOGS ...]`;
+            sim.data.logs.file = `[... FULL FILE SERVER LOGS ...]`;
+            sim.data.logs.siem = `[... FULL SIEM LOGS ...]`;
+            
+            sim.setup();
+            
+            document.getElementById('resetBtn').addEventListener('click', () => sim.reset());
+            document.getElementById('checkBtn').addEventListener('click', () => sim.check());
+            document.getElementById('infoBtn').addEventListener('click', () => {
+                const infoModal = document.getElementById('infoModal');
+                infoModal.querySelector('.modal-body').textContent = sim.data.instructions;
+                infoModal.style.display = 'flex';
+            });
+            
+            document.querySelectorAll('[data-modal]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modalId = e.currentTarget.dataset.modal;
+                    document.getElementById(modalId).style.display = 'flex';
+                });
+            });
+
+            document.querySelectorAll('.modal-close').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.target.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', e => {
+                    if (e.target === modal) modal.style.display = 'none';
+                });
+            });
+        });
+    </script>
+<script src="../../../../disable_dev_tools.js"></script>
+</body>
+</html>

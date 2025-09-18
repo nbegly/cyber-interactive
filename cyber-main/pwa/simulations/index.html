@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctrina Optimos</title>
-    <link rel="manifest" href="./manifest.json">
-    <link rel="stylesheet" href="./assets/style.css">
+    <title>Interactive Simulations Hub</title>
+    <link rel="stylesheet" href="../../assets/style.css">
     <style>
         .list-group { 
             list-style: none; 
             padding: 0; 
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 1rem;
-
         }
+
         .list-group-item { 
             background-color: var(--bg-dark-tertiary); 
             border: 1px solid var(--border-color); 
@@ -25,10 +24,13 @@
             display: grid; 
             transition: background-color 0.2s; 
             text-align: center;
+            cursor: pointer; 
         }
+
         .list-group-item:hover { 
             background-color: var(--accent-green-hover); 
         }
+
         .jumbotron { 
             text-align: center; 
             padding: 2rem; 
@@ -36,32 +38,32 @@
             border-radius: 8px; 
             margin-bottom: 2rem; 
         }
-        h7 {
-            font-size: xx-large;
-            font-weight: bolder;
-            color: #658b59;
-            font-family: 'Courier New', Courier, monospace;
+
+        .sim-top-bar { 
+            margin-bottom: 2rem;
         }
+        
     </style>
 </head>
 <body>
     <div class="sim-container">
-        <div class="jumbotron"><h7>Doctrina Optimos<br></h7>
-            <h1 class="display-4"><img src='./assets/9999.png' alt='nPower Doctrina Optimos'><br>Skillbridge<br>Interactive Cybersecurity Training Hub</h1>
-            <p class="lead">Please select a category to begin.</p>
+        <div class="jumbotron">
+            <h1 class="display-4">Interactive Simulations Hub</h1>
+            <p class="lead">Please select a path to begin.</p>
         </div>
-        <ul class="list-group">
-            <li><a href="./pwa/index.html" class="list-group-item">Welcome</a></li>
-
-        </ul>
+        </div>
+            <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Main Hub</a>
+            </button>
+        </div>
+        <div class="list-group">
+            <a href="./security-plus/index.html" class="list-group-item">CompTIA Security+ Simulations</a>
+            <a href="./linux-plus/index.html" class="list-group-item">CompTIA Linux+ Simulations</a>
+            <a href="./cysa-plus/index.html" class="list-group-item">CompTIA CySA+ Simulations</a>
+            <a href="./security-x/index.html" class="list-group-item">CompTIA SecurityX Simulations</a>
+        </div>
     </div>
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Service Worker registered:', reg))
-        .catch(err => console.error('Service Worker registration failed:', err));
-}
-</script>
-<script src="./disable_dev_tools.js"></script>
+    </script>
+<script src="../../disable_dev_tools.js"></script>
 </body>
 </html>

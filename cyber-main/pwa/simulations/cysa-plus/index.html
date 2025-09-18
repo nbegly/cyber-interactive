@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CySA+ Simulation Hub</title>
+    <link rel="manifest" href="../../../manifest.json">
+    <link rel="stylesheet" href="../../../assets/style.css">
+    <style>
+        .list-group { 
+            list-style: none; 
+            padding: 0; 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .list-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .list-group-item { 
+            background-color: var(--bg-dark-tertiary); 
+            border: 1px solid var(--border-color); 
+            padding: 1.5rem 1rem; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            color: var(--text-light); 
+            display: block; 
+            transition: background-color 0.2s; 
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .list-group-item:hover { 
+            background-color: var(--accent-green-hover); 
+        }
+
+        .jumbotron { 
+            text-align: center; 
+            padding: 2rem; 
+            background-color: var(--bg-dark-secondary); 
+            border-radius: 8px; 
+            margin-bottom: 2rem; 
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="sim-container">
+        <div class="jumbotron">
+            <h1 class="display-4">CySA+ Simulation Application Hub</h1>
+            <p class="lead">Select a simulation from the list below to begin.</p>
+        </div>
+        </div>
+            <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to Simulations Menu</a>
+            </button>
+        </div>
+        <ul class="list-group">
+            <li><a href="./sims/sim1.html" class="list-group-item">Sim 1: Data Exfiltration Analysis</a></li>
+            <li><a href="./sims/sim2.html" class="list-group-item">Sim 2: Vulnerability Remediation</a></li>
+            <li><a href="./sims/sim3.html" class="list-group-item">Sim 3: Security Incident Analysis</a></li>
+            <li><a href="./sims/sim4.html" class="list-group-item">Sim 4: Comprimise and Correction</a></li>
+            <li><a href="./sims/sim5.html" class="list-group-item">Sim 5: Phishing Campaign Analysis</a></li>
+        </ul>
+    </div>
+
+    <script>
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../../sw.js')
+                  .then(registration => {
+                    console.log('Service Worker registered! Scope: ', registration.scope);
+                })
+                .catch(err => {
+                    console.error('Service worker registration failed.', err);
+                });
+            });
+        }
+    </script>
+<script src="../../../disable_dev_tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim 11: Cloud Infrastructure Design</title>
+    <link rel="stylesheet" href="../../../../assets/style.css">
+    <style>
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-btn {
+            padding: 8px;
+            background-color: var(--interactive-blue);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            line-height: 0;
+        }
+
+        .info-btn:hover {
+            background-color: var(--interactive-blue-hover);
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .sim11-container { 
+            display: flex; 
+            gap: 20px; 
+            background-color: var(--bg-dark-secondary); 
+            padding: 20px; 
+            border-radius: 8px; 
+            flex-wrap: nowrap;
+            margin-top: 20px;
+            align-items: flex-start;
+        }
+
+        .sim11-left-panel { 
+            flex: 0 0 150px; 
+            background-color: var(--bg-dark-tertiary); 
+            padding: 15px; 
+            border-radius: 8px;
+        }
+
+        .sim11-left-panel h4 { 
+            margin-top: 0; 
+            color: var(--accent-green); 
+        }
+
+        .sim11-palette-items { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            align-items: center; 
+        }
+
+        .sim11-palette-items .draggable { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background-color: var(--interactive-blue); 
+            padding: 10px; 
+            border-radius: 4px; 
+            cursor: grab; 
+            width: 90%; 
+            user-select: none;
+        }
+
+        .sim11-palette-items .draggable:hover { 
+            background-color: var(--interactive-blue-hover); 
+        }
+
+        .sim11-right-panel { 
+            flex-grow: 1; 
+            min-width: 525px; 
+            background-color: var(--bg-dark-main); 
+            border-radius: 5px; 
+            position: relative; 
+            min-height: 450px; 
+            padding: 20px 150px 20px 150px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: space-around; 
+            gap: 10px; 
+        }
+
+        #line-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .tier { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            width: 100%; 
+            gap: 10px; 
+            position: relative; 
+        }
+
+        .tier-bubble { 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            padding: 15px 20px; 
+            background-color: var(--bg-dark-secondary); 
+            width: fit-content; 
+            position: relative;
+        }
+
+        .tier-label { 
+            font-weight: bold; 
+            color: var(--accent-green); 
+            position: absolute;
+            left: 105%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            text-align: left;
+        }
+
+        .drop-zone-group { 
+            display: flex; 
+            gap: 10px; 
+            justify-content: center; 
+        }
+
+        .drop-zone { 
+            border: 2px dashed var(--border-color); 
+            border-radius: 4px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background-color: rgba(42, 42, 42, 0.7); 
+            width: 60px; 
+            height: 60px; 
+        }
+
+        .drop-zone.drag-over { 
+            border-color: var(--accent-green); 
+        }
+
+        .drop-zone .draggable { 
+            font-size: 1rem;
+            font-weight: bold; 
+            padding: 5px; 
+            width: 80%; 
+            text-align: center;
+        }
+
+        .subnet-select-wrapper {
+            position: absolute;
+            left: 105%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            text-align: left;
+        }
+
+        .subnet-select { 
+            background-color: var(--bg-dark-tertiary); 
+            color: var(--text-light); 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+            padding: 5px; 
+        }
+
+        #internet-icon { 
+            font-size: 2.5rem; 
+            position: absolute;
+            right: 150px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-green);
+        }
+
+        #internet-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: currentColor;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sim-container">
+        <div class="sim-top-bar">
+        <a href="../index.html" class="back-btn">Back to Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+
+        <h3>Sim 11: Cloud Infrastructure Design</h3>
+        <div class="sim11-container">
+            <div class="sim11-left-panel">
+                <h4>Drag & Drop Icons</h4>
+                <div id="sim11-palette" class="sim11-palette-items"></div>
+            </div>
+            <div class="sim11-right-panel" id="diagram-panel">
+                 <canvas id="line-canvas"></canvas>
+                 <span id="internet-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></span>
+                <div class="tier" id="tier-1"><div id="zone-1" class="drop-zone"></div></div>
+                <div class="tier tier-bubble" id="tier-2">
+                    <div class="tier-label">Public Subnet</div>
+                    <div class="drop-zone-group">
+                        <div id="zone-2" class="drop-zone"></div>
+                        <div id="zone-3" class="drop-zone"></div>
+                    </div>
+                </div>
+                <div class="tier" id="tier-3"><div id="zone-4" class="drop-zone"></div></div>
+                <div class="tier tier-bubble" id="tier-4">
+                    <div class="subnet-select-wrapper">
+                        <select id="subnet-dropdown" class="subnet-select"><option value="">Select</option><option value="Public">Public Subnet</option><option value="Private">Private Subnet</option></select>
+                    </div>
+                     <div class="drop-zone-group">
+                        <div id="zone-5" class="drop-zone"></div>
+                        <div id="zone-6" class="drop-zone"></div>
+                        <div id="zone-7" class="drop-zone"></div>
+                    </div>
+                </div>
+                <div class="tier tier-bubble" id="tier-5">
+                     <div class="tier-label">Private Subnet</div>
+                     <div class="drop-zone-group">
+                        <div id="zone-8" class="drop-zone"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sim-controls">
+            <div></div>
+            <div>
+                <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+                <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+            <button class="modal-close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalBody = document.getElementById("modal-body-content");
+        function showModal(content, isCentered = true) {
+            modalBody.innerHTML = '';
+            if (typeof content === 'string') {
+                const p = document.createElement('p');
+                p.style.whiteSpace = 'pre-wrap';
+                p.textContent = content;
+                modalBody.appendChild(p);
+            } else {
+                modalBody.appendChild(content);
+            }
+            modal.querySelector('.modal-content').classList.toggle('centered-text', isCentered);
+            modal.style.display = "flex";
+        }
+        function closeModal() { modal.style.display = "none"; }
+        modal.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+        const sim11 = {
+            data: {
+                info: `SIMULATION\nA security analyst is creating the first draft of a network diagram for the company’s new customer-facing payment application that will be hosted by a third-party cloud service provider.\n\nINSTRUCTIONS\nSelect the appropriate icons to create a secure, redundant web application. Then use the dropdown menu to select the appropriate subnet type. Every space in the diagram must be filled.\n\nIf at any time you would like to bring back the initial state of the simulation, please click the Reset Sim button.`,
+                items: ['LB', 'DB', 'WAF', 'ASI', 'INS'],
+                answers: {
+                    'zone-1': 'LB', 'zone-2': 'INS', 'zone-3': 'WAF',
+                    'zone-4': 'ASI', 'zone-5': 'INS', 'zone-6': 'INS',
+                    'zone-7': 'INS', 'zone-8': 'DB', 'subnet-dropdown': 'Private',
+                }
+            },
+            setup: function() {
+                const palette = document.getElementById('sim11-palette');
+                palette.innerHTML = '';
+                this.data.items.forEach(item => {
+                    palette.innerHTML += `<div class="draggable" draggable="true" data-value="${item}">${item}</div>`;
+                });
+                
+                document.querySelectorAll('.drop-zone').forEach(zone => zone.innerHTML = '');
+                document.getElementById('subnet-dropdown').value = '';
+
+                let draggedItem = null;
+                document.addEventListener('dragstart', (e) => {
+                    if (e.target.closest('.sim11-container') && e.target.classList.contains('draggable')) {
+                        draggedItem = e.target;
+                    }
+                });
+                
+                document.querySelectorAll('.sim11-container .drop-zone').forEach(zone => {
+                    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+                    zone.addEventListener('dragleave', e => zone.classList.remove('drag-over'));
+                    zone.addEventListener('drop', e => {
+                        e.preventDefault();
+                        zone.classList.remove('drag-over');
+                        if (draggedItem) {
+                            const newItem = draggedItem.cloneNode(true);
+                            zone.innerHTML = ''; 
+                            zone.appendChild(newItem);
+                        }
+                    });
+                });
+                this.drawLines();
+            },
+            drawLines: function() {
+                const canvas = document.getElementById('line-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const container = document.getElementById('diagram-panel');
+                if (!container) return;
+
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+                ctx.lineWidth = 2;
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+                
+                const manualLines = [
+                    [980, 215, 980, 115], 
+                    [635, 50, 635, 90],
+                    [525, 50, 525, 90],
+                    [525, 195, 525, 225],
+                    [635, 195, 635, 225],
+                    [505, 245, 505, 270],
+                    [655, 245, 655, 270]
+                ];
+                manualLines.forEach(([x1, y1, x2, y2]) => {
+                    drawManualLine(x1, y1, x2, y2);
+                });
+
+                drawLineWithArrow(980, 115, 680, 115); 
+                drawLineWithArrow(635, 50, 615, 50);
+                drawLineWithArrow(525, 50, 545, 50);
+                drawLineWithArrow(525, 225, 545, 225);
+                drawLineWithArrow(635, 225, 615, 225);
+                drawLineWithArrow(505, 245, 545, 245);
+                drawLineWithArrow(655, 245, 615, 245);
+                drawLineWithArrow(580, 272, 580, 264);
+                drawLineWithArrow(580, 375, 580, 371)
+
+                function drawManualLine(x1, y1, x2, y2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                }
+
+                function drawLineWithArrow(x1, y1, x2, y2) {
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                    const angle = Math.atan2(y2 - y1, x2 - x1);
+                    const size = 8;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.translate(x2, y2);
+                    ctx.rotate(angle);
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-size, -size / 2);
+                    ctx.lineTo(-size, size / 2);
+                    ctx.closePath();
+                    ctx.fillStyle = ctx.strokeStyle;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            },
+            check: function() {
+                let correctCount = 0;
+                const totalChecks = Object.keys(this.data.answers).length;
+                let allFilled = true;
+
+                for (const key in this.data.answers) {
+                    let userAnswer = '';
+                    const element = document.getElementById(key);
+                    
+                    if (key.startsWith('zone-')) {
+                        const droppedItem = element.querySelector('.draggable');
+                        if (droppedItem) {
+                            userAnswer = droppedItem.dataset.value;
+                        } else {
+                            allFilled = false;
+                        }
+                    } else if (key.startsWith('subnet-')) {
+                        if (element.value) {
+                            userAnswer = element.value;
+                        } else {
+                            allFilled = false;
+                        }
+                    }
+                    
+                    if (userAnswer === this.data.answers[key]) {
+                        correctCount++;
+                    }
+                }
+                
+                if (!allFilled) {
+                    showModal("Please fill every space in the diagram before checking your answer.", true);
+                    return;
+                }
+
+                if (correctCount === totalChecks) {
+                    showModal("Correct! The cloud infrastructure is designed for security and redundancy.", true);
+                } else {
+                    showModal(`Incorrect. You have correctly configured ${correctCount} out of ${totalChecks} items. Please review your selections.`, true);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim11.setup();
+            document.getElementById('checkBtn').addEventListener('click', () => sim11.check());
+            document.getElementById('resetBtn').addEventListener('click', () => sim11.setup());
+            document.getElementById('infoBtn').onclick = () => {
+                showModal(sim11.data.info, false);
+            };
+            window.addEventListener('resize', () => sim11.drawLines());
+        });
+    </script>
+<script src="../../../../disable_dev_tools.js"></script>
+</body>
+</html>

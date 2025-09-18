@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sim: Website Alteration Analysis</title>
+    <link rel="stylesheet" href="../../../../assets/style.css">
+    <style>
+
+        .sim-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--bg-dark-main);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sim-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn, .info-btn {
+            background-color: var(--interactive-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .info-btn {
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .info-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .log-area {
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: small;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            min-height: 200px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: var(--text-dark);
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--accent-green);
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--text-light);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            margin-bottom: 20px;
+            background-color: var(--bg-dark-secondary);
+            border-radius: 0 0 8px 8px;
+            border: 1px solid var(--border-color);
+            border-top: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .answer-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 10px;
+            background-color: var(--bg-dark-secondary);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .answer-group-l {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            justify-content: space-evenly;
+            
+        }
+
+        .answer-group-l label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 25px;
+            gap: 20px;
+            color: var(--accent-green);
+        }
+
+        .answer-group-l select {
+            width: 80%;
+            background-color: var(--bg-dark-main);
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .answer-group-r {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .answer-group-r label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--accent-green);
+        }
+
+        .answer-group-r select {
+            width: 80%;
+            background-color: var(--bg-dark-main);
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .answer-group-r select:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .checkbox-group label:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            accent-color: var(--accent-green);
+        }
+
+        .sim-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-dark-main);
+            border-radius: 12px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--accent-green);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h5 {
+            margin: 0;
+            color: var(--accent-green);
+            font-size: 1.3em;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+            white-space: pre-line;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+
+        .modal-close-btn {
+            background-color: var(--accent-green);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 20px;
+            float: right;
+        }
+
+        #modal-body-content {
+            padding: 20px;
+        }
+
+        #modal-body-content p {
+            margin: 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="sim-container">
+        <div class="sim-top-bar">
+            <a href="../index.html" class="back-btn">Back to CySA+ Menu</a>
+            <button id="infoBtn" class="info-btn" title="Show Instructions">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+        </div>
+        <h3>Sim 4: Compromise and Correction</h3>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="sftp">SFTP log</button>
+            <button class="tab-btn" data-tab="netstat">Netstat</button>
+            <button class="tab-btn" data-tab="http">HTTP access</button>
+        </div>
+
+        <div id="sftp" class="tab-content active"><div class="log-area"></div></div>
+        <div id="netstat" class="tab-content"><div class="log-area"></div></div>
+        <div id="http" class="tab-content"><div class="log-area"></div></div>
+
+        <div class="answer-section">
+            <div class="answer-group-l">
+                <div>
+                    <label for="sourceIp">Which source IP address should the analyst be most concerned about:</label>
+                    <select id="sourceIp"></select>
+                </div>
+                <div>
+                    <label for="indicator">Identify the indicator of compromise:</label>
+                    <select id="indicator"></select>
+                </div>
+            </div>
+            <div class="answer-group-r">
+                <label>Select the corrective actions:</label>
+                <div id="correctiveActions" class="checkbox-group"></div>
+            </div>
+        </div>
+
+        <div class="sim-controls">
+            <button class="sim-check-btn" id="checkBtn">Check Answer</button>
+            <button class="sim-reset-btn" id="resetBtn">Reset Sim</button>
+        </div>
+    </div>
+    
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Instructions</h5>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-body-content"></div>
+            <button class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions
+        function showModal(content) {
+            const modal = document.getElementById('modal');
+            modal.querySelector('#modal-body-content').innerHTML = `<p style="white-space: pre-wrap;">${content}</p>`;
+            modal.style.display = 'flex';
+        }
+
+        function showInfoModal(content) {
+            const modal = document.getElementById('infoModal');
+            modal.querySelector('.modal-body').textContent = content;
+            modal.style.display = 'flex';
+        }
+
+        // Close modals
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-close')) {
+                e.target.closest('.modal').style.display = 'none';
+            }
+            if (e.target.classList.contains('modal-close-btn')) {
+                document.getElementById('modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        const sim = {
+            state: {
+                sourceIp: null,
+                indicator: null,
+                actions: []
+            },
+            data: {
+                modals: {
+                    info: `A company's website has been compromised. The security team needs to analyze the logs to identify the source of the compromise and determine appropriate corrective actions.
+
+Instructions:
+
+1. Review the SFTP log, Netstat output, and HTTP access logs by clicking through the tabs
+2. Identify which source IP address should be of most concern
+3. Determine the indicator of compromise from the available options
+4. Select the appropriate corrective actions that should be taken
+
+The logs show various connection attempts and file modifications. Look for patterns that indicate suspicious or unauthorized activity.
+
+Click "Check Answer" when you have made your selections, or "Reset Sim" to start over.`
+                },
+                logs: {
+                    sftp: `2022-04-01 16:04:12 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged in] [IP = 192.168.10.32] [username = sjames]
+2022-04-01 16:04:33 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [directory = /var/www]
+2022-04-01 16:05:30 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [./about_us.html written]
+2022-04-01 16:09:20 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged out] [IP = 192.168.10.32] [username = sjames]
+2022-04-01 17:10:42 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged in] [IP = 192.168.10.32] [username = sjames]
+2022-04-01 17:11:30 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [directory = /var/www]
+2022-04-01 17:14:30 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [./index written]
+2022-04-01 17:15:44 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged out] [IP = 192.168.10.32] [username = sjames]
+2022-04-01 19:45:48 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged in] [IP = 32.111.16.37] [username = sjames]
+2022-04-01 19:45:58 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged out] [IP = 32.111.16.37] [username = sjames]
+2022-04-01 23:01:50 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged in] [IP = 41.21.18.102] [username = sjames]
+2022-04-01 23:01:54 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged out] [IP = 32.111.16.37] [username = sjames]
+2022-04-01 23:01:54 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged in] [IP = 32.111.16.37] [username = sjames]
+2022-04-01 23:02:25 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [directory = /var/www]
+2022-04-01 23:03:18 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [./index.html written]
+2022-04-01 23:35:28 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged out] [IP = 41.21.18.102] [username = sjames]
+2022-04-02 09:10:42 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [failed login] [IP = 32.111.16.37] [username = sjames]
+2022-04-02 09:15:44 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged in] [IP = 192.168.11.102] [username = sjames]
+2022-04-02 09:22:55 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [directory = /var/www]
+2022-04-02 09:23:12 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [./index written]
+2022-04-02 09:23:12 - GUI MODE - PROTOCOL SERVER-TO-CLIENT - [logged out] [IP = 192.168.11.102] [username = sjames]`,
+                    netstat: `> netstat -ano
+
+  TCP    0.0.0.0:22             0.0.0.0:0              LISTENING       1600
+  TCP    127.0.0.1:1960         127.0.0.1:49722        ESTABLISHED     1000
+  TCP    127.0.0.1:1960         127.0.0.1:49022        ESTABLISHED     1000
+  TCP    127.0.0.1:49722        127.0.0.1:1960         ESTABLISHED     4912
+  TCP    127.0.0.1:49800        127.0.0.1:1960         ESTABLISHED     4228
+  TCP    127.0.0.1:49801        127.0.0.1:1961         ESTABLISHED     4228
+  TCP    127.0.0.1:38666        41.21.18.102:22        ESTABLISHED     4940
+  TCP    127.0.0.1:55356        192.168.10.32:22       ESTABLISHED     5112
+  TCP    127.0.0.1:37654        192.168.10.37:22       ESTABLISHED     5104
+  TCP    127.0.0.1:55357        32.111.16.37:22        TIME_WAIT       0
+  TCP    127.0.0.1:52744        32.111.16.37:22        TIME_WAIT       0
+  TCP    127.0.0.1:56751        32.111.16.37:22        TIME_WAIT       0
+  TCP    127.0.0.1:39882        104.17.18.29:22        SYN_SENT        4992`,
+                    http: `192.168.10.32    - - [2022-04-01 16:05:45] "GET mycompany.com/about_us.html HTTP/1.1 200]
+192.168.10.37    - - [2022-04-01 17:15:20] "GET mycompany.com HTTP/1.1 200]
+107.31.28.112    - - [2022-04-01 22:11:56] "GET mycompany.com HTTP/1.1 200]
+63.11.108.122    - - [2022-04-01 22:22:58] "GET mycompany.com HTTP/1.1 200]
+41.21.18.102     - - [2022-04-01 23:02:56] "GET mycompany.com HTTP/1.1 200]
+32.111.16.37     - - [2022-04-01 23:34:01] "GET mycompany.com HTTP/1.1 200]
+52.110.26.27     - - [2022-04-01 23:35:08] "GET mycompany.com/aboutUs.html HTTP/1.1 404]
+52.110.26.27     - - [2022-04-01 23:35:18] "GET mycompany.com/aboutUs.html HTTP/1.1 404]
+52.110.26.27     - - [2022-04-01 23:35:22] "GET mycompany.com/aboutUs.html HTTP/1.1 404]
+192.168.11.102   - - [2022-04-02 09:23:02] "GET mycompany.com HTTP/1.1 200]
+63.11.108.122    - - [2022-04-02 10:12:18] "GET mycompany.com HTTP/1.1 200]
+63.11.108.122    - - [2022-04-02 10:12:28] "GET mycompany.com/about_ss" HTTP/1.1 200]`
+                },
+                options: {
+                    ips: ["Select", "52.110.26.27", "41.21.18.102", "192.168.11.102", "192.168.10.37", "192.168.10.32", "32.111.16.37"],
+                    indicators: ["Select", "404 server error", "Repeated failed logins", "Unauthorized username", "Modified index.html file", "Modified about_us file"],
+                    actions: ["Deny 192.168.*.* at firewall.", "Change the password on the sjames account.", "Block external sftp access.", "Delete the sjames account.", "Shut down the insecure file transfer server.", "Encrypt index.html."]
+                },
+                correctAnswers: {
+                    sourceIp: "32.111.16.37",
+                    indicator: "Repeated failed logins",
+                    actions: ["Change the password on the sjames account.", "Block external sftp access."]
+                }
+            },
+            setup: function() {
+                this.state = { sourceIp: null, indicator: null, actions: [] };
+
+                // Populate logs
+                document.querySelector('#sftp .log-area').textContent = this.data.logs.sftp;
+                document.querySelector('#netstat .log-area').textContent = this.data.logs.netstat;
+                document.querySelector('#http .log-area').textContent = this.data.logs.http;
+
+                // Populate dropdowns
+                const ipSelect = document.getElementById('sourceIp');
+                ipSelect.innerHTML = this.data.options.ips.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+                
+                const indicatorSelect = document.getElementById('indicator');
+                indicatorSelect.innerHTML = this.data.options.indicators.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+
+                // Populate checkboxes
+                const actionsContainer = document.getElementById('correctiveActions');
+                actionsContainer.innerHTML = this.data.options.actions.map(opt => `<label><input type="checkbox" name="action" value="${opt}"> ${opt}</label>`).join('');
+            
+                this.attachListeners();
+            },
+            attachListeners: function() {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', this.openTab));
+                document.getElementById('sourceIp').addEventListener('change', (e) => this.state.sourceIp = e.target.value);
+                document.getElementById('indicator').addEventListener('change', (e) => this.state.indicator = e.target.value);
+                document.querySelectorAll('input[name="action"]').forEach(chk => {
+                    chk.addEventListener('change', (e) => {
+                        if (e.target.checked) {
+                            this.state.actions.push(e.target.value);
+                        } else {
+                            this.state.actions = this.state.actions.filter(a => a !== e.target.value);
+                        }
+                    });
+                });
+            },
+            openTab: function(evt) {
+                const tabName = evt.currentTarget.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active'));
+                document.getElementById(tabName).classList.add('active');
+                evt.currentTarget.classList.add('active');
+            },
+            check: function() {
+                const isIpCorrect = this.state.sourceIp === this.data.correctAnswers.sourceIp;
+                const isIndicatorCorrect = this.state.indicator === this.data.correctAnswers.indicator;
+                
+                const selectedActions = this.state.actions.sort();
+                const correctActions = this.data.correctAnswers.actions.sort();
+                const areActionsCorrect = selectedActions.length === correctActions.length && selectedActions.every((val, index) => val === correctActions[index]);
+
+                if (isIpCorrect && isIndicatorCorrect && areActionsCorrect) {
+                    showModal("✅ Correct! You have accurately identified the threat and the appropriate corrective actions.");
+                } else {
+                    let feedback = "❌ One or more selections are incorrect.\n\n";
+                    feedback += `- IP Address: ${isIpCorrect ? '✅ Correct' : '❌ Incorrect'}\n`;
+                    feedback += `- Indicator: ${isIndicatorCorrect ? '✅ Correct' : '❌ Incorrect'}\n`;
+                    feedback += `- Corrective Actions: ${areActionsCorrect ? '✅ Correct' : '❌ Incorrect'}`;
+                    showModal(feedback);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sim.setup();
+            document.getElementById('resetBtn').addEventListener('click', () => sim.setup());
+            document.getElementById('checkBtn').addEventListener('click', () => sim.check());
+            document.getElementById('infoBtn').addEventListener('click', () => {
+                showInfoModal(sim.data.modals.info);
+            });
+        });
+    </script>
+<script src="../../../../disable_dev_tools.js"></script>
+</body>
+</html>

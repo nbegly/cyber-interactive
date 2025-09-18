@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctrina Optimos</title>
-    <link rel="manifest" href="./manifest.json">
-    <link rel="stylesheet" href="./assets/style.css">
+    <title>Doctrina Optimos Main Hub</title>
+    <link rel="manifest" href="../manifest.json">
+    <link rel="stylesheet" href="../assets/style.css">
     <style>
         .list-group { 
             list-style: none; 
@@ -47,21 +47,22 @@
 <body>
     <div class="sim-container">
         <div class="jumbotron"><h7>Doctrina Optimos<br></h7>
-            <h1 class="display-4"><img src='./assets/9999.png' alt='nPower Doctrina Optimos'><br>Skillbridge<br>Interactive Cybersecurity Training Hub</h1>
+            <h1 class="display-4"><img src='../assets/9999.png' alt='nPower Doctrina Optimos'><br>Skillbridge<br>Interactive Cybersecurity Training Hub</h1>
             <p class="lead">Please select a category to begin.</p>
         </div>
         <ul class="list-group">
-            <li><a href="./pwa/index.html" class="list-group-item">Welcome</a></li>
-
+            <li><a href="./simulations/index.html" class="list-group-item">Practice Simulations</a></li>
+            
+            <li><a href="./practice-exams/index.html" class="list-group-item">Practice Exam Questions</a></li>
         </ul>
     </div>
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register('../sw.js')
         .then(reg => console.log('Service Worker registered:', reg))
         .catch(err => console.error('Service Worker registration failed:', err));
 }
 </script>
-<script src="./disable_dev_tools.js"></script>
+<script src="../disable_dev_tools.js"></script>
 </body>
 </html>
